@@ -21,8 +21,3 @@
 go.work
 
 tmp/**
-
-# environment variable
-.env
-
-#nyoba pull request
