@@ -7,6 +7,7 @@ require github.com/labstack/echo v3.3.10+incompatible
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.10.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -28,6 +29,7 @@ require (
 	golang.org/x/net v0.0.0-20210913180222-943fd674d43e // indirect
 	golang.org/x/sys v0.0.0-20210910150752-751e447fb3d0 // indirect
 	golang.org/x/text v0.3.7 // indirect
+	google.golang.org/protobuf v1.26.0 // indirect
 	gorm.io/driver/postgres v1.2.3 // indirect
 	gorm.io/gorm v1.22.4 // indirect
 )
