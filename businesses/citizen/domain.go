@@ -34,4 +34,5 @@ type Service interface {
 
 type Repository interface {
 	GetByEmail(email string) (Domain, error)
+	Register(data *Domain) (Domain, error)
 }
