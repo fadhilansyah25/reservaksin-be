@@ -1,17 +1,38 @@
 package citizen
-import(
-	"context"
+
+import (
+	"time"
 )
-type Domain struct{
-	ID int
+
+type Domain struct {
+	Id                 int
+	Email              string
+	NoHp               int16
+	Username           string
+	Password           string
+	NoKK               uint64
+	Nik                uint64
+	DateofBirth        string
+	FamilyRelationship string
+	Gender             string
+	MarriageStatus     string
+	Role               string
+	Address            string
+	Desa               string
+	Kota               string
+	Kecamatan          string
+	Provinsi           string
+	ImageURI           string
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
 }
 
 type Service interface {
-	CreateToken(ctx context.Context, username, password string) (string, error)
-	Register(ctx context.Context, data *Domain) error
-	GetById(ctx context.Context, id int) (Domain, error)
+	Register(data *Domain) (Domain, error)
+	Login(email string, password string) (string, error)
 }
 
 type Repository interface {
-	Store(ctx context.Context, data Domain) error
+	GetByEmail(email string) (Domain, error)
+	Register(data *Domain) (Domain, error)
 }

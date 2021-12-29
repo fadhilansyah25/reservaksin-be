@@ -21,5 +21,4 @@
 go.work
 
 tmp/**
-
 app/config/config.json
