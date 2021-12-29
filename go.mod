@@ -1,4 +1,4 @@
-module Reservaksin-BE
+module ca-reservaksin
 
 go 1.17
 
