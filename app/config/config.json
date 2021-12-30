@@ -1,5 +1,5 @@
 {
-    "debug": true,
+    "debug": false,
     "server": {
       "address": ":9090"
     },
@@ -7,11 +7,11 @@
       "timeout":2
     },
     "database": {
-        "host": "mysql",
+        "host": "localhost",
         "port": "3306",
         "user": "root",
         "pass": "",
-        "name": ""
+        "name": "reservaksin"
     },
     "jwt" : {
       "secret" : "supersecret12345!@#$%",

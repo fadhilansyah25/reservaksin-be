@@ -12,3 +12,15 @@ type Domain struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+type Service interface {
+	Register(dataAdmin *Domain) (Domain, error)
+	Login(username, password string) (string, error)
+	GetByID(id int) (Domain, error)
+}
+
+type Repository interface {
+	Register(dataAdmin *Domain) (Domain, error)
+	GetByUsername(username string) (Domain, error)
+	GetByID(id int) (Domain, error)
+}

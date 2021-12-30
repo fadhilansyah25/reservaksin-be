@@ -13,6 +13,7 @@ func HashAndSalt(pass []byte) string {
 		panic("Failed to hash password")
 	}
 	return string(hash)
+}
 
 func ValidateHash(secret, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(secret))

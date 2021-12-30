@@ -1,17 +1,10 @@
 package booking
 
-import(
-	"context"
-)
-
-type Domain struct{
-
+type Domain struct {
 }
 
-type Service interface{
-	
+type Service interface {
 }
 
-type Repository interface{
-	
+type Repository interface {
 }
