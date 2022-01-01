@@ -4,7 +4,7 @@ import (
 	"ca-reservaksin/businesses/admin"
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type Admin struct {
