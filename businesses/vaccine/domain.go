@@ -3,7 +3,7 @@ package vaccine
 import "time"
 
 type Domain struct {
-	Id         int
+	Id         string
 	NamaVaksin string
 	Stok       int
 	CreatedAt  time.Time
@@ -12,16 +12,16 @@ type Domain struct {
 
 type Service interface {
 	Create(data *Domain) (Domain, error)
-	Update(id int, data *Domain) (Domain, error)
-	Delete(id int) (string, error)
-	GetByID(id int) (Domain, error)
+	Update(id string, data *Domain) (Domain, error)
+	Delete(id string) (string, error)
+	GetByID(id string) (Domain, error)
 	FetchAll() ([]Domain, error)
 }
 
 type Repository interface {
 	Create(data *Domain) (Domain, error)
-	Update(id int, data *Domain) (Domain, error)
-	Delete(id int) (string, error)
-	GetByID(id int) (Domain, error)
+	Update(id string, data *Domain) (Domain, error)
+	Delete(id string) (string, error)
+	GetByID(id string) (Domain, error)
 	FetchAll() ([]Domain, error)
 }

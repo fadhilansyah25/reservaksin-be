@@ -28,7 +28,7 @@ func (mysqlRepo *mysqlVaccineRepository) Create(data *vaccine.Domain) (vaccine.D
 	return recVaccine.toDomain(), nil
 }
 
-func (mysqlRepo *mysqlVaccineRepository) Update(id int, data *vaccine.Domain) (vaccine.Domain, error) {
+func (mysqlRepo *mysqlVaccineRepository) Update(id string, data *vaccine.Domain) (vaccine.Domain, error) {
 	recVaccine := fromDomain(data)
 
 	err := mysqlRepo.Conn.Where("id = ?", id).Save(&recVaccine).Error
@@ -39,7 +39,7 @@ func (mysqlRepo *mysqlVaccineRepository) Update(id int, data *vaccine.Domain) (v
 	return recVaccine.toDomain(), nil
 }
 
-func (mysqlRepo *mysqlVaccineRepository) Delete(id int) (string, error) {
+func (mysqlRepo *mysqlVaccineRepository) Delete(id string) (string, error) {
 	recVaccine := Vaccine{}
 	err := mysqlRepo.Conn.Delete(&recVaccine, "id = ?", id).Error
 	if err != nil {
@@ -49,7 +49,7 @@ func (mysqlRepo *mysqlVaccineRepository) Delete(id int) (string, error) {
 	return "", nil
 }
 
-func (mysqlRepo *mysqlVaccineRepository) GetByID(id int) (vaccine.Domain, error) {
+func (mysqlRepo *mysqlVaccineRepository) GetByID(id string) (vaccine.Domain, error) {
 	recVaccine := Vaccine{}
 	err := mysqlRepo.Conn.Where("id = ?", id).First(&recVaccine).Error
 	if err != nil {

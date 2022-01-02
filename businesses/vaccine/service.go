@@ -2,6 +2,7 @@ package vaccine
 
 import (
 	"ca-reservaksin/businesses"
+	"ca-reservaksin/helpers/nanoid"
 	"fmt"
 	"strings"
 )
@@ -17,6 +18,7 @@ func NewVaccineService(vaccineRepo Repository) Service {
 }
 
 func (service *vaccineService) Create(data *Domain) (Domain, error) {
+	data.Id, _ = nanoid.GenerateNanoId()
 	dataVaccine, err := service.vaccineRepository.Create(data)
 	if err != nil {
 		return Domain{}, err
@@ -24,7 +26,7 @@ func (service *vaccineService) Create(data *Domain) (Domain, error) {
 	return dataVaccine, err
 }
 
-func (service *vaccineService) Update(id int, data *Domain) (Domain, error) {
+func (service *vaccineService) Update(id string, data *Domain) (Domain, error) {
 	res, err := service.vaccineRepository.GetByID(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
@@ -43,7 +45,7 @@ func (service *vaccineService) Update(id int, data *Domain) (Domain, error) {
 	return dataVaccine, nil
 }
 
-func (service *vaccineService) Delete(id int) (string, error) {
+func (service *vaccineService) Delete(id string) (string, error) {
 	existed, err := service.vaccineRepository.GetByID(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
@@ -60,7 +62,7 @@ func (service *vaccineService) Delete(id int) (string, error) {
 	return message, nil
 }
 
-func (service *vaccineService) GetByID(id int) (Domain, error) {
+func (service *vaccineService) GetByID(id string) (Domain, error) {
 	data, err := service.vaccineRepository.GetByID(id)
 	if err != nil {
 		return Domain{}, businesses.ErrIDNotFound

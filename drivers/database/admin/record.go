@@ -9,7 +9,7 @@ import (
 
 type Admin struct {
 	gorm.Model
-	Id        int       `json:"id" gorm:"primaryKey"`
+	Id        string    `json:"id" gorm:"primaryKey"`
 	Role      string    `json:"role"`
 	Username  string    `json:"username" gorm:"unique"`
 	Password  string    `json:"password"`
