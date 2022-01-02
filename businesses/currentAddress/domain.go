@@ -1,18 +1,32 @@
-package currentaddress
+package currentAddress
 
 import (
 	"time"
 )
 
 type Domain struct {
-	Id        int
+	Id        string
 	Alamat    string
-	Desa      string
+	Provinsi  string
 	Kota      string
 	Kecamatan string
-	Provinsi  string
-	Latd      float64
-	Lngtd     float64
+	Kelurahan string
+	Lat       float64
+	Lng       float64
 	CreatedAt time.Time
 	UpdatedAt time.Time
+}
+
+type Service interface {
+	Create(dataAddress *Domain) (Domain, error)
+	Update(id string, dataAddress *Domain) (Domain, error)
+	Delete(id string) (string, error)
+	GetByID(id string) (Domain, error)
+}
+
+type Repository interface {
+	Create(dataAddress *Domain) (Domain, error)
+	Update(id string, dataAddress *Domain) (Domain, error)
+	Delete(id string) (string, error)
+	GetByID(id string) (Domain, error)
 }

@@ -15,9 +15,9 @@ type VaccineController struct {
 	VaccineService vaccine.Service
 }
 
-func NewVaccineController(vaccineCtrl vaccine.Service) *VaccineController {
+func NewVaccineController(service vaccine.Service) *VaccineController {
 	return &VaccineController{
-		VaccineService: vaccineCtrl,
+		VaccineService: service,
 	}
 }
 

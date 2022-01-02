@@ -31,7 +31,7 @@ func (mysqlRepo *mysqlVaccineRepository) Create(data *vaccine.Domain) (vaccine.D
 func (mysqlRepo *mysqlVaccineRepository) Update(id string, data *vaccine.Domain) (vaccine.Domain, error) {
 	recVaccine := fromDomain(data)
 
-	err := mysqlRepo.Conn.Where("id = ?", id).Save(&recVaccine).Error
+	err := mysqlRepo.Conn.Save(&recVaccine).Error
 	if err != nil {
 		return vaccine.Domain{}, err
 	}

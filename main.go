@@ -14,10 +14,13 @@ import (
 	_dbDriver "ca-reservaksin/drivers/mysql"
 
 	_adminService "ca-reservaksin/businesses/admin"
+	_currentAddressService "ca-reservaksin/businesses/currentAddress"
 	_vaccineService "ca-reservaksin/businesses/vaccine"
 	_adminController "ca-reservaksin/controllers/admin"
+	_currentAddressController "ca-reservaksin/controllers/currentAddress"
 	_vaccineController "ca-reservaksin/controllers/vaccine"
 	_AdminRepo "ca-reservaksin/drivers/database/admin"
+	_currentAddressRepo "ca-reservaksin/drivers/database/currentAddress"
 	_VaccineRepo "ca-reservaksin/drivers/database/vaccine"
 )
 
@@ -37,6 +40,7 @@ func dbMigrate(db *gorm.DB) {
 	db.AutoMigrate(
 		&_AdminRepo.Admin{},
 		&_VaccineRepo.Vaccine{},
+		&_currentAddressRepo.CurrentAddress{},
 	)
 }
 
@@ -65,10 +69,15 @@ func main() {
 	vaccineService := _vaccineService.NewVaccineService(vaccineRepo)
 	vaccineCtrl := _vaccineController.NewVaccineController(vaccineService)
 
+	currentAddressRepo := _driverFactory.NewCurrentAddressRepository(db)
+	currentAddressService := _currentAddressService.NewCurrentAddressService(currentAddressRepo)
+	currentAddressCtrl := _currentAddressController.NewCurrentAddressController(currentAddressService)
+
 	routesInit := _routes.ControllerList{
-		JwtMiddleware:     configJWT.Init(),
-		AdminController:   *adminCtrl,
-		VaccineController: *vaccineCtrl,
+		JwtMiddleware:            configJWT.Init(),
+		AdminController:          *adminCtrl,
+		VaccineController:        *vaccineCtrl,
+		CurrentAddressController: *currentAddressCtrl,
 	}
 	e := echo.New()
 	routesInit.RoutesRegister(e)
