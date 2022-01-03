@@ -21,21 +21,21 @@ func (service *vaccineService) Create(data *Domain) (Domain, error) {
 	data.Id, _ = nanoid.GenerateNanoId()
 	dataVaccine, err := service.vaccineRepository.Create(data)
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, businesses.ErrInternalServer
 	}
-	return dataVaccine, err
+	return dataVaccine, nil
 }
 
 func (service *vaccineService) Update(id string, data *Domain) (Domain, error) {
-	res, err := service.vaccineRepository.GetByID(id)
+	existed, err := service.vaccineRepository.GetByID(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
 			return Domain{}, businesses.ErrIDNotFound
 		}
-		return Domain{}, err
+		return Domain{}, businesses.ErrInternalServer
 	}
 
-	data.Id = res.Id
+	data.Id = existed.Id
 
 	dataVaccine, err := service.vaccineRepository.Update(id, data)
 	if err != nil {
@@ -51,7 +51,7 @@ func (service *vaccineService) Delete(id string) (string, error) {
 		if strings.Contains(err.Error(), "not found") {
 			return "", businesses.ErrIDNotFound
 		}
-		return "", businesses.ErrIDNotFound
+		return "", businesses.ErrInternalServer
 	}
 
 	if _, err := service.vaccineRepository.Delete(id); err != nil {
@@ -65,7 +65,10 @@ func (service *vaccineService) Delete(id string) (string, error) {
 func (service *vaccineService) GetByID(id string) (Domain, error) {
 	data, err := service.vaccineRepository.GetByID(id)
 	if err != nil {
-		return Domain{}, businesses.ErrIDNotFound
+		if strings.Contains(err.Error(), "not found") {
+			return Domain{}, businesses.ErrIDNotFound
+		}
+		return Domain{}, businesses.ErrInternalServer
 	}
 
 	return data, nil
@@ -74,8 +77,8 @@ func (service *vaccineService) GetByID(id string) (Domain, error) {
 func (service *vaccineService) FetchAll() ([]Domain, error) {
 	data, err := service.vaccineRepository.FetchAll()
 	if err != nil {
-		return []Domain{}, err
+		return []Domain{}, businesses.ErrInternalServer
 	}
 
-	return data, err
+	return data, nil
 }
