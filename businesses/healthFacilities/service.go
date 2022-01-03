@@ -1,4 +1,4 @@
-package healthfacilities
+package healthFacilities
 
 import (
 	"ca-reservaksin/businesses"
