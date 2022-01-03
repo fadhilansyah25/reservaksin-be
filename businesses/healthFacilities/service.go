@@ -47,22 +47,25 @@ func (service *HealthFacilitiesService) GetByID(id string) (Domain, error) {
 	return dataHealthFacilities, nil
 }
 
-func (service *HealthFacilitiesService) Update(id string, data *Domain) (Domain, error) {
+func (service *HealthFacilitiesService) Update(id string, data *Domain, addressData *currentAddress.Domain) (Domain, currentAddress.Domain, error) {
 	existed, err := service.FacilitiesRepository.GetByID(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
-			return Domain{}, businesses.ErrIDNotFound
+			return Domain{}, currentAddress.Domain{}, businesses.ErrIDNotFound
 		}
-		return Domain{}, businesses.ErrInternalServer
+		return Domain{}, currentAddress.Domain{}, businesses.ErrInternalServer
 	}
 
 	data.Id = existed.Id
+	data.CurrentAddressID = existed.CurrentAddressID
 	dataHealthFacilities, err := service.FacilitiesRepository.Update(id, data)
 	if err != nil {
-		return Domain{}, businesses.ErrInternalServer
+		return Domain{}, currentAddress.Domain{}, businesses.ErrInternalServer
 	}
 
-	return dataHealthFacilities, nil
+	dataAddress, err := service.AddressRepository.Update(data.CurrentAddressID, addressData)
+
+	return dataHealthFacilities, dataAddress, nil
 }
 
 func (service *HealthFacilitiesService) Delete(id string) (string, error) {

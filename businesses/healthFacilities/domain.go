@@ -18,7 +18,7 @@ type Domain struct {
 type Service interface {
 	Create(data *Domain, address *currentAddress.Domain) (Domain, error)
 	GetByID(id string) (Domain, error)
-	Update(id string, data *Domain) (Domain, error)
+	Update(id string, data *Domain, addressData *currentAddress.Domain) (Domain, currentAddress.Domain, error)
 	Delete(id string) (string, error)
 }
 

@@ -8,7 +8,7 @@ import (
 
 type CurrentAddress struct {
 	gorm.Model
-	Id        string  `json:"id" gorm:"primary key"`
+	Id        string  `json:"id" gorm:"PrimaryKey; Not Null"`
 	Alamat    string  `json:"alamat"`
 	Provinsi  string  `json:"provinsi"`
 	Kota      string  `json:"kota"`

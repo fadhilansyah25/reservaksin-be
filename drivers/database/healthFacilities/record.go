@@ -10,13 +10,13 @@ import (
 
 type HealthFacilities struct {
 	gorm.Model
-	Id               string                        `json:"id" gorm:"primary key"`
+	Id               string                        `json:"id" gorm:"primaryKey"`
 	NameFacilites    string                        `json:"name_facilities"`
-	AdminId          string                        `json:"admin_id"`
-	Admin            admin.Admin                   `gorm:"constraint:OnUpdate:NO ACTION,OnDelete:RESTRICT;"`
-	CurrentAddressID string                        `json:"current_Address_id"`
-	CurrentAddress   currentAddress.CurrentAddress `gorm:"constraint:OnUpdate:NO ACTION,OnDelete:NO ACTION;"`
+	AdminId          string                        `gorm:"size:191" json:"admin_id"`
+	CurrentAddressID string                        `gorm:"size:191" json:"current_Address_id"`
 	NoTelp           string                        `json:"no_telp"`
+	Admin            admin.Admin                   `gorm:"foreignKey:AdminId;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
+	CurrentAddress   currentAddress.CurrentAddress `gorm:"foreignKey:CurrentAddressID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (rec *HealthFacilities) ToDomain() healthFacilities.Domain {
