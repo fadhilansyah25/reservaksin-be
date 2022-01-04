@@ -9,7 +9,7 @@ import (
 
 type Vaccine struct {
 	gorm.Model
-	Id         string    `json:"id" gorm:"primary key"`
+	Id         string    `json:"id" gorm:"PrimaryKey; Not Null"`
 	NamaVaksin string    `json:"nama_vaksin"`
 	Stok       int       `json:"stok"`
 	CreatedAt  time.Time `json:"created_at"`

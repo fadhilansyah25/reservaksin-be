@@ -3,6 +3,7 @@ package routes
 import (
 	"ca-reservaksin/controllers/admin"
 	"ca-reservaksin/controllers/currentAddress"
+	"ca-reservaksin/controllers/healthFacilities"
 	"ca-reservaksin/controllers/vaccine"
 
 	"github.com/labstack/echo/v4"
@@ -10,10 +11,11 @@ import (
 )
 
 type ControllerList struct {
-	JwtMiddleware            middleware.JWTConfig
-	AdminController          admin.AdminController
-	VaccineController        vaccine.VaccineController
-	CurrentAddressController currentAddress.CurrentAddressController
+	JwtMiddleware              middleware.JWTConfig
+	AdminController            admin.AdminController
+	VaccineController          vaccine.VaccineController
+	CurrentAddressController   currentAddress.CurrentAddressController
+	HealthFacilitiesController healthFacilities.HealthFacilitiesController
 }
 
 func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
@@ -34,4 +36,9 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	address.GET("/:id", cl.CurrentAddressController.GetByID)
 	address.PUT("/:id", cl.CurrentAddressController.Update)
 	address.DELETE("/:id", cl.CurrentAddressController.Delete)
+
+	healthFacilities := e.Group("health-facilities")
+	healthFacilities.POST("", cl.HealthFacilitiesController.Create)
+	healthFacilities.GET("/:id", cl.HealthFacilitiesController.GetByID)
+	healthFacilities.PUT("/:id", cl.HealthFacilitiesController.Update)
 }

@@ -24,7 +24,7 @@ func (service *adminService) Register(dataAdmin *Domain) (Domain, error) {
 	existedAdmin, err := service.adminRepository.GetByUsername(dataAdmin.Username)
 	if err != nil {
 		if !strings.Contains(err.Error(), "not found") {
-			return Domain{}, err
+			return Domain{}, businesses.ErrInternalServer
 		}
 	}
 

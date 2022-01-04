@@ -15,12 +15,15 @@ import (
 
 	_adminService "ca-reservaksin/businesses/admin"
 	_currentAddressService "ca-reservaksin/businesses/currentAddress"
+	_healthFacilitiesService "ca-reservaksin/businesses/healthFacilities"
 	_vaccineService "ca-reservaksin/businesses/vaccine"
 	_adminController "ca-reservaksin/controllers/admin"
 	_currentAddressController "ca-reservaksin/controllers/currentAddress"
+	_healthFacilitiesController "ca-reservaksin/controllers/healthFacilities"
 	_vaccineController "ca-reservaksin/controllers/vaccine"
 	_AdminRepo "ca-reservaksin/drivers/database/admin"
 	_currentAddressRepo "ca-reservaksin/drivers/database/currentAddress"
+	_healthFacilitiesRepo "ca-reservaksin/drivers/database/healthFacilities"
 	_VaccineRepo "ca-reservaksin/drivers/database/vaccine"
 )
 
@@ -41,6 +44,7 @@ func dbMigrate(db *gorm.DB) {
 		&_AdminRepo.Admin{},
 		&_VaccineRepo.Vaccine{},
 		&_currentAddressRepo.CurrentAddress{},
+		&_healthFacilitiesRepo.HealthFacilities{},
 	)
 }
 
@@ -73,11 +77,16 @@ func main() {
 	currentAddressService := _currentAddressService.NewCurrentAddressService(currentAddressRepo)
 	currentAddressCtrl := _currentAddressController.NewCurrentAddressController(currentAddressService)
 
+	healthFacilitiesRepo := _driverFactory.NewHealthFacilitiesRepository(db)
+	healthFacilitiesService := _healthFacilitiesService.NewHealthFacilitiesService(healthFacilitiesRepo, currentAddressRepo)
+	healthFacilitiesCtrl := _healthFacilitiesController.NewHealthFacilitiesController(healthFacilitiesService, currentAddressService)
+
 	routesInit := _routes.ControllerList{
-		JwtMiddleware:            configJWT.Init(),
-		AdminController:          *adminCtrl,
-		VaccineController:        *vaccineCtrl,
-		CurrentAddressController: *currentAddressCtrl,
+		JwtMiddleware:              configJWT.Init(),
+		AdminController:            *adminCtrl,
+		VaccineController:          *vaccineCtrl,
+		CurrentAddressController:   *currentAddressCtrl,
+		HealthFacilitiesController: *healthFacilitiesCtrl,
 	}
 	e := echo.New()
 	routesInit.RoutesRegister(e)

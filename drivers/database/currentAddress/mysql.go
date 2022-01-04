@@ -39,7 +39,7 @@ func (mysqlRepo *MysqlAdressRepository) GetByID(id string) (currentAddress.Domai
 func (mysqlRepo *MysqlAdressRepository) Update(id string, data *currentAddress.Domain) (currentAddress.Domain, error) {
 	recAddress := fromDomain(*data)
 
-	err := mysqlRepo.Conn.Save(&recAddress).Error
+	err := mysqlRepo.Conn.Model(&recAddress).Where("id = ?", id).Updates(&recAddress).Error
 	if err != nil {
 		return currentAddress.Domain{}, err
 	}

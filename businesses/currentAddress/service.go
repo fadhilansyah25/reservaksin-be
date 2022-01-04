@@ -20,18 +20,21 @@ func (service *currentAddressService) Create(data *Domain) (Domain, error) {
 	data.Id, _ = nanoid.GenerateNanoId()
 	dataAddress, err := service.currentAddressRepository.Create(data)
 	if err != nil {
-		return Domain{}, err
+		return Domain{}, businesses.ErrInternalServer
 	}
-	return dataAddress, err
+	return dataAddress, nil
 }
 
 func (service *currentAddressService) GetByID(id string) (Domain, error) {
 	dataAddress, err := service.currentAddressRepository.GetByID(id)
 	if err != nil {
-		return Domain{}, err
+		if strings.Contains(err.Error(), "not found") {
+			return Domain{}, businesses.ErrIDNotFound
+		}
+		return Domain{}, businesses.ErrInternalServer
 	}
 
-	return dataAddress, err
+	return dataAddress, nil
 }
 
 func (service *currentAddressService) Update(id string, data *Domain) (Domain, error) {
@@ -40,7 +43,7 @@ func (service *currentAddressService) Update(id string, data *Domain) (Domain, e
 		if strings.Contains(err.Error(), "not found") {
 			return Domain{}, businesses.ErrIDNotFound
 		}
-		return Domain{}, err
+		return Domain{}, businesses.ErrInternalServer
 	}
 
 	data.Id = res.Id
@@ -58,11 +61,11 @@ func (service *currentAddressService) Delete(id string) (string, error) {
 		if strings.Contains(err.Error(), "not found") {
 			return "", businesses.ErrIDNotFound
 		}
-		return "", businesses.ErrIDNotFound
+		return "", businesses.ErrInternalServer
 	}
 
 	if _, err := service.currentAddressRepository.Delete(id); err != nil {
-		return "", err
+		return "", businesses.ErrInternalServer
 	}
 
 	message := "current address success to deleted"
