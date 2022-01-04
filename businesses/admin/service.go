@@ -4,6 +4,7 @@ import (
 	"ca-reservaksin/app/middlewares"
 	"ca-reservaksin/businesses"
 	"ca-reservaksin/helpers/encrypt"
+	"ca-reservaksin/helpers/nanoid"
 	"strings"
 )
 
@@ -20,7 +21,6 @@ func NewAdminService(adminRepo Repository, jwtAuth *middlewares.ConfigJWT) Servi
 }
 
 func (service *adminService) Register(dataAdmin *Domain) (Domain, error) {
-
 	existedAdmin, err := service.adminRepository.GetByUsername(dataAdmin.Username)
 	if err != nil {
 		if !strings.Contains(err.Error(), "not found") {
@@ -30,6 +30,11 @@ func (service *adminService) Register(dataAdmin *Domain) (Domain, error) {
 
 	if existedAdmin != (Domain{}) {
 		return Domain{}, businesses.ErrDuplicateData
+	}
+
+	dataAdmin.Id, err = nanoid.GenerateNanoId()
+	if err != nil {
+		return Domain{}, businesses.ErrInternalServer
 	}
 
 	hashedPassword := encrypt.HashAndSalt([]byte(dataAdmin.Password))
@@ -51,11 +56,11 @@ func (service *adminService) Login(username, password string) (string, error) {
 		return "", businesses.ErrUsernamePasswordNotFound
 	}
 
-	token := service.jwtAuth.GenerateToken(adminDomain.Id)
+	token := service.jwtAuth.GenerateTokenAdmin(adminDomain.Id)
 	return token, nil
 }
 
-func (service *adminService) GetByID(id int) (Domain, error) {
+func (service *adminService) GetByID(id string) (Domain, error) {
 	adminDomain, err := service.adminRepository.GetByID(id)
 	if err != nil {
 		return Domain{}, businesses.ErrIDNotFound

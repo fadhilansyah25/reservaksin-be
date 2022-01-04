@@ -5,8 +5,8 @@ import (
 	"ca-reservaksin/controllers"
 	"ca-reservaksin/controllers/admin/request"
 	"ca-reservaksin/controllers/admin/response"
+	"errors"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -58,7 +58,11 @@ func (ctrl *AdminController) Login(c echo.Context) error {
 }
 
 func (ctrl *AdminController) GetByID(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
+	id := c.Param("id")
+	if id == "" {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, errors.New("id: id is empty"))
+	}
+
 	admin, err := ctrl.AdminService.GetByID(id)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)

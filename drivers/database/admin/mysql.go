@@ -28,21 +28,21 @@ func (mysqlRepo *MysqlAdminRepository) Register(dataAdmin *admin.Domain) (admin.
 }
 
 func (mysqlRepo *MysqlAdminRepository) GetByUsername(username string) (admin.Domain, error) {
-	rec := Admin{}
-	err := mysqlRepo.Conn.First(&rec, "username = ?", username).Error
+	recAdmin := Admin{}
+	err := mysqlRepo.Conn.First(&recAdmin, "username = ?", username).Error
 	if err != nil {
 		return admin.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return recAdmin.toDomain(), nil
 }
 
-func (mysqlRepo *MysqlAdminRepository) GetByID(id int) (admin.Domain, error) {
-	rec := Admin{}
-	err := mysqlRepo.Conn.Where("id = ?", id).First(&rec).Error
+func (mysqlRepo *MysqlAdminRepository) GetByID(id string) (admin.Domain, error) {
+	recAdmin := Admin{}
+	err := mysqlRepo.Conn.Where("id = ?", id).First(&recAdmin).Error
 	if err != nil {
 		return admin.Domain{}, err
 	}
 
-	return rec.toDomain(), nil
+	return recAdmin.toDomain(), nil
 }

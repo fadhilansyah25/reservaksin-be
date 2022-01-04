@@ -6,7 +6,7 @@ import (
 )
 
 type Admin struct {
-	Id        int       `json:"id"`
+	Id        string    `json:"id"`
 	Role      string    `json:"role"`
 	Username  string    `json:"username"`
 	Password  string    `json:"password"`

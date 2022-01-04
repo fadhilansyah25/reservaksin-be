@@ -5,7 +5,7 @@ import (
 )
 
 type Domain struct {
-	Id        int
+	Id        string
 	Role      string
 	Username  string
 	Password  string
@@ -16,11 +16,11 @@ type Domain struct {
 type Service interface {
 	Register(dataAdmin *Domain) (Domain, error)
 	Login(username, password string) (string, error)
-	GetByID(id int) (Domain, error)
+	GetByID(id string) (Domain, error)
 }
 
 type Repository interface {
 	Register(dataAdmin *Domain) (Domain, error)
 	GetByUsername(username string) (Domain, error)
-	GetByID(id int) (Domain, error)
+	GetByID(id string) (Domain, error)
 }

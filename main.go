@@ -9,13 +9,19 @@ import (
 	"gorm.io/gorm"
 
 	_middlewares "ca-reservaksin/app/middlewares"
-	"ca-reservaksin/app/routes"
+	_routes "ca-reservaksin/app/routes"
 	_driverFactory "ca-reservaksin/drivers"
 	_dbDriver "ca-reservaksin/drivers/mysql"
 
 	_adminService "ca-reservaksin/businesses/admin"
+	_currentAddressService "ca-reservaksin/businesses/currentAddress"
+	_vaccineService "ca-reservaksin/businesses/vaccine"
 	_adminController "ca-reservaksin/controllers/admin"
+	_currentAddressController "ca-reservaksin/controllers/currentAddress"
+	_vaccineController "ca-reservaksin/controllers/vaccine"
 	_AdminRepo "ca-reservaksin/drivers/database/admin"
+	_currentAddressRepo "ca-reservaksin/drivers/database/currentAddress"
+	_VaccineRepo "ca-reservaksin/drivers/database/vaccine"
 )
 
 func init() {
@@ -33,6 +39,8 @@ func init() {
 func dbMigrate(db *gorm.DB) {
 	db.AutoMigrate(
 		&_AdminRepo.Admin{},
+		&_VaccineRepo.Vaccine{},
+		&_currentAddressRepo.CurrentAddress{},
 	)
 }
 
@@ -57,9 +65,19 @@ func main() {
 	adminService := _adminService.NewAdminService(adminRepo, &configJWT)
 	adminCtrl := _adminController.NewAdminController(adminService)
 
-	routesInit := routes.ControllerList{
-		JwtMiddleware:   configJWT.Init(),
-		AdminController: *adminCtrl,
+	vaccineRepo := _driverFactory.NewVaccineRepository(db)
+	vaccineService := _vaccineService.NewVaccineService(vaccineRepo)
+	vaccineCtrl := _vaccineController.NewVaccineController(vaccineService)
+
+	currentAddressRepo := _driverFactory.NewCurrentAddressRepository(db)
+	currentAddressService := _currentAddressService.NewCurrentAddressService(currentAddressRepo)
+	currentAddressCtrl := _currentAddressController.NewCurrentAddressController(currentAddressService)
+
+	routesInit := _routes.ControllerList{
+		JwtMiddleware:            configJWT.Init(),
+		AdminController:          *adminCtrl,
+		VaccineController:        *vaccineCtrl,
+		CurrentAddressController: *currentAddressCtrl,
 	}
 	e := echo.New()
 	routesInit.RoutesRegister(e)
