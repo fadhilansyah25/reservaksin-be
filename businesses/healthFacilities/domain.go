@@ -6,19 +6,20 @@ import (
 )
 
 type Domain struct {
-	Id               string
+	ID               string
 	AdminId          string
 	NameFacilites    string
 	CurrentAddressID string
 	NoTelp           string
+	CurrentAddress   currentAddress.Domain
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 }
 
 type Service interface {
-	Create(data *Domain, address *currentAddress.Domain) (Domain, error)
+	Create(data *Domain) (Domain, error)
 	GetByID(id string) (Domain, error)
-	Update(id string, data *Domain, addressData *currentAddress.Domain) (Domain, currentAddress.Domain, error)
+	Update(id string, data *Domain) (Domain, error)
 	Delete(id string) (string, error)
 }
 

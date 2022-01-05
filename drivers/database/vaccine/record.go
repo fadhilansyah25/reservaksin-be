@@ -16,7 +16,7 @@ type Vaccine struct {
 	UpdatedAt  time.Time `json:"updated_at"`
 }
 
-func (rec *Vaccine) toDomain() vaccine.Domain {
+func (rec *Vaccine) ToDomain() vaccine.Domain {
 	return vaccine.Domain{
 		Id:         rec.Id,
 		NamaVaksin: rec.NamaVaksin,
@@ -38,7 +38,7 @@ func ToArrayOfDomain(rec []Vaccine) []vaccine.Domain {
 	domainArray := []vaccine.Domain{}
 
 	for _, val := range rec {
-		domainArray = append(domainArray, val.toDomain())
+		domainArray = append(domainArray, val.ToDomain())
 	}
 
 	return domainArray

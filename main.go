@@ -16,14 +16,17 @@ import (
 	_adminService "ca-reservaksin/businesses/admin"
 	_currentAddressService "ca-reservaksin/businesses/currentAddress"
 	_healthFacilitiesService "ca-reservaksin/businesses/healthFacilities"
+	_sessionService "ca-reservaksin/businesses/session"
 	_vaccineService "ca-reservaksin/businesses/vaccine"
 	_adminController "ca-reservaksin/controllers/admin"
 	_currentAddressController "ca-reservaksin/controllers/currentAddress"
 	_healthFacilitiesController "ca-reservaksin/controllers/healthFacilities"
+	_sessionController "ca-reservaksin/controllers/session"
 	_vaccineController "ca-reservaksin/controllers/vaccine"
 	_AdminRepo "ca-reservaksin/drivers/database/admin"
 	_currentAddressRepo "ca-reservaksin/drivers/database/currentAddress"
 	_healthFacilitiesRepo "ca-reservaksin/drivers/database/healthFacilities"
+	_session "ca-reservaksin/drivers/database/session"
 	_VaccineRepo "ca-reservaksin/drivers/database/vaccine"
 )
 
@@ -45,6 +48,7 @@ func dbMigrate(db *gorm.DB) {
 		&_VaccineRepo.Vaccine{},
 		&_currentAddressRepo.CurrentAddress{},
 		&_healthFacilitiesRepo.HealthFacilities{},
+		&_session.Session{},
 	)
 }
 
@@ -81,12 +85,17 @@ func main() {
 	healthFacilitiesService := _healthFacilitiesService.NewHealthFacilitiesService(healthFacilitiesRepo, currentAddressRepo)
 	healthFacilitiesCtrl := _healthFacilitiesController.NewHealthFacilitiesController(healthFacilitiesService, currentAddressService)
 
+	sessionRepo := _driverFactory.NewSessionRepository(db)
+	sessionService := _sessionService.NewSessionService(sessionRepo)
+	sessionCtrl := _sessionController.NewSessioncontroller(sessionService)
+
 	routesInit := _routes.ControllerList{
 		JwtMiddleware:              configJWT.Init(),
 		AdminController:            *adminCtrl,
 		VaccineController:          *vaccineCtrl,
 		CurrentAddressController:   *currentAddressCtrl,
 		HealthFacilitiesController: *healthFacilitiesCtrl,
+		SessionController:          *sessionCtrl,
 	}
 	e := echo.New()
 	routesInit.RoutesRegister(e)

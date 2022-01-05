@@ -17,13 +17,13 @@ func NewMysqlRepository(conn *gorm.DB) currentAddress.Repository {
 }
 
 func (mysqlRepo *MysqlAdressRepository) Create(data *currentAddress.Domain) (currentAddress.Domain, error) {
-	dataAddress := fromDomain(*data)
+	dataAddress := FromDomain(*data)
 	err := mysqlRepo.Conn.Create(&dataAddress).Error
 	if err != nil {
 		return currentAddress.Domain{}, err
 	}
 
-	return dataAddress.toDomain(), nil
+	return dataAddress.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlAdressRepository) GetByID(id string) (currentAddress.Domain, error) {
@@ -33,18 +33,18 @@ func (mysqlRepo *MysqlAdressRepository) GetByID(id string) (currentAddress.Domai
 		return currentAddress.Domain{}, err
 	}
 
-	return recAddress.toDomain(), nil
+	return recAddress.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlAdressRepository) Update(id string, data *currentAddress.Domain) (currentAddress.Domain, error) {
-	recAddress := fromDomain(*data)
+	recAddress := FromDomain(*data)
 
 	err := mysqlRepo.Conn.Model(&recAddress).Where("id = ?", id).Updates(&recAddress).Error
 	if err != nil {
 		return currentAddress.Domain{}, err
 	}
 
-	return recAddress.toDomain(), nil
+	return recAddress.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlAdressRepository) Delete(id string) (string, error) {

@@ -4,6 +4,7 @@ import (
 	"ca-reservaksin/controllers/admin"
 	"ca-reservaksin/controllers/currentAddress"
 	"ca-reservaksin/controllers/healthFacilities"
+	"ca-reservaksin/controllers/session"
 	"ca-reservaksin/controllers/vaccine"
 
 	"github.com/labstack/echo/v4"
@@ -16,6 +17,7 @@ type ControllerList struct {
 	VaccineController          vaccine.VaccineController
 	CurrentAddressController   currentAddress.CurrentAddressController
 	HealthFacilitiesController healthFacilities.HealthFacilitiesController
+	SessionController          session.Sessioncontroller
 }
 
 func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
@@ -41,4 +43,9 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	healthFacilities.POST("", cl.HealthFacilitiesController.Create)
 	healthFacilities.GET("/:id", cl.HealthFacilitiesController.GetByID)
 	healthFacilities.PUT("/:id", cl.HealthFacilitiesController.Update)
+	healthFacilities.DELETE("/:id", cl.HealthFacilitiesController.Delete)
+
+	session := e.Group("session")
+	session.POST("", cl.SessionController.Create)
+	session.GET("/:id", cl.SessionController.GetByID)
 }

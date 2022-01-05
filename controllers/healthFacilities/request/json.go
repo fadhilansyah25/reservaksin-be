@@ -1,7 +1,6 @@
 package request
 
 import (
-	"ca-reservaksin/businesses/currentAddress"
 	"ca-reservaksin/businesses/healthFacilities"
 	"ca-reservaksin/controllers/currentAddress/request"
 )
@@ -13,18 +12,11 @@ type HealthFacilities struct {
 	CurrentAddress request.CurrentAddress `json:"current_address"`
 }
 
-func (req *HealthFacilities) ToDomain() (*healthFacilities.Domain, *currentAddress.Domain) {
+func (req *HealthFacilities) ToDomain() *healthFacilities.Domain {
 	return &healthFacilities.Domain{
-			AdminId:       req.AdminId,
-			NameFacilites: req.NameFacilites,
-			NoTelp:        req.NoTelp,
-		}, &currentAddress.Domain{
-			Alamat:    req.CurrentAddress.Alamat,
-			Provinsi:  req.CurrentAddress.Provinsi,
-			Kota:      req.CurrentAddress.Kota,
-			Kecamatan: req.CurrentAddress.Kecamatan,
-			Kelurahan: req.CurrentAddress.Kelurahan,
-			Lat:       req.CurrentAddress.Lat,
-			Lng:       req.CurrentAddress.Lng,
-		}
+		AdminId:        req.AdminId,
+		NameFacilites:  req.NameFacilites,
+		NoTelp:         req.NoTelp,
+		CurrentAddress: *req.CurrentAddress.ToDomain(),
+	}
 }

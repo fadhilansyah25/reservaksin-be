@@ -4,19 +4,20 @@ import (
 	"ca-reservaksin/businesses/healthFacilities"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
-type MysqlAdressRepository struct {
+type MysqlHealthFacilitiesRepository struct {
 	Conn *gorm.DB
 }
 
 func NewMysqlRepository(conn *gorm.DB) healthFacilities.Repository {
-	return &MysqlAdressRepository{
+	return &MysqlHealthFacilitiesRepository{
 		Conn: conn,
 	}
 }
 
-func (mysqlRepo *MysqlAdressRepository) Create(data *healthFacilities.Domain) (healthFacilities.Domain, error) {
+func (mysqlRepo *MysqlHealthFacilitiesRepository) Create(data *healthFacilities.Domain) (healthFacilities.Domain, error) {
 	dataHealthFacilities := FromDomain(*data)
 
 	err := mysqlRepo.Conn.Create(&dataHealthFacilities).Error
@@ -24,21 +25,24 @@ func (mysqlRepo *MysqlAdressRepository) Create(data *healthFacilities.Domain) (h
 		return healthFacilities.Domain{}, err
 	}
 
+	if err := mysqlRepo.Conn.Preload(clause.Associations).Find(&dataHealthFacilities).Error; err != nil {
+		return healthFacilities.Domain{}, err
+	}
+
 	return dataHealthFacilities.ToDomain(), nil
 }
 
-func (mysqlRepo *MysqlAdressRepository) GetByID(id string) (healthFacilities.Domain, error) {
+func (mysqlRepo *MysqlHealthFacilitiesRepository) GetByID(id string) (healthFacilities.Domain, error) {
 	recFacilities := HealthFacilities{}
 
-	err := mysqlRepo.Conn.Where("id = ?", id).First(&recFacilities).Error
-	if err != nil {
+	if err := mysqlRepo.Conn.Preload(clause.Associations).First(&recFacilities, "id = ?", id).Error; err != nil {
 		return healthFacilities.Domain{}, err
 	}
 
 	return recFacilities.ToDomain(), nil
 }
 
-func (mysqlRepo *MysqlAdressRepository) Update(id string, data *healthFacilities.Domain) (healthFacilities.Domain, error) {
+func (mysqlRepo *MysqlHealthFacilitiesRepository) Update(id string, data *healthFacilities.Domain) (healthFacilities.Domain, error) {
 	recFacilities := FromDomain(*data)
 	err := mysqlRepo.Conn.Model(&recFacilities).Where("id = ?", id).Updates(&recFacilities).Error
 	if err != nil {
@@ -48,7 +52,7 @@ func (mysqlRepo *MysqlAdressRepository) Update(id string, data *healthFacilities
 	return recFacilities.ToDomain(), nil
 }
 
-func (mysqlRepo *MysqlAdressRepository) Delete(id string) (string, error) {
+func (mysqlRepo *MysqlHealthFacilitiesRepository) Delete(id string) (string, error) {
 	recFacilities := HealthFacilities{}
 	err := mysqlRepo.Conn.Delete(&recFacilities, "id = ?", id).Error
 	if err != nil {

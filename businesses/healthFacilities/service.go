@@ -20,11 +20,11 @@ func NewHealthFacilitiesService(facilitiesRepo Repository, addressRepo currentAd
 	}
 }
 
-func (service *HealthFacilitiesService) Create(data *Domain, address *currentAddress.Domain) (Domain, error) {
-	address.Id, _ = nanoid.GenerateNanoId()
-	newAddress, _ := service.AddressRepository.Create(address)
+func (service *HealthFacilitiesService) Create(data *Domain) (Domain, error) {
+	data.CurrentAddress.Id, _ = nanoid.GenerateNanoId()
+	newAddress, _ := service.AddressRepository.Create(&data.CurrentAddress)
 
-	data.Id, _ = nanoid.GenerateNanoId()
+	data.ID, _ = nanoid.GenerateNanoId()
 	data.CurrentAddressID = newAddress.Id
 
 	dataHealthFacilities, err := service.FacilitiesRepository.Create(data)
@@ -47,25 +47,29 @@ func (service *HealthFacilitiesService) GetByID(id string) (Domain, error) {
 	return dataHealthFacilities, nil
 }
 
-func (service *HealthFacilitiesService) Update(id string, data *Domain, addressData *currentAddress.Domain) (Domain, currentAddress.Domain, error) {
+func (service *HealthFacilitiesService) Update(id string, data *Domain) (Domain, error) {
 	existed, err := service.FacilitiesRepository.GetByID(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
-			return Domain{}, currentAddress.Domain{}, businesses.ErrIDNotFound
+			return Domain{}, businesses.ErrIDNotFound
 		}
-		return Domain{}, currentAddress.Domain{}, businesses.ErrInternalServer
+		return Domain{}, businesses.ErrInternalServer
 	}
 
-	data.Id = existed.Id
+	data.ID = existed.ID
 	data.CurrentAddressID = existed.CurrentAddressID
+	data.CurrentAddress.Id = existed.CurrentAddressID
+
+	if _, err := service.AddressRepository.Update(data.CurrentAddress.Id, &data.CurrentAddress); err != nil {
+		return Domain{}, businesses.ErrInternalServer
+	}
+
 	dataHealthFacilities, err := service.FacilitiesRepository.Update(id, data)
 	if err != nil {
-		return Domain{}, currentAddress.Domain{}, businesses.ErrInternalServer
+		return Domain{}, businesses.ErrInternalServer
 	}
 
-	dataAddress, err := service.AddressRepository.Update(data.CurrentAddressID, addressData)
-
-	return dataHealthFacilities, dataAddress, nil
+	return dataHealthFacilities, nil
 }
 
 func (service *HealthFacilitiesService) Delete(id string) (string, error) {
@@ -78,6 +82,10 @@ func (service *HealthFacilitiesService) Delete(id string) (string, error) {
 	}
 
 	if _, err := service.FacilitiesRepository.Delete(id); err != nil {
+		return "", businesses.ErrInternalServer
+	}
+
+	if _, err := service.AddressRepository.Delete(existed.CurrentAddressID); err != nil {
 		return "", businesses.ErrInternalServer
 	}
 
