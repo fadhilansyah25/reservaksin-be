@@ -1,7 +1,6 @@
 package healthFacilities
 
 import (
-	"ca-reservaksin/businesses/currentAddress"
 	"ca-reservaksin/businesses/healthFacilities"
 	"ca-reservaksin/controllers"
 	"ca-reservaksin/controllers/healthFacilities/request"
@@ -14,13 +13,11 @@ import (
 
 type HealthFacilitiesController struct {
 	FacilitiesService healthFacilities.Service
-	AddressService    currentAddress.Service
 }
 
-func NewHealthFacilitiesController(service healthFacilities.Service, addressService currentAddress.Service) *HealthFacilitiesController {
+func NewHealthFacilitiesController(service healthFacilities.Service) *HealthFacilitiesController {
 	return &HealthFacilitiesController{
 		FacilitiesService: service,
-		AddressService:    addressService,
 	}
 }
 
@@ -36,12 +33,7 @@ func (ctrl *HealthFacilitiesController) Create(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	address, err := ctrl.AddressService.GetByID(data.CurrentAddressID)
-	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
-	}
-
-	return controllers.NewSuccesResponse(c, response.FromDomain(&data, &address))
+	return controllers.NewSuccesResponse(c, response.FromDomain(data))
 }
 
 func (ctrl *HealthFacilitiesController) GetByID(c echo.Context) error {
@@ -49,18 +41,14 @@ func (ctrl *HealthFacilitiesController) GetByID(c echo.Context) error {
 
 	data, err := ctrl.FacilitiesService.GetByID(id)
 	if err != nil {
-		if strings.Contains(err.Error(), "duplicate data") {
+		if strings.Contains(err.Error(), "not found") {
 			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 		}
+
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	address, err := ctrl.AddressService.GetByID(data.CurrentAddressID)
-	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
-	}
-
-	return controllers.NewSuccesResponse(c, response.FromDomain(&data, &address))
+	return controllers.NewSuccesResponse(c, response.FromDomain(data))
 }
 
 func (ctrl *HealthFacilitiesController) Update(c echo.Context) error {
@@ -71,12 +59,25 @@ func (ctrl *HealthFacilitiesController) Update(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	facilitiesDomain, addressDomain := req.ToDomain()
-	data, address, err := ctrl.FacilitiesService.Update(id, facilitiesDomain, addressDomain)
+	data, err := ctrl.FacilitiesService.Update(id, req.ToDomain())
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccesResponse(c, response.FromDomain(&data, &address))
+	return controllers.NewSuccesResponse(c, response.FromDomain(data))
 
+}
+
+func (ctrl *HealthFacilitiesController) Delete(c echo.Context) error {
+	id := c.Param("id")
+
+	res, err := ctrl.FacilitiesService.Delete(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+		}
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, res)
 }

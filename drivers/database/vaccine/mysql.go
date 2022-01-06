@@ -25,7 +25,7 @@ func (mysqlRepo *mysqlVaccineRepository) Create(data *vaccine.Domain) (vaccine.D
 		return vaccine.Domain{}, err
 	}
 
-	return recVaccine.toDomain(), nil
+	return recVaccine.ToDomain(), nil
 }
 
 func (mysqlRepo *mysqlVaccineRepository) Update(id string, data *vaccine.Domain) (vaccine.Domain, error) {
@@ -36,7 +36,7 @@ func (mysqlRepo *mysqlVaccineRepository) Update(id string, data *vaccine.Domain)
 		return vaccine.Domain{}, err
 	}
 
-	return recVaccine.toDomain(), nil
+	return recVaccine.ToDomain(), nil
 }
 
 func (mysqlRepo *mysqlVaccineRepository) Delete(id string) (string, error) {
@@ -56,7 +56,7 @@ func (mysqlRepo *mysqlVaccineRepository) GetByID(id string) (vaccine.Domain, err
 		return vaccine.Domain{}, err
 	}
 
-	return recVaccine.toDomain(), nil
+	return recVaccine.ToDomain(), nil
 }
 
 func (mysqlRepo *mysqlVaccineRepository) FetchAll() ([]vaccine.Domain, error) {

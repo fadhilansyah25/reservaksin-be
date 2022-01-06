@@ -8,7 +8,7 @@ import (
 
 type CurrentAddress struct {
 	gorm.Model
-	Id        string  `json:"id" gorm:"PrimaryKey; Not Null"`
+	Id        string  `json:"id" gorm:"PrimaryKey; NOT NULL"`
 	Alamat    string  `json:"alamat"`
 	Provinsi  string  `json:"provinsi"`
 	Kota      string  `json:"kota"`
@@ -18,7 +18,7 @@ type CurrentAddress struct {
 	Lng       float64 `json:"lng"`
 }
 
-func (rec *CurrentAddress) toDomain() currentAddress.Domain {
+func (rec *CurrentAddress) ToDomain() currentAddress.Domain {
 	return currentAddress.Domain{
 		Id:        rec.Id,
 		Alamat:    rec.Alamat,
@@ -33,7 +33,7 @@ func (rec *CurrentAddress) toDomain() currentAddress.Domain {
 	}
 }
 
-func fromDomain(address currentAddress.Domain) *CurrentAddress {
+func FromDomain(address currentAddress.Domain) *CurrentAddress {
 	return &CurrentAddress{
 		Id:        address.Id,
 		Alamat:    address.Alamat,
