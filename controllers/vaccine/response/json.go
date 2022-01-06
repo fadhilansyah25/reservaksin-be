@@ -23,10 +23,10 @@ func FromDomain(vaccine vaccine.Domain) *Vaccine {
 	}
 }
 
-func FromDomainArray(domain []vaccine.Domain) []Vaccine {
+func FromDomainArray(domain []vaccine.Domain) *[]Vaccine {
 	res := []Vaccine{}
 	for _, val := range domain {
 		res = append(res, *FromDomain(val))
 	}
-	return res
+	return &res
 }

@@ -1,7 +1,6 @@
 package healthFacilities
 
 import (
-	"ca-reservaksin/businesses/currentAddress"
 	"ca-reservaksin/businesses/healthFacilities"
 	"ca-reservaksin/controllers"
 	"ca-reservaksin/controllers/healthFacilities/request"
@@ -14,13 +13,11 @@ import (
 
 type HealthFacilitiesController struct {
 	FacilitiesService healthFacilities.Service
-	AddressService    currentAddress.Service
 }
 
-func NewHealthFacilitiesController(service healthFacilities.Service, addressService currentAddress.Service) *HealthFacilitiesController {
+func NewHealthFacilitiesController(service healthFacilities.Service) *HealthFacilitiesController {
 	return &HealthFacilitiesController{
 		FacilitiesService: service,
-		AddressService:    addressService,
 	}
 }
 

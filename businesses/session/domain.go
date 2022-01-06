@@ -22,18 +22,25 @@ type Domain struct {
 	UpdatedAt         time.Time
 }
 
+type Result struct {
+	Session  Domain
+	Distance float64
+}
+
 type Service interface {
 	Create(data *Domain) (Domain, error)
-	// FetchAll() ([]Domain, error)
-	// Update(id string, data *Domain) (Domain, error)
+	FetchAll() ([]Domain, error)
+	GetByLatLong(lat float64, lng float64) ([]Result, error)
 	GetByID(id string) (Domain, error)
+	// Update(id string, data *Domain) (Domain, error)
 	// Delete(id string) (string, error)
 }
 
 type Repository interface {
 	Create(data *Domain) (Domain, error)
-	// FetchAll() ([]Domain, error)
-	// Update(id string, data *Domain) (Domain, error)
+	FetchAll() ([]Domain, error)
+	GetByLatLong(lat, lng float64) ([]Result, error)
 	GetByID(id string) (Domain, error)
+	// Update(id string, data *Domain) (Domain, error)
 	// Delete(id string) (string, error)
 }

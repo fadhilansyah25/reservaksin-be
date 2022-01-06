@@ -41,6 +41,16 @@ func (rec *Session) ToDomain() session.Domain {
 	}
 }
 
+func ToArrayOfDomain(rec []Session) []session.Domain {
+	domainArray := []session.Domain{}
+
+	for _, val := range rec {
+		domainArray = append(domainArray, val.ToDomain())
+	}
+
+	return domainArray
+}
+
 func FromDomain(dataSession *session.Domain) *Session {
 	return &Session{
 		Id:                dataSession.Id,
@@ -53,4 +63,26 @@ func FromDomain(dataSession *session.Domain) *Session {
 		StartSession:      dataSession.StartSession,
 		EndSession:        dataSession.EndSession,
 	}
+}
+
+type Result struct {
+	Session
+	Distance float64
+}
+
+func (res *Result) ToDomain() session.Result {
+	return session.Result{
+		Session:  res.Session.ToDomain(),
+		Distance: res.Distance,
+	}
+}
+
+func ToArrayOfDomainResult(res []Result) []session.Result {
+	domainArray := []session.Result{}
+
+	for _, val := range res {
+		domainArray = append(domainArray, val.ToDomain())
+	}
+
+	return domainArray
 }

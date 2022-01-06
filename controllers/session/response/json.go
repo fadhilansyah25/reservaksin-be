@@ -23,7 +23,7 @@ type Session struct {
 	UpdatedAt         time.Time                    `json:"updated_at"`
 }
 
-func FromDomain(data *session.Domain) *Session {
+func FromDomain(data session.Domain) *Session {
 	return &Session{
 		Id:                data.Id,
 		HealthFacilitesID: data.HealthFacilitesID,
@@ -39,4 +39,34 @@ func FromDomain(data *session.Domain) *Session {
 		CreatedAt:         data.CreatedAt,
 		UpdatedAt:         data.UpdatedAt,
 	}
+}
+
+func FromDomainArray(domain []session.Domain) *[]Session {
+	res := []Session{}
+
+	for _, val := range domain {
+		res = append(res, *FromDomain(val))
+	}
+	return &res
+}
+
+type Result struct {
+	Session  `json:"session"`
+	Distance float64 `json:"distance"`
+}
+
+func FromDomainResult(domain session.Result) *Result {
+	return &Result{
+		Session:  *FromDomain(domain.Session),
+		Distance: domain.Distance,
+	}
+}
+
+func FromDomainArrayResult(domain []session.Result) *[]Result {
+	res := []Result{}
+
+	for _, val := range domain {
+		res = append(res, *FromDomainResult(val))
+	}
+	return &res
 }

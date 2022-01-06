@@ -83,10 +83,10 @@ func main() {
 
 	healthFacilitiesRepo := _driverFactory.NewHealthFacilitiesRepository(db)
 	healthFacilitiesService := _healthFacilitiesService.NewHealthFacilitiesService(healthFacilitiesRepo, currentAddressRepo)
-	healthFacilitiesCtrl := _healthFacilitiesController.NewHealthFacilitiesController(healthFacilitiesService, currentAddressService)
+	healthFacilitiesCtrl := _healthFacilitiesController.NewHealthFacilitiesController(healthFacilitiesService)
 
 	sessionRepo := _driverFactory.NewSessionRepository(db)
-	sessionService := _sessionService.NewSessionService(sessionRepo)
+	sessionService := _sessionService.NewSessionService(sessionRepo, currentAddressRepo)
 	sessionCtrl := _sessionController.NewSessioncontroller(sessionService)
 
 	routesInit := _routes.ControllerList{

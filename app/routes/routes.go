@@ -48,4 +48,6 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	session := e.Group("session")
 	session.POST("", cl.SessionController.Create)
 	session.GET("/:id", cl.SessionController.GetByID)
+	session.GET("", cl.SessionController.FetchAll)
+	session.GET("/nearfacilities", cl.SessionController.NearFacilities)
 }
