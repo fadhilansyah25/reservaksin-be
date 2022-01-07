@@ -23,7 +23,7 @@ type ControllerList struct {
 func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	admin := e.Group("admin")
 	admin.POST("/register", cl.AdminController.Register)
-	admin.GET("/login", cl.AdminController.Login)
+	admin.POST("/login", cl.AdminController.Login)
 	admin.GET("/:id", cl.AdminController.GetByID)
 
 	vaccine := e.Group("vaccine")

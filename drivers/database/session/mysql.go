@@ -2,7 +2,6 @@ package session
 
 import (
 	"ca-reservaksin/businesses/session"
-	"fmt"
 	"strconv"
 
 	"gorm.io/gorm"
@@ -79,6 +78,7 @@ func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]sessi
 		)
 	HAVING
 		distance < 5
+		&& date >= DATE(NOW())
 	ORDER BY
 		distance
 	LIMIT
@@ -91,8 +91,6 @@ func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]sessi
 	for i := range res {
 		mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Find(&res[i].Session)
 	}
-
-	fmt.Println(res)
 
 	return ToArrayOfDomainResult(res), nil
 }
