@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 
@@ -98,6 +99,18 @@ func main() {
 		SessionController:          *sessionCtrl,
 	}
 	e := echo.New()
+
+	// corsMiddleware := cors.New(cors.Options{
+	// 	AllowedOrigins: []string{"*"},
+	// 	AllowedMethods: []string{http.MethodGet, http.MethodPost},
+	// 	AllowedHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAccessControlAllowOrigin, echo.HeaderAccessControlAllowMethods},
+	// 	Debug:          true,
+	// })
+	// e.Use(echo.WrapMiddleware(corsMiddleware.Handler))
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}))
 	routesInit.RoutesRegister(e)
 
 	e.GET("/", func(c echo.Context) error {
