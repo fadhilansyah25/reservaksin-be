@@ -5,9 +5,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	// "github.com/labstack/echo/v4/middleware"
 	"github.com/rs/cors"
 	"github.com/spf13/viper"
+
+	// "github.com/labstack/echo/v4/middleware"
 	"gorm.io/gorm"
 
 	_middlewares "ca-reservaksin/app/middlewares"
