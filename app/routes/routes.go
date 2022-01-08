@@ -50,4 +50,9 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	session.GET("/:id", cl.SessionController.GetByID)
 	session.GET("", cl.SessionController.FetchAll)
 	session.GET("/nearfacilities", cl.SessionController.NearFacilities)
+	session.PUT("/:id", cl.SessionController.Update)
+	session.DELETE("/:id", cl.SessionController.Delete)
+	session.GET("/current", cl.SessionController.FetchSessionCurrent)
+	session.GET("/history", cl.SessionController.FetchSessionHistory)
+	session.GET("/upcoming", cl.SessionController.FetchSessionUpcoming)
 }
