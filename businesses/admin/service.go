@@ -49,6 +49,9 @@ func (service *adminService) Register(dataAdmin *Domain) (Domain, error) {
 func (service *adminService) Login(username, password string) (string, error) {
 	adminDomain, err := service.adminRepository.GetByUsername(username)
 	if err != nil {
+		if !strings.Contains(err.Error(), "not found") {
+			return "", businesses.ErrInternalServer
+		}
 		return "", businesses.ErrUsernamePasswordNotFound
 	}
 

@@ -47,6 +47,9 @@ func (ctrl *AdminController) Login(c echo.Context) error {
 
 	token, err := ctrl.AdminService.Login(req.Username, req.Password)
 	if err != nil {
+		if strings.Contains(err.Error(), "incorrect (Username) or (Password)") {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
@@ -65,6 +68,9 @@ func (ctrl *AdminController) GetByID(c echo.Context) error {
 
 	admin, err := ctrl.AdminService.GetByID(id)
 	if err != nil {
+		if !strings.Contains(err.Error(), "not found") {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 	return controllers.NewSuccesResponse(c, response.FromDomain(admin))
