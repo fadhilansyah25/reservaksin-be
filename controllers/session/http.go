@@ -70,3 +70,68 @@ func (ctrl *Sessioncontroller) NearFacilities(c echo.Context) error {
 	}
 	return controllers.NewSuccesResponse(c, response.FromDomainArrayResult(res))
 }
+
+func (ctrl *Sessioncontroller) Update(c echo.Context) error {
+	id := c.Param("id")
+	req := request.Session{}
+
+	if err := c.Bind(&req); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	data, err := ctrl.SessionService.Update(id, req.ToDomain())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomain(data))
+}
+
+func (ctrl *Sessioncontroller) Delete(c echo.Context) error {
+	id := c.Param("id")
+	res, err := ctrl.SessionService.Delete(id)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, res)
+}
+
+func (ctrl *Sessioncontroller) FetchSessionHistory(c echo.Context) error {
+	data, err := ctrl.SessionService.FetchByHistory("history")
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	if len(data) == 0 {
+		return controllers.NewSuccesResponse(c, "no history session")
+	}
+
+	return controllers.NewSuccesResponse(c, data)
+}
+
+func (ctrl *Sessioncontroller) FetchSessionCurrent(c echo.Context) error {
+	data, err := ctrl.SessionService.FetchByHistory("current")
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	if len(data) == 0 {
+		return controllers.NewSuccesResponse(c, "no current session")
+	}
+
+	return controllers.NewSuccesResponse(c, data)
+}
+
+func (ctrl *Sessioncontroller) FetchSessionUpcoming(c echo.Context) error {
+	data, err := ctrl.SessionService.FetchByHistory("upcoming")
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	if len(data) == 0 {
+		return controllers.NewSuccesResponse(c, "no upcoming session")
+	}
+
+	return controllers.NewSuccesResponse(c, data)
+}

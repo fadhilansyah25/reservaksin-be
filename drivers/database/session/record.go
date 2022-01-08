@@ -65,20 +65,20 @@ func FromDomain(dataSession *session.Domain) *Session {
 	}
 }
 
-type Result struct {
+type SessionDistance struct {
 	Session
 	Distance float64
 }
 
-func (res *Result) ToDomain() session.Result {
-	return session.Result{
+func (res *SessionDistance) ToDomain() session.SessionDistance {
+	return session.SessionDistance{
 		Session:  res.Session.ToDomain(),
 		Distance: res.Distance,
 	}
 }
 
-func ToArrayOfDomainResult(res []Result) []session.Result {
-	domainArray := []session.Result{}
+func ToArrayOfDomainResult(res []SessionDistance) []session.SessionDistance {
+	domainArray := []session.SessionDistance{}
 
 	for _, val := range res {
 		domainArray = append(domainArray, val.ToDomain())
