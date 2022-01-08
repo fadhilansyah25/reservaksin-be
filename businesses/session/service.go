@@ -4,6 +4,7 @@ import (
 	"ca-reservaksin/businesses"
 	"ca-reservaksin/businesses/currentAddress"
 	"ca-reservaksin/helpers/nanoid"
+	"fmt"
 	"strings"
 )
 
@@ -44,19 +45,65 @@ func (service *SessionService) GetByID(id string) (Domain, error) {
 
 func (service *SessionService) FetchAll() ([]Domain, error) {
 
-	res, err := service.SessionRepository.FetchAll()
+	resSession, err := service.SessionRepository.FetchAll()
 	if err != nil {
 		return []Domain{}, businesses.ErrInternalServer
 	}
 
-	return res, nil
+	return resSession, nil
 }
 
-func (service *SessionService) GetByLatLong(lat float64, lng float64) ([]Result, error) {
-	res, err := service.SessionRepository.GetByLatLong(lat, lng)
+func (service *SessionService) GetByLatLong(lat float64, lng float64) ([]SessionDistance, error) {
+	resultSession, err := service.SessionRepository.GetByLatLong(lat, lng)
 	if err != nil {
-		return []Result{}, err
+		return []SessionDistance{}, businesses.ErrInternalServer
 	}
 
-	return res, nil
+	return resultSession, nil
+}
+
+func (service *SessionService) Update(id string, data *Domain) (Domain, error) {
+	existed, err := service.SessionRepository.GetByID(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return Domain{}, businesses.ErrIDNotFound
+		}
+		return Domain{}, businesses.ErrInternalServer
+	}
+
+	data.Id = existed.Id
+	dataSession, err := service.SessionRepository.Update(id, data)
+	if err != nil {
+		return Domain{}, businesses.ErrInternalServer
+	}
+
+	return dataSession, nil
+}
+
+func (service *SessionService) Delete(id string) (string, error) {
+	existed, err := service.SessionRepository.GetByID(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return "", businesses.ErrIDNotFound
+		}
+		return "", businesses.ErrInternalServer
+	}
+
+	if _, err := service.SessionRepository.Delete(id); err != nil {
+		return "", businesses.ErrInternalServer
+	}
+
+	message := fmt.Sprintf("session %s success to deleted", existed.NameSession)
+	return message, nil
+}
+
+func (service *SessionService) FetchByHistory(history string) ([]Domain, error) {
+
+	param := strings.ToLower(history)
+	resSession, err := service.SessionRepository.FetchByHistory(param)
+	if err != nil {
+		return []Domain{}, businesses.ErrInternalServer
+	}
+
+	return resSession, nil
 }

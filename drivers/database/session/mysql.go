@@ -2,7 +2,6 @@ package session
 
 import (
 	"ca-reservaksin/businesses/session"
-	"fmt"
 	"strconv"
 
 	"gorm.io/gorm"
@@ -44,10 +43,6 @@ func (mysqlRepo *MysqlSessionRepository) FetchAll() ([]session.Domain, error) {
 	return ToArrayOfDomain(dataSession), nil
 }
 
-// func (mysqlRepo *MysqlSessionRepository) Update(id string, data *session.Domain) (session.Domain, error) {
-
-// }
-
 func (mysqlRepo *MysqlSessionRepository) GetByID(id string) (session.Domain, error) {
 	dataSession := Session{}
 
@@ -59,8 +54,8 @@ func (mysqlRepo *MysqlSessionRepository) GetByID(id string) (session.Domain, err
 	return dataSession.ToDomain(), nil
 }
 
-func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]session.Result, error) {
-	res := []Result{}
+func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]session.SessionDistance, error) {
+	res := []SessionDistance{}
 	qe := `SELECT
 	*,
 	(
@@ -79,6 +74,7 @@ func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]sessi
 		)
 	HAVING
 		distance < 5
+		&& date >= DATE(NOW())
 	ORDER BY
 		distance
 	LIMIT
@@ -92,11 +88,53 @@ func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]sessi
 		mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Find(&res[i].Session)
 	}
 
-	fmt.Println(res)
-
 	return ToArrayOfDomainResult(res), nil
 }
 
-// func (mysqlRepo *MysqlSessionRepository) Delete(id string) (string, error) {
+func (mysqlRepo *MysqlSessionRepository) Update(id string, data *session.Domain) (session.Domain, error) {
+	dataSession := FromDomain(data)
+	err := mysqlRepo.Conn.Where("id = ?", id).Updates(&dataSession).Error
+	if err != nil {
+		return session.Domain{}, err
+	}
 
-// }
+	if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Find(&dataSession).Error; err != nil {
+		return session.Domain{}, err
+	}
+
+	return dataSession.ToDomain(), nil
+}
+
+func (mysqlRepo *MysqlSessionRepository) Delete(id string) (string, error) {
+	recSession := Session{}
+	err := mysqlRepo.Conn.Delete(&recSession, "id = ?", id).Error
+	if err != nil {
+		return "", err
+	}
+
+	return "", nil
+}
+
+func (mysqlRepo *MysqlSessionRepository) FetchByHistory(history string) ([]session.Domain, error) {
+	dataSession := []Session{}
+
+	switch history {
+	case "upcomning":
+		if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Where("date > DATE(NOW())").Find(&dataSession).Error; err != nil {
+			return []session.Domain{}, err
+		}
+		break
+	case "history":
+		if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Where("date < DATE(NOW())").Find(&dataSession).Error; err != nil {
+			return []session.Domain{}, err
+		}
+		break
+	default:
+		if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Where("date = DATE(NOW())").Find(&dataSession).Error; err != nil {
+			return []session.Domain{}, err
+		}
+		break
+	}
+
+	return ToArrayOfDomain(dataSession), nil
+}
