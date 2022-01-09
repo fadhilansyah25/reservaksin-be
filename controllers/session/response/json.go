@@ -55,14 +55,14 @@ type Result struct {
 	Distance float64 `json:"distance"`
 }
 
-func FromDomainResult(domain session.Result) *Result {
+func FromDomainResult(domain session.SessionDistance) *Result {
 	return &Result{
 		Session:  *FromDomain(domain.Session),
 		Distance: domain.Distance,
 	}
 }
 
-func FromDomainArrayResult(domain []session.Result) *[]Result {
+func FromDomainArrayResult(domain []session.SessionDistance) *[]Result {
 	res := []Result{}
 
 	for _, val := range domain {

@@ -1,13 +1,14 @@
 package citizen
 
 import (
+	"ca-reservaksin/businesses/currentAddress"
 	"time"
 )
 
 type Domain struct {
-	Id                 int
+	Id                 string
 	Email              string
-	NoHp               int16
+	NoHp               string
 	Username           string
 	Password           string
 	NoKK               uint64
@@ -15,13 +16,9 @@ type Domain struct {
 	DateofBirth        string
 	FamilyRelationship string
 	Gender             string
-	MarriageStatus     string
 	Role               string
-	Address            string
-	Desa               string
-	Kota               string
-	Kecamatan          string
-	Provinsi           string
+	CurrentAddressID   string
+	CurrentAddress     currentAddress.Domain
 	ImageURI           string
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
@@ -30,9 +27,14 @@ type Domain struct {
 type Service interface {
 	Register(data *Domain) (Domain, error)
 	Login(email string, password string) (string, error)
+	Update(id string, data *Domain) (Domain, error)
+	Delete(id string) (string, error)
 }
 
 type Repository interface {
 	GetByEmail(email string) (Domain, error)
 	Register(data *Domain) (Domain, error)
+	GetByNIK(nik string) (Domain, error)
+	GetByNoKK(noKK string) ([]Domain, error)
+	Update(id string) (Domain, error)
 }
