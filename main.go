@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/rs/cors"
@@ -114,5 +115,6 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!\n")
 	})
 
-	log.Fatal(e.Start(viper.GetString("server.address")))
+	port := os.Getenv("PORT")
+	log.Fatal(e.Start(":" + port))
 }
