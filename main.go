@@ -7,6 +7,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/rs/cors"
 	"github.com/spf13/viper"
+
+	// "github.com/labstack/echo/v4/middleware"
 	"gorm.io/gorm"
 
 	_middlewares "ca-reservaksin/app/middlewares"
@@ -100,6 +102,10 @@ func main() {
 	}
 	e := echo.New()
 
+	// e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	// 	AllowOrigins: []string{"http://localhost:3000"},
+	// 	AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	// }))
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
