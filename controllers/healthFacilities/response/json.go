@@ -29,3 +29,12 @@ func FromDomain(data healthFacilities.Domain) *HealthFacilities {
 		UpdatedAt:        data.UpdatedAt,
 	}
 }
+
+func FromDomainArray(domain []healthFacilities.Domain) *[]HealthFacilities {
+	res := []HealthFacilities{}
+
+	for _, val := range domain {
+		res = append(res, *FromDomain(val))
+	}
+	return &res
+}

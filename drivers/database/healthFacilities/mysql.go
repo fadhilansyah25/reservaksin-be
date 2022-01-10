@@ -2,6 +2,7 @@ package healthFacilities
 
 import (
 	"ca-reservaksin/businesses/healthFacilities"
+	"errors"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -60,4 +61,16 @@ func (mysqlRepo *MysqlHealthFacilitiesRepository) Delete(id string) (string, err
 	}
 
 	return "", nil
+}
+
+func (mysqlRepo *MysqlHealthFacilitiesRepository) GetByIdAdmin(id string) ([]healthFacilities.Domain, error) {
+	dataFaskes := []HealthFacilities{}
+	if err := mysqlRepo.Conn.Preload(clause.Associations).Find(&dataFaskes, "admin_id = ?", id).Error; err != nil {
+		return []healthFacilities.Domain{}, err
+	}
+	if len(dataFaskes) == 0 {
+		err := errors.New("data is empty")
+		return []healthFacilities.Domain{}, err
+	}
+	return ToArrayOfDomain(dataFaskes), nil
 }
