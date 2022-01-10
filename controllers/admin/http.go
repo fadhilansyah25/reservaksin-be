@@ -48,7 +48,7 @@ func (ctrl *AdminController) Login(c echo.Context) error {
 	token, err := ctrl.AdminService.Login(req.Username, req.Password)
 	if err != nil {
 		if strings.Contains(err.Error(), "incorrect (Username) or (Password)") {
-			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+			return controllers.NewErrorResponse(c, http.StatusUnauthorized, err)
 		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
