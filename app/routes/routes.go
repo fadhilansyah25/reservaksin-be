@@ -2,6 +2,7 @@ package routes
 
 import (
 	"ca-reservaksin/controllers/admin"
+	"ca-reservaksin/controllers/citizen"
 	"ca-reservaksin/controllers/currentAddress"
 	"ca-reservaksin/controllers/healthFacilities"
 	"ca-reservaksin/controllers/session"
@@ -18,6 +19,7 @@ type ControllerList struct {
 	CurrentAddressController   currentAddress.CurrentAddressController
 	HealthFacilitiesController healthFacilities.HealthFacilitiesController
 	SessionController          session.Sessioncontroller
+	CitizenController          citizen.CitizenController
 }
 
 func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
@@ -44,6 +46,7 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	healthFacilities.GET("/:id", cl.HealthFacilitiesController.GetByID)
 	healthFacilities.PUT("/:id", cl.HealthFacilitiesController.Update)
 	healthFacilities.DELETE("/:id", cl.HealthFacilitiesController.Delete)
+	healthFacilities.GET("/admin/:id", cl.HealthFacilitiesController.GetByIdAdmin)
 
 	session := e.Group("session")
 	session.POST("", cl.SessionController.Create)
@@ -52,7 +55,13 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	session.GET("/nearfacilities", cl.SessionController.NearFacilities)
 	session.PUT("/:id", cl.SessionController.Update)
 	session.DELETE("/:id", cl.SessionController.Delete)
-	session.GET("/current", cl.SessionController.FetchSessionCurrent)
-	session.GET("/history", cl.SessionController.FetchSessionHistory)
-	session.GET("/upcoming", cl.SessionController.FetchSessionUpcoming)
+	session.GET("/current/admin/:id", cl.SessionController.FetchSessionCurrent)
+	session.GET("/history/admin/:id", cl.SessionController.FetchSessionHistory)
+	session.GET("/upcoming/admin/:id", cl.SessionController.FetchSessionUpcoming)
+	session.GET("/admin/:id", cl.SessionController.FetchSessionByAdminId)
+
+	citizen := e.Group("citizen")
+	citizen.POST("/register", cl.CitizenController.Register)
+	citizen.POST("/loginEmail", cl.CitizenController.LoginByEmail)
+	citizen.POST("/loginNik", cl.CitizenController.LoginByNIK)
 }

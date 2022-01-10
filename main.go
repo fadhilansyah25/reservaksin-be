@@ -16,16 +16,19 @@ import (
 	_dbDriver "ca-reservaksin/drivers/mysql"
 
 	_adminService "ca-reservaksin/businesses/admin"
+	_citizenService "ca-reservaksin/businesses/citizen"
 	_currentAddressService "ca-reservaksin/businesses/currentAddress"
 	_healthFacilitiesService "ca-reservaksin/businesses/healthFacilities"
 	_sessionService "ca-reservaksin/businesses/session"
 	_vaccineService "ca-reservaksin/businesses/vaccine"
 	_adminController "ca-reservaksin/controllers/admin"
+	_citizenController "ca-reservaksin/controllers/citizen"
 	_currentAddressController "ca-reservaksin/controllers/currentAddress"
 	_healthFacilitiesController "ca-reservaksin/controllers/healthFacilities"
 	_sessionController "ca-reservaksin/controllers/session"
 	_vaccineController "ca-reservaksin/controllers/vaccine"
 	_AdminRepo "ca-reservaksin/drivers/database/admin"
+	_citizenRepo "ca-reservaksin/drivers/database/citizen"
 	_currentAddressRepo "ca-reservaksin/drivers/database/currentAddress"
 	_healthFacilitiesRepo "ca-reservaksin/drivers/database/healthFacilities"
 	_session "ca-reservaksin/drivers/database/session"
@@ -51,6 +54,7 @@ func dbMigrate(db *gorm.DB) {
 		&_currentAddressRepo.CurrentAddress{},
 		&_healthFacilitiesRepo.HealthFacilities{},
 		&_session.Session{},
+		&_citizenRepo.Citizen{},
 	)
 }
 
@@ -91,6 +95,10 @@ func main() {
 	sessionService := _sessionService.NewSessionService(sessionRepo, currentAddressRepo)
 	sessionCtrl := _sessionController.NewSessioncontroller(sessionService)
 
+	citizenRepo := _driverFactory.NewCitizenRepository(db)
+	citizenService := _citizenService.NewCitizenService(citizenRepo, &configJWT)
+	citizenCtrl := _citizenController.NewCitizenController(citizenService)
+
 	routesInit := _routes.ControllerList{
 		JwtMiddleware:              configJWT.Init(),
 		AdminController:            *adminCtrl,
@@ -98,6 +106,7 @@ func main() {
 		CurrentAddressController:   *currentAddressCtrl,
 		HealthFacilitiesController: *healthFacilitiesCtrl,
 		SessionController:          *sessionCtrl,
+		CitizenController:          *citizenCtrl,
 	}
 	e := echo.New()
 

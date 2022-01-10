@@ -10,7 +10,7 @@ import (
 )
 
 type JwtCitizenClaims struct {
-	ID int `json:"id"`
+	ID string `json:"id"`
 	jwt.StandardClaims
 }
 
@@ -31,7 +31,7 @@ func (jwtConf *ConfigJWT) Init() middleware.JWTConfig {
 	}
 }
 
-func (jwtConf *ConfigJWT) GenerateToken(CitizenID int) string {
+func (jwtConf *ConfigJWT) GenerateToken(CitizenID string) string {
 	claims := JwtCitizenClaims{
 		CitizenID,
 		jwt.StandardClaims{

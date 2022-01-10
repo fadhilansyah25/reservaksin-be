@@ -97,10 +97,19 @@ func (service *SessionService) Delete(id string) (string, error) {
 	return message, nil
 }
 
-func (service *SessionService) FetchByHistory(history string) ([]Domain, error) {
+func (service *SessionService) FetchByHistory(adminID, history string) ([]Domain, error) {
 
 	param := strings.ToLower(history)
-	resSession, err := service.SessionRepository.FetchByHistory(param)
+	resSession, err := service.SessionRepository.FetchByHistory(adminID, param)
+	if err != nil {
+		return []Domain{}, businesses.ErrInternalServer
+	}
+
+	return resSession, nil
+}
+
+func (service *SessionService) FetchAllByAdminID(adminID string) ([]Domain, error) {
+	resSession, err := service.SessionRepository.FetchAllByAdminID(adminID)
 	if err != nil {
 		return []Domain{}, businesses.ErrInternalServer
 	}
