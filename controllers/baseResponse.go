@@ -32,3 +32,12 @@ func NewErrorResponse(c echo.Context, status int, err error) error {
 
 	return c.JSON(status, res)
 }
+
+func NewEmptyDataResponse(c echo.Context, data interface{}) error {
+	res := BaseResponse{}
+	res.Meta.Status = http.StatusOK
+	res.Meta.Message = "Data is Empty"
+	res.Data = data
+
+	return c.JSON(http.StatusOK, res)
+}
