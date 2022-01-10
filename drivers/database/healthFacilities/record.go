@@ -42,3 +42,13 @@ func FromDomain(facilities healthFacilities.Domain) *HealthFacilities {
 		CurrentAddress:   *currentAddress.FromDomain(facilities.CurrentAddress),
 	}
 }
+
+func ToArrayOfDomain(rec []HealthFacilities) []healthFacilities.Domain {
+	domainArray := []healthFacilities.Domain{}
+
+	for _, val := range rec {
+		domainArray = append(domainArray, val.ToDomain())
+	}
+
+	return domainArray
+}
