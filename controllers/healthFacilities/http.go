@@ -81,3 +81,13 @@ func (ctrl *HealthFacilitiesController) Delete(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, res)
 }
+
+func (ctrl *HealthFacilitiesController) GetByIdAdmin(c echo.Context) error {
+	id := c.Param("id")
+	data, err := ctrl.FacilitiesService.GetByIdAdmin(id)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomainArray(data))
+}

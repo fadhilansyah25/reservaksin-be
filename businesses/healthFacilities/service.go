@@ -92,3 +92,11 @@ func (service *HealthFacilitiesService) Delete(id string) (string, error) {
 	message := fmt.Sprintf("health facilities %s success to deleted", existed.NameFacilites)
 	return message, nil
 }
+
+func (service *HealthFacilitiesService) GetByIdAdmin(id string) ([]Domain, error) {
+	dataFaskes, err := service.FacilitiesRepository.GetByIdAdmin(id)
+	if err != nil {
+		return []Domain{}, businesses.ErrInternalServer
+	}
+	return dataFaskes, nil
+}
