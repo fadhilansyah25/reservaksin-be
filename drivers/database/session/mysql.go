@@ -115,25 +115,51 @@ func (mysqlRepo *MysqlSessionRepository) Delete(id string) (string, error) {
 	return "", nil
 }
 
-func (mysqlRepo *MysqlSessionRepository) FetchByHistory(history string) ([]session.Domain, error) {
+func (mysqlRepo *MysqlSessionRepository) FetchByHistory(adminID, history string) ([]session.Domain, error) {
 	dataSession := []Session{}
 
 	switch history {
-	case "upcomning":
-		if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Where("date > DATE(NOW())").Find(&dataSession).Error; err != nil {
-			return []session.Domain{}, err
+	case "upcoming":
+		qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		WHERE date > DATE(NOW()) && admin_id = ?`
+		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+		if err != nil {
+			return nil, err
 		}
-		break
 	case "history":
-		if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Where("date < DATE(NOW())").Find(&dataSession).Error; err != nil {
-			return []session.Domain{}, err
+		qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		WHERE date < DATE(NOW()) && admin_id = ?`
+		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+		if err != nil {
+			return nil, err
 		}
-		break
 	default:
-		if err := mysqlRepo.Conn.Preload("HealthFacilites.CurrentAddress").Preload(clause.Associations).Where("date = DATE(NOW())").Find(&dataSession).Error; err != nil {
-			return []session.Domain{}, err
+		qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		WHERE date = DATE(NOW()) && admin_id = ?`
+		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+		if err != nil {
+			return nil, err
 		}
-		break
+	}
+
+	for i := range dataSession {
+		mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession[i])
+	}
+
+	return ToArrayOfDomain(dataSession), nil
+}
+
+func (mysqlRepo *MysqlSessionRepository) FetchAllByAdminID(adminID string) ([]session.Domain, error) {
+	dataSession := []Session{}
+	qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		WHERE admin_id = ?`
+	err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for i := range dataSession {
+		mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession[i])
 	}
 
 	return ToArrayOfDomain(dataSession), nil

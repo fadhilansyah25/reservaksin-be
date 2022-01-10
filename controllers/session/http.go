@@ -57,7 +57,7 @@ func (ctrl *Sessioncontroller) FetchAll(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccesResponse(c, data)
+	return controllers.NewSuccesResponse(c, response.FromDomainArray(data))
 }
 
 func (ctrl *Sessioncontroller) NearFacilities(c echo.Context) error {
@@ -98,40 +98,57 @@ func (ctrl *Sessioncontroller) Delete(c echo.Context) error {
 }
 
 func (ctrl *Sessioncontroller) FetchSessionHistory(c echo.Context) error {
-	data, err := ctrl.SessionService.FetchByHistory("history")
+	adminID := c.Param("id")
+	res, err := ctrl.SessionService.FetchByHistory(adminID, "history")
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	if len(data) == 0 {
-		return controllers.NewSuccesResponse(c, "no history session")
+	if len(res) == 0 {
+		return controllers.NewEmptyDataResponse(c, res)
 	}
 
-	return controllers.NewSuccesResponse(c, data)
+	return controllers.NewSuccesResponse(c, response.FromDomainArraySimpleRes(res))
 }
 
 func (ctrl *Sessioncontroller) FetchSessionCurrent(c echo.Context) error {
-	data, err := ctrl.SessionService.FetchByHistory("current")
+	adminID := c.Param("id")
+	res, err := ctrl.SessionService.FetchByHistory(adminID, "current")
 	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+		return controllers.NewEmptyDataResponse(c, res)
 	}
 
-	if len(data) == 0 {
-		return controllers.NewSuccesResponse(c, "no current session")
+	if len(res) == 0 {
+		return controllers.NewEmptyDataResponse(c, response.FromDomainArraySimpleRes(res))
 	}
 
-	return controllers.NewSuccesResponse(c, data)
+	return controllers.NewSuccesResponse(c, response.FromDomainArraySimpleRes(res))
 }
 
 func (ctrl *Sessioncontroller) FetchSessionUpcoming(c echo.Context) error {
-	data, err := ctrl.SessionService.FetchByHistory("upcoming")
+	adminID := c.Param("id")
+	res, err := ctrl.SessionService.FetchByHistory(adminID, "upcoming")
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	if len(data) == 0 {
-		return controllers.NewSuccesResponse(c, "no upcoming session")
+	if len(res) == 0 {
+		return controllers.NewEmptyDataResponse(c, response.FromDomainArraySimpleRes(res))
 	}
 
-	return controllers.NewSuccesResponse(c, data)
+	return controllers.NewSuccesResponse(c, response.FromDomainArraySimpleRes(res))
+}
+
+func (ctrl *Sessioncontroller) FetchSessionByAdminId(c echo.Context) error {
+	adminID := c.Param("id")
+	res, err := ctrl.SessionService.FetchAllByAdminID(adminID)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	if len(res) == 0 {
+		return controllers.NewEmptyDataResponse(c, response.FromDomainArraySimpleRes(res))
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomainArraySimpleRes(res))
 }

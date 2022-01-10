@@ -34,7 +34,8 @@ type Service interface {
 	GetByID(id string) (Domain, error)
 	Update(id string, data *Domain) (Domain, error)
 	Delete(id string) (string, error)
-	FetchByHistory(history string) ([]Domain, error)
+	FetchByHistory(adminID, history string) ([]Domain, error)
+	FetchAllByAdminID(adminID string) ([]Domain, error)
 }
 
 type Repository interface {
@@ -44,5 +45,6 @@ type Repository interface {
 	GetByID(id string) (Domain, error)
 	Update(id string, data *Domain) (Domain, error)
 	Delete(id string) (string, error)
-	FetchByHistory(history string) ([]Domain, error)
+	FetchByHistory(adminID, history string) ([]Domain, error)
+	FetchAllByAdminID(adminID string) ([]Domain, error)
 }
