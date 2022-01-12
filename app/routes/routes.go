@@ -2,6 +2,7 @@ package routes
 
 import (
 	"ca-reservaksin/controllers/admin"
+	"ca-reservaksin/controllers/booking"
 	"ca-reservaksin/controllers/citizen"
 	"ca-reservaksin/controllers/currentAddress"
 	"ca-reservaksin/controllers/healthFacilities"
@@ -20,6 +21,7 @@ type ControllerList struct {
 	HealthFacilitiesController healthFacilities.HealthFacilitiesController
 	SessionController          session.Sessioncontroller
 	CitizenController          citizen.CitizenController
+	BookingController          booking.BookingController
 }
 
 func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
@@ -64,4 +66,7 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	citizen.POST("/register", cl.CitizenController.Register)
 	citizen.POST("/loginEmail", cl.CitizenController.LoginByEmail)
 	citizen.POST("/loginNik", cl.CitizenController.LoginByNIK)
+
+	booking := e.Group("booking")
+	booking.POST("", cl.BookingController.BookingSession)
 }
