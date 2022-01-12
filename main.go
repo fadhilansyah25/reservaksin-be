@@ -15,22 +15,25 @@ import (
 	_dbDriver "ca-reservaksin/drivers/mysql"
 
 	_adminService "ca-reservaksin/businesses/admin"
+	_bookingService "ca-reservaksin/businesses/booking"
 	_citizenService "ca-reservaksin/businesses/citizen"
 	_currentAddressService "ca-reservaksin/businesses/currentAddress"
 	_healthFacilitiesService "ca-reservaksin/businesses/healthFacilities"
 	_sessionService "ca-reservaksin/businesses/session"
 	_vaccineService "ca-reservaksin/businesses/vaccine"
 	_adminController "ca-reservaksin/controllers/admin"
+	_bookingController "ca-reservaksin/controllers/booking"
 	_citizenController "ca-reservaksin/controllers/citizen"
 	_currentAddressController "ca-reservaksin/controllers/currentAddress"
 	_healthFacilitiesController "ca-reservaksin/controllers/healthFacilities"
 	_sessionController "ca-reservaksin/controllers/session"
 	_vaccineController "ca-reservaksin/controllers/vaccine"
 	_AdminRepo "ca-reservaksin/drivers/database/admin"
+	_bookingRepo "ca-reservaksin/drivers/database/booking"
 	_citizenRepo "ca-reservaksin/drivers/database/citizen"
 	_currentAddressRepo "ca-reservaksin/drivers/database/currentAddress"
 	_healthFacilitiesRepo "ca-reservaksin/drivers/database/healthFacilities"
-	_session "ca-reservaksin/drivers/database/session"
+	_sessionRepo "ca-reservaksin/drivers/database/session"
 	_VaccineRepo "ca-reservaksin/drivers/database/vaccine"
 )
 
@@ -52,8 +55,9 @@ func dbMigrate(db *gorm.DB) {
 		&_VaccineRepo.Vaccine{},
 		&_currentAddressRepo.CurrentAddress{},
 		&_healthFacilitiesRepo.HealthFacilities{},
-		&_session.Session{},
+		&_sessionRepo.Session{},
 		&_citizenRepo.Citizen{},
+		&_bookingRepo.Booking{},
 	)
 }
 
@@ -95,8 +99,12 @@ func main() {
 	sessionCtrl := _sessionController.NewSessioncontroller(sessionService)
 
 	citizenRepo := _driverFactory.NewCitizenRepository(db)
-	citizenService := _citizenService.NewCitizenService(citizenRepo, &configJWT)
+	citizenService := _citizenService.NewCitizenService(citizenRepo, currentAddressRepo, &configJWT)
 	citizenCtrl := _citizenController.NewCitizenController(citizenService)
+
+	bookingRepo := _driverFactory.NewBookingRepository(db)
+	bookingService := _bookingService.NewBookingSessionService(bookingRepo)
+	bookingCtrl := _bookingController.NewBookingController(bookingService)
 
 	routesInit := _routes.ControllerList{
 		JwtMiddleware:              configJWT.Init(),
@@ -106,6 +114,7 @@ func main() {
 		HealthFacilitiesController: *healthFacilitiesCtrl,
 		SessionController:          *sessionCtrl,
 		CitizenController:          *citizenCtrl,
+		BookingController:          *bookingCtrl,
 	}
 	e := echo.New()
 

@@ -6,10 +6,10 @@ import (
 )
 
 type Domain struct {
-	ID                 string
+	Id                 string
 	Email              string
 	NoHp               string
-	Username           string
+	FullName           string
 	Password           string
 	NoKK               string
 	Nik                string
@@ -18,11 +18,6 @@ type Domain struct {
 	Role               string
 	FamilyRelationship string
 	MarriageStatus     string
-	Address            string
-	Desa               string
-	Kota               string
-	Kecamatan          string
-	Provinsi           string
 	CurrentAddressID   string
 	CurrentAddress     currentAddress.Domain
 	ImageURI           string

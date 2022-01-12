@@ -23,7 +23,6 @@ func NewCitizenController(uc citizen.Service) *CitizenController {
 
 func (ctrl *CitizenController) Register(c echo.Context) error {
 	req := request.Citizen{}
-	// domain:= citizen.Domain{}
 	if err := c.Bind(&req); err != nil {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
