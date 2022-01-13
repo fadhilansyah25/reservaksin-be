@@ -74,3 +74,15 @@ func (mysqlRepo *mysqlVaccineRepository) FetchAll() ([]vaccine.Domain, error) {
 
 	return ToArrayOfDomain(recVaccine), nil
 }
+
+func (mysqlRepo *mysqlVaccineRepository) GetByAdminID(adminID string) ([]vaccine.Domain, error) {
+	dataVaccine := []Vaccine{}
+	if err := mysqlRepo.Conn.Find(&dataVaccine, "admin_id = ?", adminID).Error; err != nil {
+		return []vaccine.Domain{}, err
+	}
+	if len(dataVaccine) == 0 {
+		err := errors.New("data is empty")
+		return []vaccine.Domain{}, err
+	}
+	return ToArrayOfDomain(dataVaccine), nil
+}

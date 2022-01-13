@@ -36,6 +36,7 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	vaccine.GET("/:id", cl.VaccineController.GetByID)
 	vaccine.PUT("/:id", cl.VaccineController.Update)
 	vaccine.DELETE("/:id", cl.VaccineController.Delete)
+	vaccine.GET("/admin/:id", cl.VaccineController.GetByAdminID)
 
 	address := e.Group("address")
 	address.POST("", cl.CurrentAddressController.Create)
@@ -69,4 +70,6 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 
 	booking := e.Group("booking")
 	booking.POST("", cl.BookingController.BookingSession)
+	booking.GET("/citizen/:id", cl.BookingController.GetByCitizenID)
+	booking.GET("/session/:id", cl.BookingController.GetBySessionID)
 }

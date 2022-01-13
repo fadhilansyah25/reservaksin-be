@@ -82,3 +82,14 @@ func (service *vaccineService) FetchAll() ([]Domain, error) {
 
 	return data, nil
 }
+
+func (service *vaccineService) GetByAdminID(adminID string) ([]Domain, error) {
+	dataVaccine, err := service.vaccineRepository.GetByAdminID(adminID)
+	if err != nil {
+		if strings.Contains(err.Error(), "empty") {
+			return []Domain{}, err
+		}
+		return []Domain{}, err
+	}
+	return dataVaccine, nil
+}
