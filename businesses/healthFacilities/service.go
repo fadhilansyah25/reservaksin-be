@@ -96,7 +96,10 @@ func (service *HealthFacilitiesService) Delete(id string) (string, error) {
 func (service *HealthFacilitiesService) GetByIdAdmin(id string) ([]Domain, error) {
 	dataFaskes, err := service.FacilitiesRepository.GetByIdAdmin(id)
 	if err != nil {
-		return []Domain{}, businesses.ErrInternalServer
+		if strings.Contains(err.Error(), "empty") {
+			return []Domain{}, err
+		}
+		return []Domain{}, err
 	}
 	return dataFaskes, nil
 }

@@ -13,36 +13,30 @@ import (
 type citizenService struct {
 	citizenRepository Repository
 	AddressRepository currentAddress.Repository
-	// contextTimeout    time.Duration
-	jwtAuth *middlewares.ConfigJWT
+	jwtAuth           *middlewares.ConfigJWT
 }
 
-func NewCitizenService(repoCitizen Repository, jwtauth *middlewares.ConfigJWT) Service {
+func NewCitizenService(repoCitizen Repository, addressRepo currentAddress.Repository, jwtauth *middlewares.ConfigJWT) Service {
 	return &citizenService{
 		citizenRepository: repoCitizen,
-		// contextTimeout:    timeout,
-		jwtAuth: jwtauth,
+		AddressRepository: addressRepo,
+		jwtAuth:           jwtauth,
 	}
 }
 
 func (repo *citizenService) Register(citizenDomain *Domain) (Domain, error) {
-	existedCitizen, err := repo.citizenRepository.GetByNIK(citizenDomain.Nik)
-	if err != nil {
-		if !strings.Contains(err.Error(), "not found") {
-			return Domain{}, err
-		}
-	}
-
-	citizenDomain.ID, err = nanoid.GenerateNanoId()
-	if err != nil {
-		return Domain{}, businesses.ErrInternalServer
-	}
-
+	existedCitizen, _ := repo.citizenRepository.GetByNIK(citizenDomain.Nik)
 	if existedCitizen != (Domain{}) {
 		return Domain{}, businesses.ErrDuplicateData
 	}
 
-	citizenDomain.Password = encrypt.HashAndSalt([]byte(citizenDomain.Password))
+	citizenDomain.CurrentAddress.Id, _ = nanoid.GenerateNanoId()
+	newAddress, _ := repo.AddressRepository.Create(&citizenDomain.CurrentAddress)
+	citizenDomain.CurrentAddressID = newAddress.Id
+
+	citizenDomain.Id, _ = nanoid.GenerateNanoId()
+	hashedPassword := encrypt.HashAndSalt([]byte(citizenDomain.Password))
+	citizenDomain.Password = hashedPassword
 	result, err := repo.citizenRepository.Register(citizenDomain)
 	if err != nil {
 		return Domain{}, err
@@ -66,7 +60,7 @@ func (repo *citizenService) LoginByEmail(email, password string) (string, error)
 		return "", businesses.ErrInternalServer
 	}
 
-	token := repo.jwtAuth.GenerateToken(citizenDomain.ID)
+	token := repo.jwtAuth.GenerateToken(citizenDomain.Id)
 	return token, nil
 
 }
@@ -87,7 +81,7 @@ func (repo *citizenService) LoginByNIK(nik, password string) (string, error) {
 		return "", businesses.ErrInternalServer
 	}
 
-	token := repo.jwtAuth.GenerateToken(citizenDomain.ID)
+	token := repo.jwtAuth.GenerateToken(citizenDomain.Id)
 	return token, nil
 
 }
@@ -109,7 +103,7 @@ func (service *citizenService) Delete(id string) (string, error) {
 		return "", businesses.ErrInternalServer
 	}
 
-	message := fmt.Sprintf("account %s success to deleted", existed.Username)
+	message := fmt.Sprintf("account %s success to deleted", existed.FullName)
 	return message, nil
 }
 
@@ -122,7 +116,7 @@ func (service *citizenService) Update(id string, data *Domain) (Domain, error) {
 		return Domain{}, businesses.ErrInternalServer
 	}
 
-	data.ID = existed.ID
+	data.Id = existed.Id
 	data.CurrentAddressID = existed.CurrentAddressID
 	data.CurrentAddress.Id = existed.CurrentAddressID
 
