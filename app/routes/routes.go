@@ -2,6 +2,7 @@ package routes
 
 import (
 	"ca-reservaksin/controllers/admin"
+	"ca-reservaksin/controllers/booking"
 	"ca-reservaksin/controllers/citizen"
 	"ca-reservaksin/controllers/currentAddress"
 	"ca-reservaksin/controllers/healthFacilities"
@@ -20,6 +21,7 @@ type ControllerList struct {
 	HealthFacilitiesController healthFacilities.HealthFacilitiesController
 	SessionController          session.Sessioncontroller
 	CitizenController          citizen.CitizenController
+	BookingController          booking.BookingController
 }
 
 func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
@@ -34,6 +36,7 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	vaccine.GET("/:id", cl.VaccineController.GetByID)
 	vaccine.PUT("/:id", cl.VaccineController.Update)
 	vaccine.DELETE("/:id", cl.VaccineController.Delete)
+	vaccine.GET("/admin/:id", cl.VaccineController.GetByAdminID)
 
 	address := e.Group("address")
 	address.POST("", cl.CurrentAddressController.Create)
@@ -64,4 +67,9 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	citizen.POST("/register", cl.CitizenController.Register)
 	citizen.POST("/loginEmail", cl.CitizenController.LoginByEmail)
 	citizen.POST("/loginNik", cl.CitizenController.LoginByNIK)
+
+	booking := e.Group("booking")
+	booking.POST("", cl.BookingController.BookingSession)
+	booking.GET("/citizen/:id", cl.BookingController.GetByCitizenID)
+	booking.GET("/session/:id", cl.BookingController.GetBySessionID)
 }

@@ -9,10 +9,10 @@ import (
 
 type Citizen struct {
 	gorm.Model
-	ID                 string                        `json:"id" gorm:"Primarykey; Not Null"`
+	Id                 string                        `json:"id" gorm:"Primarykey; Not Null"`
 	Email              string                        `json:"email"`
 	NoHp               string                        `json:"nohp"`
-	Username           string                        `json:"username"`
+	FullName           string                        `json:"fullname"`
 	Password           string                        `json:"password"`
 	NoKK               string                        `json:"nokk"`
 	Nik                string                        `json:"nik" gorm:"unique"`
@@ -21,22 +21,17 @@ type Citizen struct {
 	Gender             string                        `json:"gender"`
 	MarriageStatus     string                        `json:"status"`
 	Role               string                        `json:"role"`
-	Address            string                        `json:"alamat"`
-	Desa               string                        `json:"desa"`
-	Kota               string                        `json:"kota"`
-	Kecamatan          string                        `json:"kecamatan"`
-	Provinsi           string                        `json:"provinsi"`
-	CurrentAddressID   string                        `gorm:"size:191" json:"current_Address_id"`
+	CurrentAddressID   string                        `gorm:"size:191" json:"current_address_id"`
 	CurrentAddress     currentAddress.CurrentAddress `gorm:"foreignKey:CurrentAddressID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	ImageURI           string                        `json:"imageURI"`
 }
 
-func (rec *Citizen) toDomain() citizen.Domain {
+func (rec *Citizen) ToDomain() citizen.Domain {
 	return citizen.Domain{
-		ID:                 rec.ID,
+		Id:                 rec.Id,
 		Email:              rec.Email,
 		NoHp:               rec.NoHp,
-		Username:           rec.Username,
+		FullName:           rec.FullName,
 		Password:           rec.Password,
 		NoKK:               rec.NoKK,
 		Nik:                rec.Nik,
@@ -45,23 +40,18 @@ func (rec *Citizen) toDomain() citizen.Domain {
 		Gender:             rec.Gender,
 		MarriageStatus:     rec.MarriageStatus,
 		Role:               rec.Role,
-		Address:            rec.Address,
-		Desa:               rec.Desa,
-		Kota:               rec.Kota,
-		Kecamatan:          rec.Kecamatan,
-		Provinsi:           rec.Provinsi,
 		CurrentAddressID:   rec.CurrentAddressID,
 		CurrentAddress:     rec.CurrentAddress.ToDomain(),
 		ImageURI:           rec.ImageURI,
 	}
 }
 
-func fromDomain(domain citizen.Domain) *Citizen {
+func FromDomain(domain citizen.Domain) *Citizen {
 	return &Citizen{
-		ID:                 domain.ID,
+		Id:                 domain.Id,
 		Email:              domain.Email,
 		NoHp:               domain.NoHp,
-		Username:           domain.Username,
+		FullName:           domain.FullName,
 		Password:           domain.Password,
 		NoKK:               domain.NoKK,
 		Nik:                domain.Nik,
@@ -70,11 +60,6 @@ func fromDomain(domain citizen.Domain) *Citizen {
 		Gender:             domain.Gender,
 		MarriageStatus:     domain.MarriageStatus,
 		Role:               domain.Role,
-		Address:            domain.Address,
-		Desa:               domain.Desa,
-		Kota:               domain.Kota,
-		Kecamatan:          domain.Kecamatan,
-		Provinsi:           domain.Provinsi,
 		CurrentAddress:     *currentAddress.FromDomain(domain.CurrentAddress),
 		ImageURI:           domain.ImageURI,
 	}
@@ -84,7 +69,7 @@ func ToArrayOfDomain(rec []Citizen) []citizen.Domain {
 	domainArray := []citizen.Domain{}
 
 	for _, val := range rec {
-		domainArray = append(domainArray, val.toDomain())
+		domainArray = append(domainArray, val.ToDomain())
 	}
 
 	return domainArray

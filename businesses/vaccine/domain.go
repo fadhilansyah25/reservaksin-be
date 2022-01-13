@@ -6,6 +6,7 @@ type Domain struct {
 	Id         string
 	NamaVaksin string
 	Stok       int
+	AdminID    string
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
@@ -16,6 +17,7 @@ type Service interface {
 	Delete(id string) (string, error)
 	GetByID(id string) (Domain, error)
 	FetchAll() ([]Domain, error)
+	GetByAdminID(adminID string) ([]Domain, error)
 }
 
 type Repository interface {
@@ -24,4 +26,5 @@ type Repository interface {
 	Delete(id string) (string, error)
 	GetByID(id string) (Domain, error)
 	FetchAll() ([]Domain, error)
+	GetByAdminID(adminID string) ([]Domain, error)
 }

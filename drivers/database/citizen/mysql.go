@@ -18,14 +18,14 @@ func NewMysqlRepository(conn *gorm.DB) citizen.Repository {
 }
 
 func (mysqlrepo *MysqlCitizenRepository) Register(dataCitizen *citizen.Domain) (citizen.Domain, error) {
-	recCitizen := fromDomain(*dataCitizen)
+	recCitizen := FromDomain(*dataCitizen)
 
 	err := mysqlrepo.Conn.Create(&recCitizen).Error
 	if err != nil {
 		return citizen.Domain{}, err
 	}
 
-	return recCitizen.toDomain(), nil
+	return recCitizen.ToDomain(), nil
 }
 
 func (mysqlrepo *MysqlCitizenRepository) GetByEmail(email string) (citizen.Domain, error) {
@@ -35,7 +35,7 @@ func (mysqlrepo *MysqlCitizenRepository) GetByEmail(email string) (citizen.Domai
 		return citizen.Domain{}, err
 	}
 
-	return recCitizen.toDomain(), nil
+	return recCitizen.ToDomain(), nil
 }
 
 func (mysqlrepo *MysqlCitizenRepository) GetByNIK(nik string) (citizen.Domain, error) {
@@ -45,7 +45,7 @@ func (mysqlrepo *MysqlCitizenRepository) GetByNIK(nik string) (citizen.Domain, e
 		return citizen.Domain{}, err
 	}
 
-	return recCitizen.toDomain(), nil
+	return recCitizen.ToDomain(), nil
 }
 
 func (mysqlrepo *MysqlCitizenRepository) GetByNoKK(nokk string) ([]citizen.Domain, error) {
@@ -59,13 +59,13 @@ func (mysqlrepo *MysqlCitizenRepository) GetByNoKK(nokk string) ([]citizen.Domai
 }
 
 func (mysqlRepo *MysqlCitizenRepository) Update(id string, data *citizen.Domain) (citizen.Domain, error) {
-	recFacilities := fromDomain(*data)
+	recFacilities := FromDomain(*data)
 	err := mysqlRepo.Conn.Model(&recFacilities).Where("id = ?", id).Updates(&recFacilities).Error
 	if err != nil {
 		return citizen.Domain{}, err
 	}
 
-	return recFacilities.toDomain(), nil
+	return recFacilities.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlCitizenRepository) Delete(id string) (string, error) {
@@ -85,5 +85,5 @@ func (mysqlRepo *MysqlCitizenRepository) GetByID(id string) (citizen.Domain, err
 		return citizen.Domain{}, err
 	}
 
-	return recFacilities.toDomain(), nil
+	return recFacilities.ToDomain(), nil
 }

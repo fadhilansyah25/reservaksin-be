@@ -2,12 +2,14 @@ package drivers
 
 import (
 	adminDomain "ca-reservaksin/businesses/admin"
+	bookingDomain "ca-reservaksin/businesses/booking"
 	citizenDomain "ca-reservaksin/businesses/citizen"
 	currentAddressDomain "ca-reservaksin/businesses/currentAddress"
 	healthFacilitiesDomain "ca-reservaksin/businesses/healthFacilities"
 	sessionDomain "ca-reservaksin/businesses/session"
 	vaccineDomain "ca-reservaksin/businesses/vaccine"
 	adminDB "ca-reservaksin/drivers/database/admin"
+	bookingDB "ca-reservaksin/drivers/database/booking"
 	citizenDB "ca-reservaksin/drivers/database/citizen"
 	currentAddressDB "ca-reservaksin/drivers/database/currentAddress"
 	healthFacilitiesDB "ca-reservaksin/drivers/database/healthFacilities"
@@ -39,4 +41,8 @@ func NewSessionRepository(conn *gorm.DB) sessionDomain.Repository {
 
 func NewCitizenRepository(conn *gorm.DB) citizenDomain.Repository {
 	return citizenDB.NewMysqlRepository(conn)
+}
+
+func NewBookingRepository(conn *gorm.DB) bookingDomain.Repository {
+	return bookingDB.NewMysqlBookingRepository(conn)
 }
