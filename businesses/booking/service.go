@@ -31,3 +31,21 @@ func (service *bookingsessionService) BookingSession(dataBooking *Domain) (Domai
 
 	return booking, nil
 }
+
+func (service *bookingsessionService) GetByCitizenID(citizenID string) ([]Domain, error) {
+	dataBooking, err := service.bookingRepository.GetByCitizenID(citizenID)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return dataBooking, nil
+}
+
+func (service *bookingsessionService) GetBySessionID(sessionID string) ([]Domain, error) {
+	dataBooking, err := service.bookingRepository.GetBySessionID(sessionID)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return dataBooking, nil
+}

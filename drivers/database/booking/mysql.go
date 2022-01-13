@@ -25,7 +25,7 @@ func (mysqlRepo *MysqlBookingRepository) Create(data *booking.Domain) (booking.D
 		return booking.Domain{}, err
 	}
 
-	mysqlRepo.Conn.Preload("Session.HealthFacilites").Preload(clause.Associations).Find(&recBooking)
+	mysqlRepo.Conn.Preload("Session.HealthFacilites").Preload("Session.Vaccine").Preload(clause.Associations).Find(&recBooking)
 
 	return recBooking.ToDomain(), nil
 }
@@ -33,7 +33,7 @@ func (mysqlRepo *MysqlBookingRepository) Create(data *booking.Domain) (booking.D
 func (mysqlRepo *MysqlBookingRepository) GetBySessionID(sessionID string) ([]booking.Domain, error) {
 	recBooking := []Booking{}
 
-	err := mysqlRepo.Conn.Find(&recBooking, "session_id = ?", sessionID).Error
+	err := mysqlRepo.Conn.Preload("Citizen.CurrentAddress").Preload(clause.Associations).Find(&recBooking, "session_id = ?", sessionID).Error
 	if err != nil {
 		return []booking.Domain{}, err
 	}
@@ -61,4 +61,15 @@ func (mysqlRepo *MysqlBookingRepository) GetByID(id string) (booking.Domain, err
 	}
 
 	return recBooking.ToDomain(), nil
+}
+
+func (mysqlRepo *MysqlBookingRepository) GetByCitizenID(sessionID string) ([]booking.Domain, error) {
+	recBooking := []Booking{}
+
+	err := mysqlRepo.Conn.Preload("Session.HealthFacilites").Preload("Session.Vaccine").Preload(clause.Associations).Find(&recBooking, "citizen_id = ?", sessionID).Error
+	if err != nil {
+		return []booking.Domain{}, err
+	}
+
+	return ToArrayOfDomain(recBooking), nil
 }

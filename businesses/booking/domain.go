@@ -22,11 +22,13 @@ type Domain struct {
 
 type Service interface {
 	BookingSession(dataBooking *Domain) (Domain, error)
+	GetBySessionID(sessionID string) ([]Domain, error)
+	GetByCitizenID(citizenID string) ([]Domain, error)
 }
 
 type Repository interface {
 	GetBySessionID(sessionID string) ([]Domain, error)
-	// GetByUserID(userID string) ([]Domain, error)
+	GetByCitizenID(citizenID string) ([]Domain, error)
 	GetByStatus(status string) ([]Domain, error)
 	GetByID(id string) (Domain, error)
 	Create(data *Domain) (Domain, error)
