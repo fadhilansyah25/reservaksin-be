@@ -86,8 +86,10 @@ func (ctrl *HealthFacilitiesController) GetByIdAdmin(c echo.Context) error {
 	id := c.Param("id")
 	data, err := ctrl.FacilitiesService.GetByIdAdmin(id)
 	if err != nil {
+		if strings.Contains(err.Error(), "empty") {
+			return controllers.NewEmptyDataResponse(c, data)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-
 	return controllers.NewSuccesResponse(c, response.FromDomainArray(data))
 }
