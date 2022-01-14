@@ -80,6 +80,13 @@ func (service *vaccineService) FetchAll() ([]Domain, error) {
 		return []Domain{}, businesses.ErrInternalServer
 	}
 
+	if err != nil {
+		if strings.Contains(err.Error(), "empty") {
+			return []Domain{}, err
+		}
+		return []Domain{}, err
+	}
+
 	return data, nil
 }
 
