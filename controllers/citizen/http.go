@@ -91,3 +91,31 @@ func (ctrl *CitizenController) Delete(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, res)
 }
+
+func (ctrl *CitizenController) GetCitizenByID(c echo.Context) error {
+	id := c.Param("id")
+
+	res, err := ctrl.citizenService.GetByID(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+		}
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, res)
+}
+
+func (ctrl *CitizenController) FetchCitizenByAdminID(c echo.Context) error {
+	adminID := c.Param("id")
+	res, err := ctrl.citizenService.GetByAdminID(adminID)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	if len(res) == 0 {
+		return controllers.NewEmptyDataResponse(c, response.FromDomainOfArray(res))
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomainOfArray(res))
+}

@@ -123,7 +123,7 @@ func main() {
 		AllowedOrigins: []string{"*"},
 		AllowedMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 		AllowedHeaders: []string{"*"},
-		Debug:          true,
+		Debug:          false,
 	})
 	e.Use(echo.WrapMiddleware(corsMiddleware.Handler))
 
