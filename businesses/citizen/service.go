@@ -35,8 +35,11 @@ func (repo *citizenService) Register(citizenDomain *Domain) (Domain, error) {
 	citizenDomain.CurrentAddressID = newAddress.Id
 
 	citizenDomain.Id, _ = nanoid.GenerateNanoId()
-	hashedPassword := encrypt.HashAndSalt([]byte(citizenDomain.Password))
-	citizenDomain.Password = hashedPassword
+	if citizenDomain.Password != "" {
+		hashedPassword := encrypt.HashAndSalt([]byte(citizenDomain.Password))
+		citizenDomain.Password = hashedPassword
+	}
+
 	result, err := repo.citizenRepository.Register(citizenDomain)
 	if err != nil {
 		return Domain{}, err
@@ -110,4 +113,25 @@ func (service *citizenService) Update(id string, data *Domain) (Domain, error) {
 	}
 
 	return dataHealthFacilities, nil
+}
+
+func (service *citizenService) GetByID(id string) (Domain, error) {
+	resCitizen, err := service.citizenRepository.GetByID(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return Domain{}, businesses.ErrIDNotFound
+		}
+		return Domain{}, businesses.ErrInternalServer
+	}
+
+	return resCitizen, nil
+}
+
+func (service *citizenService) GetByAdminID(adminID string) ([]Domain, error) {
+	resCitizen, err := service.citizenRepository.GetByAdminID(adminID)
+	if err != nil {
+		return []Domain{}, businesses.ErrInternalServer
+	}
+
+	return resCitizen, nil
 }

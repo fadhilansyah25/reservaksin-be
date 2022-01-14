@@ -44,3 +44,12 @@ func FromDomain(domain citizen.Domain) *CitizenResponse {
 		UpdatedAt:          domain.UpdatedAt,
 	}
 }
+
+func FromDomainOfArray(domainArray []citizen.Domain) *[]CitizenResponse {
+	res := []CitizenResponse{}
+
+	for _, val := range domainArray {
+		res = append(res, *FromDomain(val))
+	}
+	return &res
+}
