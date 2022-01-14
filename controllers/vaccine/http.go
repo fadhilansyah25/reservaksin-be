@@ -85,6 +85,9 @@ func (ctrl *VaccineController) GetByID(c echo.Context) error {
 func (ctrl *VaccineController) FetchAll(c echo.Context) error {
 	res, err := ctrl.VaccineService.FetchAll()
 	if err != nil {
+		if strings.Contains(err.Error(), "empty") {
+			return controllers.NewEmptyDataResponse(c, res)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
