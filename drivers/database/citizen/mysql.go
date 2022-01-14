@@ -59,18 +59,18 @@ func (mysqlrepo *MysqlCitizenRepository) GetByNoKK(nokk string) ([]citizen.Domai
 }
 
 func (mysqlRepo *MysqlCitizenRepository) Update(id string, data *citizen.Domain) (citizen.Domain, error) {
-	recFacilities := FromDomain(*data)
-	err := mysqlRepo.Conn.Model(&recFacilities).Where("id = ?", id).Updates(&recFacilities).Error
+	recCitizen := FromDomain(*data)
+	err := mysqlRepo.Conn.Model(&recCitizen).Where("id = ?", id).Updates(&recCitizen).Error
 	if err != nil {
 		return citizen.Domain{}, err
 	}
 
-	return recFacilities.ToDomain(), nil
+	return recCitizen.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlCitizenRepository) Delete(id string) (string, error) {
-	recFacilities := Citizen{}
-	err := mysqlRepo.Conn.Delete(&recFacilities, "id = ?", id).Error
+	recCitizen := Citizen{}
+	err := mysqlRepo.Conn.Delete(&recCitizen, "id = ?", id).Error
 	if err != nil {
 		return "", err
 	}
@@ -79,11 +79,22 @@ func (mysqlRepo *MysqlCitizenRepository) Delete(id string) (string, error) {
 }
 
 func (mysqlRepo *MysqlCitizenRepository) GetByID(id string) (citizen.Domain, error) {
-	recFacilities := Citizen{}
+	recCitizen := Citizen{}
 
-	if err := mysqlRepo.Conn.Preload(clause.Associations).First(&recFacilities, "id = ?", id).Error; err != nil {
+	if err := mysqlRepo.Conn.Preload(clause.Associations).First(&recCitizen, "id = ?", id).Error; err != nil {
 		return citizen.Domain{}, err
 	}
 
-	return recFacilities.ToDomain(), nil
+	return recCitizen.ToDomain(), nil
+}
+
+func (mysqlRepo *MysqlCitizenRepository) GetByEmailOrNIK(email_or_string string) (citizen.Domain, error) {
+	recCitizen := Citizen{}
+
+	if err := mysqlRepo.Conn.Preload(clause.Associations).
+		First(&recCitizen, "email = ? OR nik = ?", email_or_string, email_or_string).Error; err != nil {
+		return citizen.Domain{}, err
+	}
+
+	return recCitizen.ToDomain(), nil
 }
