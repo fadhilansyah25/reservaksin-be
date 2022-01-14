@@ -27,8 +27,7 @@ type Domain struct {
 
 type Service interface {
 	Register(data *Domain) (Domain, error)
-	LoginByEmail(email string, password string) (string, error)
-	LoginByNIK(nik, password string) (string, error)
+	Login(email_nik, password string) (string, error)
 	Update(id string, data *Domain) (Domain, error)
 	Delete(id string) (string, error)
 }
@@ -38,6 +37,7 @@ type Repository interface {
 	Register(data *Domain) (Domain, error)
 	GetByID(id string) (Domain, error)
 	GetByNIK(nik string) (Domain, error)
+	GetByEmailOrNIK(email_or_nik string) (Domain, error)
 	GetByNoKK(noKK string) ([]Domain, error)
 	Delete(id string) (string, error)
 	Update(id string, data *Domain) (Domain, error)

@@ -21,14 +21,9 @@ type Citizen struct {
 	ImageURI           string                 `json:"image_url"`
 }
 
-type CitizenLoginEmail struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type CitizenLoginNIK struct {
-	Nik      string `json:"nik"`
-	Password string `json:"password"`
+type CitizenLogin struct {
+	EmailOrNIK string `json:"email_or_nik"`
+	Password   string `json:"password"`
 }
 
 func (req *Citizen) ToDomain() *citizen.Domain {
@@ -49,16 +44,9 @@ func (req *Citizen) ToDomain() *citizen.Domain {
 	}
 }
 
-func (req *CitizenLoginEmail) ToDomain() *citizen.Domain {
+func (req *CitizenLogin) ToDomain() *citizen.Domain {
 	return &citizen.Domain{
-		Email:    req.Email,
-		Password: req.Password,
-	}
-}
-
-func (req *CitizenLoginNIK) ToDomain() *citizen.Domain {
-	return &citizen.Domain{
-		Nik:      req.Nik,
+		Email:    req.EmailOrNIK,
 		Password: req.Password,
 	}
 }

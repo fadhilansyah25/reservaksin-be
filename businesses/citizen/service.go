@@ -44,46 +44,26 @@ func (repo *citizenService) Register(citizenDomain *Domain) (Domain, error) {
 	return result, nil
 }
 
-func (repo *citizenService) LoginByEmail(email, password string) (string, error) {
+func (repo *citizenService) Login(email_or_nik, password string) (string, error) {
 
-	if strings.TrimSpace(email) == "" && strings.TrimSpace(password) == "" {
-		return "", businesses.ErrEmailPasswordNotFound
+	if strings.TrimSpace(email_or_nik) == "" {
+		return "", businesses.ErrEmailOrNIKNotFound
 	}
 
-	citizenDomain, err := repo.citizenRepository.GetByEmail(email)
-
+	citizenDomain, err := repo.citizenRepository.GetByEmailOrNIK(email_or_nik)
 	if err != nil {
-		return "", err
+		if strings.Contains(err.Error(), "not found") {
+			return "", businesses.ErrEmailOrNIKNotFound
+		}
+		return "", businesses.ErrInternalServer
 	}
 
 	if !encrypt.ValidateHash(password, citizenDomain.Password) {
-		return "", businesses.ErrInternalServer
+		return "", businesses.ErrIncorrectPassword
 	}
 
 	token := repo.jwtAuth.GenerateToken(citizenDomain.Id)
 	return token, nil
-
-}
-
-func (repo *citizenService) LoginByNIK(nik, password string) (string, error) {
-
-	if strings.TrimSpace(nik) == "" && strings.TrimSpace(password) == "" {
-		return "", businesses.ErrEmailPasswordNotFound
-	}
-
-	citizenDomain, err := repo.citizenRepository.GetByNIK(nik)
-
-	if err != nil {
-		return "", err
-	}
-
-	if !encrypt.ValidateHash(password, citizenDomain.Password) {
-		return "", businesses.ErrInternalServer
-	}
-
-	token := repo.jwtAuth.GenerateToken(citizenDomain.Id)
-	return token, nil
-
 }
 
 func (service *citizenService) Delete(id string) (string, error) {

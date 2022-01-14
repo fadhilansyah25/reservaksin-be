@@ -8,6 +8,6 @@ var (
 	ErrIDNotFound               = errors.New("id not found")
 	ErrDuplicateData            = errors.New("duplicate data")
 	ErrUsernamePasswordNotFound = errors.New("incorrect (Username) or (Password)")
-	ErrEmailPasswordNotFound    = errors.New("incorrect (email) or (Password)")
-	ErrNIKPasswordNotFound      = errors.New("incorrect (NIK) or (Password)")
+	ErrEmailOrNIKNotFound       = errors.New("incorrect (Email) or (NIK)")
+	ErrIncorrectPassword        = errors.New("incorrect (Password)")
 )
