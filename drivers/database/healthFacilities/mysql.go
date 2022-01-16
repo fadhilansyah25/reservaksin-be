@@ -74,3 +74,15 @@ func (mysqlRepo *MysqlHealthFacilitiesRepository) GetByIdAdmin(id string) ([]hea
 	}
 	return ToArrayOfDomain(dataFaskes), nil
 }
+
+func (mysqlRepo *MysqlHealthFacilitiesRepository) FetchAll() ([]healthFacilities.Domain, error) {
+	dataFaskes := []HealthFacilities{}
+	if err := mysqlRepo.Conn.Preload(clause.Associations).Find(&dataFaskes).Error; err != nil {
+		return []healthFacilities.Domain{}, err
+	}
+	if len(dataFaskes) == 0 {
+		err := errors.New("data is empty")
+		return []healthFacilities.Domain{}, err
+	}
+	return ToArrayOfDomain(dataFaskes), nil
+}

@@ -103,3 +103,14 @@ func (service *HealthFacilitiesService) GetByIdAdmin(id string) ([]Domain, error
 	}
 	return dataFaskes, nil
 }
+
+func (service *HealthFacilitiesService) FetchAll() ([]Domain, error) {
+	dataFaskes, err := service.FacilitiesRepository.FetchAll()
+	if err != nil {
+		if strings.Contains(err.Error(), "empty") {
+			return []Domain{}, err
+		}
+		return []Domain{}, err
+	}
+	return dataFaskes, nil
+}
