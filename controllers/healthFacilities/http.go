@@ -93,3 +93,14 @@ func (ctrl *HealthFacilitiesController) GetByIdAdmin(c echo.Context) error {
 	}
 	return controllers.NewSuccesResponse(c, response.FromDomainArray(data))
 }
+
+func (ctrl *HealthFacilitiesController) FetchAllForMapsResponse(c echo.Context) error {
+	data, err := ctrl.FacilitiesService.FetchAll()
+	if err != nil {
+		if strings.Contains(err.Error(), "empty") {
+			return controllers.NewEmptyDataResponse(c, data)
+		}
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.FromDomainArrayToMapsResponse(data))
+}

@@ -50,6 +50,7 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	healthFacilities.PUT("/:id", cl.HealthFacilitiesController.Update)
 	healthFacilities.DELETE("/:id", cl.HealthFacilitiesController.Delete)
 	healthFacilities.GET("/admin/:id", cl.HealthFacilitiesController.GetByIdAdmin)
+	healthFacilities.GET("/maps-place", cl.HealthFacilitiesController.FetchAllForMapsResponse)
 
 	session := e.Group("session")
 	session.POST("", cl.SessionController.Create)
