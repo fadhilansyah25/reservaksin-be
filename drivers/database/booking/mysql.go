@@ -11,7 +11,7 @@ type MysqlBookingRepository struct {
 	Conn *gorm.DB
 }
 
-func NewMysqlBookingRepository(conn *gorm.DB) booking.Repository {
+func NewMysqlRepository(conn *gorm.DB) booking.Repository {
 	return &MysqlBookingRepository{
 		Conn: conn,
 	}

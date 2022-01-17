@@ -17,14 +17,14 @@ func NewMysqlRepository(conn *gorm.DB) admin.Repository {
 }
 
 func (mysqlRepo *MysqlAdminRepository) Register(dataAdmin *admin.Domain) (admin.Domain, error) {
-	recAdmin := fromDomain(*dataAdmin)
+	recAdmin := FromDomain(*dataAdmin)
 
 	err := mysqlRepo.Conn.Create(&recAdmin).Error
 	if err != nil {
 		return admin.Domain{}, err
 	}
 
-	return recAdmin.toDomain(), nil
+	return recAdmin.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlAdminRepository) GetByUsername(username string) (admin.Domain, error) {
@@ -34,7 +34,7 @@ func (mysqlRepo *MysqlAdminRepository) GetByUsername(username string) (admin.Dom
 		return admin.Domain{}, err
 	}
 
-	return recAdmin.toDomain(), nil
+	return recAdmin.ToDomain(), nil
 }
 
 func (mysqlRepo *MysqlAdminRepository) GetByID(id string) (admin.Domain, error) {
@@ -44,5 +44,5 @@ func (mysqlRepo *MysqlAdminRepository) GetByID(id string) (admin.Domain, error) 
 		return admin.Domain{}, err
 	}
 
-	return recAdmin.toDomain(), nil
+	return recAdmin.ToDomain(), nil
 }
