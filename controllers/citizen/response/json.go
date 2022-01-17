@@ -22,7 +22,6 @@ type CitizenResponse struct {
 	CurrentAddress     response.CurrentAddress `json:"current_Address"`
 	CreatedAt          time.Time               `json:"created_at"`
 	UpdatedAt          time.Time               `json:"updated_at"`
-	Token              string                  `json:"token"`
 }
 
 func FromDomain(domain citizen.Domain) *CitizenResponse {

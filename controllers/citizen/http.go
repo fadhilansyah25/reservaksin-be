@@ -43,7 +43,7 @@ func (ctrl *CitizenController) Login(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	token, err := ctrl.citizenService.Login(req.EmailOrNIK, req.Password)
+	dataCitizen, token, err := ctrl.citizenService.Login(req.EmailOrNIK, req.Password)
 	if err != nil {
 		if strings.Contains(err.Error(), "incorrect (Email) or (NIK)") {
 			return controllers.NewErrorResponse(c, http.StatusUnauthorized, err)
@@ -55,8 +55,9 @@ func (ctrl *CitizenController) Login(c echo.Context) error {
 	}
 
 	res := struct {
-		Token string `json:"token"`
-	}{Token: token}
+		DataCitizen response.CitizenResponse
+		Token       string `json:"token"`
+	}{DataCitizen: *response.FromDomain(dataCitizen), Token: token}
 
 	return controllers.NewSuccesResponse(c, res)
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type BookingCitizen struct {
-	Id           string `json:"id"`
+	BookingID    string `json:"booking_id"`
 	NomorAntrian int    `json:"nomor_antrian"`
 	Status       string `json:"status"`
 	VaccineName  string `json:"vaccine_name"`
@@ -24,7 +24,7 @@ type BookingCitizen struct {
 
 func FromDomainBookingCitizen(data booking.Domain) *BookingCitizen {
 	return &BookingCitizen{
-		Id:           data.Id,
+		BookingID:    data.Id,
 		NomorAntrian: data.NomorAntrian,
 		Status:       data.Status,
 		VaccineName:  data.Session.Vaccine.NamaVaksin,
@@ -49,6 +49,7 @@ func FromDomainOfArrayBookingCitizen(data []booking.Domain) *[]BookingCitizen {
 }
 
 type BookingSessionID struct {
+	BookingID   string `json:"booking_id"`
 	CitizenName string `json:"citizen_name"`
 	Address     string `json:"address"`
 	NIK         string `json:"nik"`
@@ -58,6 +59,7 @@ type BookingSessionID struct {
 
 func FromDomainBookingSession(data booking.Domain) *BookingSessionID {
 	return &BookingSessionID{
+		BookingID:   data.Id,
 		CitizenName: data.Citizen.FullName,
 		Address:     data.Citizen.CurrentAddress.Alamat,
 		NIK:         data.Citizen.Nik,

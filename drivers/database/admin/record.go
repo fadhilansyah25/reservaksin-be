@@ -14,7 +14,7 @@ type Admin struct {
 	Password string `json:"password"`
 }
 
-func (rec *Admin) toDomain() admin.Domain {
+func (rec *Admin) ToDomain() admin.Domain {
 	return admin.Domain{
 		Id:        rec.Id,
 		Role:      rec.Role,
@@ -25,7 +25,7 @@ func (rec *Admin) toDomain() admin.Domain {
 	}
 }
 
-func fromDomain(domain admin.Domain) *Admin {
+func FromDomain(domain admin.Domain) *Admin {
 	return &Admin{
 		Id:       domain.Id,
 		Role:     domain.Role,
