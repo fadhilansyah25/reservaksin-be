@@ -47,26 +47,26 @@ func (repo *citizenService) Register(citizenDomain *Domain) (Domain, error) {
 	return result, nil
 }
 
-func (repo *citizenService) Login(email_or_nik, password string) (string, error) {
+func (repo *citizenService) Login(email_or_nik, password string) (Domain, string, error) {
 
 	if strings.TrimSpace(email_or_nik) == "" {
-		return "", businesses.ErrEmailOrNIKNotFound
+		return Domain{}, "", businesses.ErrEmailOrNIKNotFound
 	}
 
 	citizenDomain, err := repo.citizenRepository.GetByEmailOrNIK(email_or_nik)
 	if err != nil {
 		if strings.Contains(err.Error(), "not found") {
-			return "", businesses.ErrEmailOrNIKNotFound
+			return Domain{}, "", businesses.ErrEmailOrNIKNotFound
 		}
-		return "", businesses.ErrInternalServer
+		return Domain{}, "", businesses.ErrInternalServer
 	}
 
 	if !encrypt.ValidateHash(password, citizenDomain.Password) {
-		return "", businesses.ErrIncorrectPassword
+		return Domain{}, "", businesses.ErrIncorrectPassword
 	}
 
 	token := repo.jwtAuth.GenerateToken(citizenDomain.Id)
-	return token, nil
+	return citizenDomain, token, nil
 }
 
 func (service *citizenService) Delete(id string) (string, error) {
