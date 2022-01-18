@@ -104,7 +104,7 @@ func (ctrl *CitizenController) GetCitizenByID(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccesResponse(c, res)
+	return controllers.NewSuccesResponse(c, response.FromDomain(res))
 }
 
 func (ctrl *CitizenController) FetchCitizenByAdminID(c echo.Context) error {
