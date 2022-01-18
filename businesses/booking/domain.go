@@ -24,12 +24,14 @@ type Service interface {
 	BookingSession(dataBooking *Domain) (Domain, error)
 	GetBySessionID(sessionID string) ([]Domain, error)
 	GetByCitizenID(citizenID string) ([]Domain, error)
+	GetByNoKK(noKK string) ([]Domain, error)
 }
 
 type Repository interface {
 	GetBySessionID(sessionID string) ([]Domain, error)
 	GetByCitizenID(citizenID string) ([]Domain, error)
 	GetByStatus(status string) ([]Domain, error)
+	GetByNoKK(noKK string) ([]Domain, error)
 	GetByID(id string) (Domain, error)
 	Create(data *Domain) (Domain, error)
 	// Update(data *Domain) (Domain, error)

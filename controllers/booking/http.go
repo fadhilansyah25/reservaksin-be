@@ -56,3 +56,14 @@ func (ctrl *BookingController) GetBySessionID(c echo.Context) error {
 
 	return controllers.NewSuccesResponse(c, response.FromDomainOfArrayBookingSession(data))
 }
+
+func (ctrl *BookingController) GetByNoKK(c echo.Context) error {
+	noKK := c.Param("id")
+
+	data, err := ctrl.bookingService.GetByNoKK(noKK)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomainOfArrayBookingCitizen(data))
+}

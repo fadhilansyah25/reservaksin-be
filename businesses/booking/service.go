@@ -49,3 +49,12 @@ func (service *bookingsessionService) GetBySessionID(sessionID string) ([]Domain
 
 	return dataBooking, nil
 }
+
+func (service *bookingsessionService) GetByNoKK(noKK string) ([]Domain, error) {
+	dataBooking, err := service.bookingRepository.GetByNoKK(noKK)
+	if err != nil {
+		return []Domain{}, err
+	}
+
+	return dataBooking, nil
+}

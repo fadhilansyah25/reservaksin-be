@@ -75,4 +75,5 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	booking.POST("", cl.BookingController.BookingSession)
 	booking.GET("/citizen/:id", cl.BookingController.GetByCitizenID)
 	booking.GET("/session/:id", cl.BookingController.GetBySessionID)
+	booking.GET("/nokk/:id", cl.BookingController.GetByNoKK)
 }
