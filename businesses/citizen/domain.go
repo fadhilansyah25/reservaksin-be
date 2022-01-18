@@ -32,6 +32,7 @@ type Service interface {
 	Delete(id string) (string, error)
 	GetByID(id string) (Domain, error)
 	GetByAdminID(adminID string) ([]Domain, error)
+	GetByNoKK(noKK string) ([]Domain, error)
 }
 
 type Repository interface {

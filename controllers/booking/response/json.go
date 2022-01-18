@@ -2,24 +2,24 @@ package response
 
 import (
 	"ca-reservaksin/businesses/booking"
+	_responseCitizen "ca-reservaksin/controllers/citizen/response"
+	_responseSession "ca-reservaksin/controllers/session/response"
 	"time"
 )
 
 type BookingCitizen struct {
-	BookingID    string `json:"booking_id"`
-	NomorAntrian int    `json:"nomor_antrian"`
-	Status       string `json:"status"`
-	VaccineName  string `json:"vaccine_name"`
-	CitizenId    string `json:"citizen_id"`
-	// Citizen      _responseCitizen.CitizenResponse `json:"citizen"`
-	Citizen   string `json:"citizen"`
-	SessionId string `json:"session_id"`
-	// Session     _responseSession.Session `json:"session"`
-	Session     string    `json:"session_place"`
-	Date        string    `json:"date"`
-	SessionTime string    `json:"session_time"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	BookingID    string                           `json:"booking_id"`
+	NomorAntrian int                              `json:"nomor_antrian"`
+	Status       string                           `json:"status"`
+	VaccineName  string                           `json:"vaccine_name"`
+	CitizenId    string                           `json:"citizen_id"`
+	Citizen      _responseCitizen.CitizenResponse `json:"citizen"`
+	SessionId    string                           `json:"session_id"`
+	Session      _responseSession.Session         `json:"session"`
+	Date         string                           `json:"date"`
+	SessionTime  string                           `json:"session_time"`
+	CreatedAt    time.Time                        `json:"created_at"`
+	UpdatedAt    time.Time                        `json:"updated_at"`
 }
 
 func FromDomainBookingCitizen(data booking.Domain) *BookingCitizen {
@@ -29,9 +29,9 @@ func FromDomainBookingCitizen(data booking.Domain) *BookingCitizen {
 		Status:       data.Status,
 		VaccineName:  data.Session.Vaccine.NamaVaksin,
 		CitizenId:    data.CitizenId,
-		Citizen:      data.Citizen.FullName,
+		Citizen:      *_responseCitizen.FromDomain(data.Citizen),
 		SessionId:    data.SessionId,
-		Session:      data.Session.HealthFacilites.NameFacilites,
+		Session:      *_responseSession.FromDomain(data.Session),
 		Date:         data.Date,
 		SessionTime:  data.SessionTime,
 		CreatedAt:    data.CreatedAt,

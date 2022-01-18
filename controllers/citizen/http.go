@@ -104,12 +104,26 @@ func (ctrl *CitizenController) GetCitizenByID(c echo.Context) error {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return controllers.NewSuccesResponse(c, res)
+	return controllers.NewSuccesResponse(c, response.FromDomain(res))
 }
 
 func (ctrl *CitizenController) FetchCitizenByAdminID(c echo.Context) error {
 	adminID := c.Param("id")
 	res, err := ctrl.citizenService.GetByAdminID(adminID)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	if len(res) == 0 {
+		return controllers.NewEmptyDataResponse(c, response.FromDomainOfArray(res))
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomainOfArray(res))
+}
+
+func (ctrl *CitizenController) FetchCitizenByNoKK(c echo.Context) error {
+	noKK := c.QueryParam("nokk")
+	res, err := ctrl.citizenService.GetByNoKK(noKK)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}

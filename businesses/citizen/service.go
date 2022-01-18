@@ -135,3 +135,12 @@ func (service *citizenService) GetByAdminID(adminID string) ([]Domain, error) {
 
 	return resCitizen, nil
 }
+
+func (service *citizenService) GetByNoKK(noKK string) ([]Domain, error) {
+	resCitizen, err := service.citizenRepository.GetByNoKK(noKK)
+	if err != nil {
+		return []Domain{}, businesses.ErrInternalServer
+	}
+
+	return resCitizen, nil
+}

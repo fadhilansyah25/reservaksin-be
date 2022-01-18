@@ -61,7 +61,7 @@ func (mysqlrepo *MysqlCitizenRepository) GetByNIK(nik string) (citizen.Domain, e
 
 func (mysqlrepo *MysqlCitizenRepository) GetByNoKK(nokk string) ([]citizen.Domain, error) {
 	recCitizen := []Citizen{}
-	err := mysqlrepo.Conn.Where("nokk = ?", nokk).First(&recCitizen).Error
+	err := mysqlrepo.Conn.Preload(clause.Associations).Find(&recCitizen, "no_kk = ?", nokk).Error
 	if err != nil {
 		return []citizen.Domain{}, err
 	}

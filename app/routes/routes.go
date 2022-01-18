@@ -69,9 +69,11 @@ func (cl *ControllerList) RoutesRegister(e *echo.Echo) {
 	citizen.POST("/login", cl.CitizenController.Login)
 	citizen.GET("/:id", cl.CitizenController.GetCitizenByID)
 	citizen.GET("/admin/:id", cl.CitizenController.FetchCitizenByAdminID)
+	citizen.GET("/family", cl.CitizenController.FetchCitizenByNoKK)
 
 	booking := e.Group("booking")
 	booking.POST("", cl.BookingController.BookingSession)
 	booking.GET("/citizen/:id", cl.BookingController.GetByCitizenID)
 	booking.GET("/session/:id", cl.BookingController.GetBySessionID)
+	booking.GET("/nokk/:id", cl.BookingController.GetByNoKK)
 }
