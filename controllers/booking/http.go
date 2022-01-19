@@ -6,6 +6,7 @@ import (
 	"ca-reservaksin/controllers/booking/request"
 	"ca-reservaksin/controllers/booking/response"
 	"net/http"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -66,4 +67,24 @@ func (ctrl *BookingController) GetByNoKK(c echo.Context) error {
 	}
 
 	return controllers.NewSuccesResponse(c, response.FromDomainOfArrayBookingCitizen(data))
+}
+
+func (ctrl *BookingController) UpdateBookingStatusByID(c echo.Context) error {
+	id := c.Param("id")
+	var req = struct {
+		Status string `json:"status"`
+	}{}
+	if err := c.Bind(&req); err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	data, err := ctrl.bookingService.UpdateStatusByID(id, req.Status)
+	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+		}
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+
+	return controllers.NewSuccesResponse(c, response.FromDomainBookingCitizen(data))
 }

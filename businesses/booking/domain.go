@@ -25,6 +25,7 @@ type Service interface {
 	GetBySessionID(sessionID string) ([]Domain, error)
 	GetByCitizenID(citizenID string) ([]Domain, error)
 	GetByNoKK(noKK string) ([]Domain, error)
+	UpdateStatusByID(id string, status string) (Domain, error)
 }
 
 type Repository interface {
@@ -34,6 +35,7 @@ type Repository interface {
 	GetByNoKK(noKK string) ([]Domain, error)
 	GetByID(id string) (Domain, error)
 	Create(data *Domain) (Domain, error)
+	UpdateStatusByID(id string, status string) (Domain, error)
 	// Update(data *Domain) (Domain, error)
 	// Delete(id string) (string, error)
 }

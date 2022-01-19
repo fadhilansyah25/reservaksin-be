@@ -120,7 +120,7 @@ func main() {
 
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowedMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete, http.MethodPatch},
 		AllowedHeaders: []string{"*"},
 		Debug:          false,
 	})

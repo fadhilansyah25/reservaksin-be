@@ -64,7 +64,7 @@ func (mysqlRepo *MysqlBookingRepository) GetByID(id string) (booking.Domain, err
 		Preload("Citizen.CurrentAddress").
 		Preload("Session.Vaccine").
 		Preload(clause.Associations).
-		Find(&recBooking, "session_id = ?", id).Error
+		Find(&recBooking, "id = ?", id).Error
 	if err != nil {
 		return booking.Domain{}, err
 	}
@@ -92,8 +92,7 @@ func (mysqlRepo *MysqlBookingRepository) GetByNoKK(noKK string) ([]booking.Domai
 	recBooking := []Booking{}
 
 	sqlQuery := `SELECT
-			bookings.*,
-			citizens.*
+			bookings.*
 		FROM
 			bookings
 			INNER JOIN citizens ON bookings.citizen_id = citizens.id
@@ -116,4 +115,21 @@ func (mysqlRepo *MysqlBookingRepository) GetByNoKK(noKK string) ([]booking.Domai
 	}
 
 	return ToArrayOfDomain(recBooking), nil
+}
+
+func (mysqlRepo *MysqlBookingRepository) UpdateStatusByID(id, status string) (booking.Domain, error) {
+	recBooking := Booking{}
+
+	err := mysqlRepo.Conn.Model(&recBooking).Where("id = ?", id).Update("status", status).Error
+	if err != nil {
+		return booking.Domain{}, err
+	}
+
+	mysqlRepo.Conn.Preload("Session.HealthFacilites").
+		Preload("Session.HealthFacilites.CurrentAddress").
+		Preload("Citizen.CurrentAddress").
+		Preload("Session.Vaccine").
+		Preload(clause.Associations).First(&recBooking, "id = ?", id)
+
+	return recBooking.ToDomain(), nil
 }
