@@ -108,6 +108,8 @@ func (mysqlRepo *MysqlCitizenRepository) Update(id string, data *citizen.Domain)
 		return citizen.Domain{}, err
 	}
 
+	mysqlRepo.Conn.Preload(clause.Associations).First(&recCitizen, "id = ?", id)
+
 	return recCitizen.ToDomain(), nil
 }
 
