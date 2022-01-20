@@ -46,7 +46,3 @@ func NewCitizenRepository(conn *gorm.DB) citizenDomain.Repository {
 func NewBookingRepository(conn *gorm.DB) bookingDomain.Repository {
 	return bookingDB.NewMysqlRepository(conn)
 }
-
-// func NewStatusVaccineRepository(conn *gorm.DB) statusvaccineDomain.Repository {
-// 	return statusvaccineDB.NewsMysqlRepository(conn)
-// }

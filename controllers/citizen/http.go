@@ -64,14 +64,17 @@ func (ctrl *CitizenController) Login(c echo.Context) error {
 
 func (ctrl *CitizenController) Update(c echo.Context) error {
 	id := c.Param("id")
-	req := request.Citizen{}
+	req := request.CitizenEdit{}
 
 	if err := c.Bind(&req); err != nil {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
-	data, err := ctrl.citizenService.Update(id, req.ToDomain())
+	data, err := ctrl.citizenService.Update(id, req.ToDomainCitizenEdit())
 	if err != nil {
+		if strings.Contains(err.Error(), "not found") {
+			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+		}
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
