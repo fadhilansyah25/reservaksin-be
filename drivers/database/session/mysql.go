@@ -117,21 +117,21 @@ func (mysqlRepo *MysqlSessionRepository) FetchByHistory(adminID, history string)
 
 	switch history {
 	case "upcoming":
-		qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
 		WHERE date > DATE(NOW()) && admin_id = ?`
 		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
 	case "history":
-		qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
 		WHERE date < DATE(NOW()) && admin_id = ?`
 		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
 	default:
-		qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
 		WHERE date = DATE(NOW()) && admin_id = ?`
 		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
 		if err != nil {
@@ -139,25 +139,21 @@ func (mysqlRepo *MysqlSessionRepository) FetchByHistory(adminID, history string)
 		}
 	}
 
-	for i := range dataSession {
-		mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession[i])
-	}
+	mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession)
 
 	return ToArrayOfDomain(dataSession), nil
 }
 
 func (mysqlRepo *MysqlSessionRepository) FetchAllByAdminID(adminID string) ([]session.Domain, error) {
 	dataSession := []Session{}
-	qe := `SELECT * FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
+	qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
 		WHERE admin_id = ?`
 	err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
 	if err != nil {
 		return nil, err
 	}
 
-	for i := range dataSession {
-		mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession[i])
-	}
+	mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession)
 
 	return ToArrayOfDomain(dataSession), nil
 }
