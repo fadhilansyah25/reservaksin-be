@@ -102,7 +102,7 @@ func (mysqlRepo *MysqlBookingRepository) GetByNoKK(noKK string) ([]booking.Domai
 		WHERE
 			no_kk = ?
 		ORDER BY
-		status`
+		status DESC, created_at DESC`
 
 	err := mysqlRepo.Conn.Raw(sqlQuery, noKK).Preload("Session.HealthFacilites").
 		Preload("Session.HealthFacilites.CurrentAddress").
