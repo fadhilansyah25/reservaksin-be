@@ -3,7 +3,6 @@ package vaccine
 import (
 	"ca-reservaksin/businesses/vaccine"
 	"ca-reservaksin/drivers/database/admin"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -15,8 +14,8 @@ type Vaccine struct {
 	AdminID    string      `json:"admin_id" gorm:"size:191"`
 	Admin      admin.Admin `gorm:"foreignKey:AdminID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Stok       int         `json:"stok"`
-	CreatedAt  time.Time   `json:"created_at"`
-	UpdatedAt  time.Time   `json:"updated_at"`
+	// CreatedAt  time.Time   `json:"created_at"`
+	// UpdatedAt  time.Time   `json:"updated_at"`
 }
 
 func (rec *Vaccine) ToDomain() vaccine.Domain {
