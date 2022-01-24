@@ -115,31 +115,28 @@ func (mysqlRepo *MysqlSessionRepository) Delete(id string) (string, error) {
 func (mysqlRepo *MysqlSessionRepository) FetchByHistory(adminID, history string) ([]session.Domain, error) {
 	dataSession := []Session{}
 
-	switch history {
-	case "upcoming":
+	if history == "upcoming" {
 		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE date > DATE(NOW()) && admin_id = ?`
-		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+		WHERE date > CURDATE() && admin_id = ?`
+		err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
-	case "history":
+	} else if history == "history" {
 		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE date < DATE(NOW()) && admin_id = ?`
-		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+		WHERE date < CURDATE() && admin_id = ?`
+		err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
-	default:
+	} else if history == "current" {
 		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE date = DATE(NOW()) && admin_id = ?`
-		err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+		WHERE date = CURDATE() && admin_id = ?`
+		err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
 	}
-
-	mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession)
 
 	return ToArrayOfDomain(dataSession), nil
 }

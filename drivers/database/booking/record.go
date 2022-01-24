@@ -4,6 +4,7 @@ import (
 	"ca-reservaksin/businesses/booking"
 	"ca-reservaksin/drivers/database/citizen"
 	"ca-reservaksin/drivers/database/session"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -19,6 +20,8 @@ type Booking struct {
 	Session      session.Session `gorm:"foreignKey:SessionId;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	Date         string          `gorm:"type:Date" json:"date"`
 	SessionTime  string          `json:"start_session" gorm:"type:Datetime" time_format:"2006-01-02 15:04"`
+	CreatedAt    time.Time       `json:"created_at" gorm:"<-:create"`
+	UpdatedAt    time.Time       `json:"updated_at"`
 }
 
 func (rec *Booking) ToDomain() booking.Domain {

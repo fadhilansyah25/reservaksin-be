@@ -3,6 +3,7 @@ package citizen
 import (
 	"ca-reservaksin/businesses/citizen"
 	"ca-reservaksin/drivers/database/currentAddress"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -24,6 +25,8 @@ type Citizen struct {
 	CurrentAddressID   string                        `gorm:"size:191" json:"current_address_id"`
 	CurrentAddress     currentAddress.CurrentAddress `gorm:"foreignKey:CurrentAddressID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	ImageURI           string                        `json:"imageURI"`
+	CreatedAt          time.Time                     `json:"created_at" gorm:"<-:create"`
+	UpdatedAt          time.Time                     `json:"updated_at"`
 }
 
 func (rec *Citizen) ToDomain() citizen.Domain {

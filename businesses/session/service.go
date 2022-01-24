@@ -99,8 +99,7 @@ func (service *SessionService) Delete(id string) (string, error) {
 
 func (service *SessionService) FetchByHistory(adminID, history string) ([]Domain, error) {
 
-	param := strings.ToLower(history)
-	resSession, err := service.SessionRepository.FetchByHistory(adminID, param)
+	resSession, err := service.SessionRepository.FetchByHistory(adminID, history)
 	if err != nil {
 		return []Domain{}, businesses.ErrInternalServer
 	}

@@ -4,6 +4,7 @@ import (
 	"ca-reservaksin/businesses/healthFacilities"
 	"ca-reservaksin/drivers/database/admin"
 	"ca-reservaksin/drivers/database/currentAddress"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -17,6 +18,8 @@ type HealthFacilities struct {
 	NoTelp           string                        `json:"no_telp"`
 	Admin            admin.Admin                   `gorm:"foreignKey:AdminId;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	CurrentAddress   currentAddress.CurrentAddress `gorm:"foreignKey:CurrentAddressID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	CreatedAt        time.Time                     `json:"created_at" gorm:"<-:create"`
+	UpdatedAt        time.Time                     `json:"updated_at"`
 }
 
 func (rec *HealthFacilities) ToDomain() healthFacilities.Domain {
