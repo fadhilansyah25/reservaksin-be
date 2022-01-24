@@ -4,6 +4,7 @@ import (
 	"ca-reservaksin/businesses/session"
 	"ca-reservaksin/drivers/database/healthFacilities"
 	"ca-reservaksin/drivers/database/vaccine"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -21,6 +22,8 @@ type Session struct {
 	EndSession        string                            `json:"end_session" gorm:"type:Datetime"  time_format:"2006-01-02 15:04"`
 	Vaccine           vaccine.Vaccine                   `gorm:"foreignKey:VaccineID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
 	HealthFacilites   healthFacilities.HealthFacilities `gorm:"foreignKey:HealthFacilitesID;constraint:OnUpdate:CASCADE,OnDelete:RESTRICT;"`
+	CreatedAt         time.Time                         `json:"created_at" gorm:"<-:create"`
+	UpdatedAt         time.Time                         `json:"updated_at"`
 }
 
 func (rec *Session) ToDomain() session.Domain {

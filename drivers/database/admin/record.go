@@ -2,16 +2,19 @@ package admin
 
 import (
 	"ca-reservaksin/businesses/admin"
+	"time"
 
 	"gorm.io/gorm"
 )
 
 type Admin struct {
 	gorm.Model
-	Id       string `json:"id" gorm:"PrimaryKey; Not Null"`
-	Role     string `json:"role"`
-	Username string `json:"username" gorm:"unique"`
-	Password string `json:"password"`
+	Id        string    `json:"id" gorm:"PrimaryKey; Not Null"`
+	Role      string    `json:"role"`
+	Username  string    `json:"username" gorm:"unique"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at" gorm:"<-:create"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (rec *Admin) ToDomain() admin.Domain {
