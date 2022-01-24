@@ -145,12 +145,10 @@ func (mysqlRepo *MysqlSessionRepository) FetchAllByAdminID(adminID string) ([]se
 	dataSession := []Session{}
 	qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
 		WHERE admin_id = ?`
-	err := mysqlRepo.Conn.Raw(qe, adminID).Find(&dataSession).Error
+	err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 	if err != nil {
 		return nil, err
 	}
-
-	mysqlRepo.Conn.Preload(clause.Associations).Find(&dataSession)
 
 	return ToArrayOfDomain(dataSession), nil
 }
