@@ -15,7 +15,7 @@ type Vaccine struct {
 	AdminID    string      `json:"admin_id" gorm:"size:191"`
 	Admin      admin.Admin `gorm:"foreignKey:AdminID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Stok       int         `json:"stok"`
-	CreatedAt  time.Time   `json:"created_at"`
+	CreatedAt  time.Time   `json:"created_at" gorm:"<-:create"`
 	UpdatedAt  time.Time   `json:"updated_at"`
 }
 

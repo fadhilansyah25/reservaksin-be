@@ -47,7 +47,6 @@ func (ctrl *VaccineController) Update(c echo.Context) error {
 		if strings.Contains(err.Error(), "not found") {
 			return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 		}
-
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
