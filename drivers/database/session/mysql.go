@@ -75,7 +75,7 @@ func (mysqlRepo *MysqlSessionRepository) GetByLatLong(lat, lng float64) ([]sessi
 			)
 		HAVING
 			distance < 10
-			&& date >= DATE(NOW())
+			&& date >= DATE(NOW()) AND sessions.deleted_at IS NULL
 		ORDER BY
 			distance
 		LIMIT
@@ -117,21 +117,21 @@ func (mysqlRepo *MysqlSessionRepository) FetchByHistory(adminID, history string)
 
 	if history == "upcoming" {
 		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE date > CURDATE() && admin_id = ?`
+		WHERE date > CURDATE() && admin_id = ? AND sessions.deleted_at IS NULL`
 		err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
 	} else if history == "history" {
 		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE date < CURDATE() && admin_id = ?`
+		WHERE date < CURDATE() && admin_id = ? AND sessions.deleted_at IS NULL`
 		err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
 		}
 	} else if history == "current" {
 		qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE date = CURDATE() && admin_id = ?`
+		WHERE date = CURDATE() && admin_id = ? AND sessions.deleted_at IS NULL`
 		err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 		if err != nil {
 			return nil, err
@@ -144,7 +144,7 @@ func (mysqlRepo *MysqlSessionRepository) FetchByHistory(adminID, history string)
 func (mysqlRepo *MysqlSessionRepository) FetchAllByAdminID(adminID string) ([]session.Domain, error) {
 	dataSession := []Session{}
 	qe := `SELECT sessions.* FROM sessions INNER JOIN health_facilities ON sessions.health_facilites_id = health_facilities.id
-		WHERE admin_id = ?`
+		WHERE admin_id = ? AND sessions.deleted_at IS NULL`
 	err := mysqlRepo.Conn.Raw(qe, adminID).Preload(clause.Associations).Find(&dataSession).Error
 	if err != nil {
 		return nil, err
