@@ -12,6 +12,7 @@ type Domain struct {
 	HealthFacilites   healthFacilities.Domain
 	NameSession       string
 	Capacity          int
+	CapacityFulfilled int
 	VaccineID         string
 	Vaccine           vaccine.Domain
 	Date              string

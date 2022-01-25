@@ -104,7 +104,7 @@ func main() {
 	citizenCtrl := _citizenController.NewCitizenController(citizenService)
 
 	bookingRepo := _driverFactory.NewBookingRepository(db)
-	bookingService := _bookingService.NewBookingSessionService(bookingRepo)
+	bookingService := _bookingService.NewBookingSessionService(bookingRepo, sessionRepo)
 	bookingCtrl := _bookingController.NewBookingController(bookingService)
 
 	routesInit := _routes.ControllerList{
@@ -130,7 +130,7 @@ func main() {
 	routesInit.RoutesRegister(e)
 
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!\n")
+		return c.String(http.StatusOK, "Reservaksin API\n")
 	})
 
 	port := os.Getenv("PORT")

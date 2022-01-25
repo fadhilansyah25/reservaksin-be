@@ -15,6 +15,7 @@ type Session struct {
 	HealthFacilitesID string                            `gorm:"size:191" json:"health_facilities_id"`
 	NameSession       string                            `json:"name_session"`
 	Capacity          int                               `json:"capacity"`
+	CapacityFulfilled int                               `json:"capacity_fulfilled" gorm:"default:0"`
 	VaccineID         string                            `gorm:"size:191" json:"vaccine_id"`
 	Date              string                            `gorm:"type:Date" json:"date"`
 	Tahap             string                            `json:"tahap"`
@@ -33,6 +34,7 @@ func (rec *Session) ToDomain() session.Domain {
 		HealthFacilites:   rec.HealthFacilites.ToDomain(),
 		NameSession:       rec.NameSession,
 		Capacity:          rec.Capacity,
+		CapacityFulfilled: rec.CapacityFulfilled,
 		VaccineID:         rec.VaccineID,
 		Vaccine:           rec.Vaccine.ToDomain(),
 		Date:              rec.Date,
@@ -60,6 +62,7 @@ func FromDomain(dataSession *session.Domain) *Session {
 		HealthFacilitesID: dataSession.HealthFacilitesID,
 		NameSession:       dataSession.NameSession,
 		Capacity:          dataSession.Capacity,
+		CapacityFulfilled: dataSession.CapacityFulfilled,
 		VaccineID:         dataSession.VaccineID,
 		Date:              dataSession.Date,
 		Tahap:             dataSession.Tahap,

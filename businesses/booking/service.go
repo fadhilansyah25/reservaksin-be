@@ -2,17 +2,20 @@ package booking
 
 import (
 	"ca-reservaksin/businesses"
+	"ca-reservaksin/businesses/session"
 	"ca-reservaksin/helpers/nanoid"
 	"strings"
 )
 
 type bookingsessionService struct {
 	bookingRepository Repository
+	sessionRepository session.Repository
 }
 
-func NewBookingSessionService(repoBooking Repository) Service {
+func NewBookingSessionService(repoBooking Repository, repoSession session.Repository) Service {
 	return &bookingsessionService{
 		bookingRepository: repoBooking,
+		sessionRepository: repoSession,
 	}
 }
 
@@ -27,6 +30,19 @@ func (service *bookingsessionService) BookingSession(dataBooking *Domain) (Domai
 
 	booking, err := service.bookingRepository.Create(dataBooking)
 	if err != nil {
+		return Domain{}, businesses.ErrInternalServer
+	}
+
+	getSessionByID, err := service.sessionRepository.GetByID(dataBooking.SessionId)
+	if err != nil {
+		return Domain{}, businesses.ErrInternalServer
+	}
+
+	getSessionByID.CapacityFulfilled += 1
+	getSessionByID.Date = ""
+	getSessionByID.StartSession = ""
+	getSessionByID.EndSession = ""
+	if _, err := service.sessionRepository.Update(dataBooking.SessionId, &getSessionByID); err != nil {
 		return Domain{}, businesses.ErrInternalServer
 	}
 
@@ -72,6 +88,21 @@ func (service *bookingsessionService) UpdateStatusByID(id, status string) (Domai
 	dataBooking, err := service.bookingRepository.UpdateStatusByID(existed.Id, status)
 	if err != nil {
 		return Domain{}, businesses.ErrInternalServer
+	}
+
+	if strings.ToLower(status) == "canceled" {
+		getSessionByID, err := service.sessionRepository.GetByID(dataBooking.SessionId)
+		if err != nil {
+			return Domain{}, businesses.ErrInternalServer
+		}
+
+		getSessionByID.CapacityFulfilled -= 1
+		getSessionByID.Date = ""
+		getSessionByID.StartSession = ""
+		getSessionByID.EndSession = ""
+		if _, err := service.sessionRepository.Update(dataBooking.SessionId, &getSessionByID); err != nil {
+			return Domain{}, businesses.ErrInternalServer
+		}
 	}
 
 	return dataBooking, nil

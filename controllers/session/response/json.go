@@ -13,6 +13,7 @@ type Session struct {
 	HealthFacilites   _responseHF.HealthFacilities `json:"health_facilities"`
 	NameSession       string                       `json:"name_session"`
 	Capacity          int                          `json:"capacity"`
+	CapacityFulfilled int                          `json:"capacity_fulfilled"`
 	VaccineID         string                       `json:"vaccine_id"`
 	Vaccine           _responseVC.Vaccine          `json:"vaccine"`
 	Date              string                       `json:"date"`
@@ -30,6 +31,7 @@ func FromDomain(data session.Domain) *Session {
 		HealthFacilites:   *_responseHF.FromDomain(data.HealthFacilites),
 		NameSession:       data.NameSession,
 		Capacity:          data.Capacity,
+		CapacityFulfilled: data.CapacityFulfilled,
 		VaccineID:         data.VaccineID,
 		Vaccine:           *_responseVC.FromDomain(data.Vaccine),
 		Date:              data.Date,
@@ -79,6 +81,7 @@ type SimpleResSession struct {
 	HealthFacilites   string    `json:"health_facilities"`
 	NameSession       string    `json:"name_session"`
 	Capacity          int       `json:"capacity"`
+	CapacityFulfilled int       `json:"capacity_fulfilled"`
 	VaccineID         string    `json:"vaccine_id"`
 	Vaccine           string    `json:"vaccine"`
 	Date              string    `json:"date"`
@@ -96,6 +99,7 @@ func FromDomainSimpleRes(data session.Domain) *SimpleResSession {
 		HealthFacilites:   data.HealthFacilites.NameFacilites,
 		NameSession:       data.NameSession,
 		Capacity:          data.Capacity,
+		CapacityFulfilled: data.CapacityFulfilled,
 		VaccineID:         data.VaccineID,
 		Vaccine:           data.Vaccine.NamaVaksin,
 		Date:              data.Date,
