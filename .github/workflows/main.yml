@@ -1,0 +1,46 @@
+name: Build Docker Image, Integration To Docker Hub and Deploy To Herokuu
+
+on:
+  push:
+    branches:
+      - "deployment"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      - name: Create config.json file
+        env:
+          CONFIG_JSON: ${{secrets.CONFIG_JSON}}
+        run: echo "$CONFIG_JSON" > config.json
+
+      - name: docker login
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+      - name: docker build golang
+        run: |
+          docker build . -t fadhilansyah25/reservaksin-be:latest
+
+      - name: docker push
+        run: |
+          docker push fadhilansyah25/reservaksin-be:latest
+
+      - name: Build, Push and Release a Docker container to Heroku.
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          dockerfile_directory: ./
+          dockerfile_name: dockerfile
+          docker_options: "--no-cache"
+          process_type: web
