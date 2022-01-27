@@ -1,0 +1,3048 @@
+openapi: 3.0.0
+servers:
+  - url: https://reservaksin-be.herokuapp.com
+    description: ""
+    variables: {}
+info:
+  version: v.1.0
+  title: Reservaksin-API
+  description: "The goal of the project is to help the government’s goal of Covid-19 vaccinations by facilitating users to\_**book vaccination sessions easily**\_and creating a proper system for health facilities."
+  termsOfService: ""
+  contact: {}
+  license:
+    name: ""
+paths:
+  /admin/register:
+    post:
+      summary: Register
+      operationId: Register
+      parameters: []
+      responses:
+        "200":
+          description: Register
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: luYbco9Im0yqrODt08KLE
+                  role: admin
+                  username: kurniawan12
+                  password: $2a$04$FhY9ZzerGjL0Q4tlqpGdNuEcvh7mrgt1iLGp9JHO5MwGLtO6LtS3m
+                  created_at: "2022-01-02T20:43:38.917+07:00"
+                  updated_at: "2022-01-02T20:43:38.917+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                role: admin
+                username: fadhilansyah25
+                password: alterra-project
+            example: "{\r\n    \"role\": \"admin\",\r\n    \"username\": \"fadhilansyah25\",\r\n    \"password\": \"alterra-project\" \r\n}"
+      tags:
+        - Admin
+  /admin/login:
+    post:
+      summary: Login
+      operationId: Login
+      parameters: []
+      responses:
+        "200":
+          description: Login [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Il9vejRWd01DWkNBa1pxVUx4aDAzcCIsImV4cCI6MTY0MTEzNDQ2OH0.MJn1oRVYtyuKtg3OkPdjGwZkwhDfrlD0Dbq4NVJ9t7c
+        "400":
+          description: Login [failed]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - incorrect (Username) or (Password)
+                data: null
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                username: fadhilansyah25
+                password: alterra-project
+            example: "{\r\n    \"username\": \"fadhilansyah25\",\r\n    \"password\": \"alterra-project\"\r\n}"
+      tags:
+        - Admin
+  /admin/{id}:
+    get:
+      summary: GetByID
+      operationId: GetByID
+      parameters:
+        - $ref: "#/components/parameters/"
+        - $ref: "#/components/parameters/id"
+      responses:
+        "200":
+          description: GetByID
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: _oz4VwMCZCAkZqULxh03p
+                  role: admin
+                  username: fadhilansyah75
+                  password: $2a$04$F3.NckJfHNs1.hBaIX278eSm9CYcECPCnexjztq3RmSrlYsyqNVDC
+                  created_at: "2022-01-02T20:40:57.014+07:00"
+                  updated_at: "2022-01-02T20:40:57.014+07:00"
+      tags:
+        - Admin
+  /vaccine:
+    post:
+      summary: Insert
+      operationId: Insert
+      parameters: []
+      responses:
+        "200":
+          description: Insert [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: SE9why4D2PMmiU75T3OSc
+                  nama_vaksin: Sinopharm
+                  admin_id: luYbco9Im0yqrODt08KLE
+                  stok: 900
+                  created_at: "2022-01-13T13:59:59.81+07:00"
+                  updated_at: "2022-01-13T13:59:59.81+07:00"
+        "400":
+          description: Insert [bad request]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - >-
+                      code=400, message=Unmarshal type error: expected=int,
+                      got=string, field=stok, offset=95, internal=json: cannot
+                      unmarshal string into Go struct field Vaccine.stok of type
+                      int
+                data: null
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                admin_id: bNQV1Uy9JtkoQIwERfyit
+                nama_vaksin: Sinopharm KW
+                stok: 900
+            example: "{\r\n    \"admin_id\": \"bNQV1Uy9JtkoQIwERfyit\",\r\n    \"nama_vaksin\": \"Sinopharm KW\",\r\n    \"stok\": 900\r\n}"
+      tags:
+        - Vaccine
+    get:
+      summary: Fetch All
+      operationId: FetchAll
+      parameters: []
+      responses:
+        "200":
+          description: Fetch All [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - id: 4LtskWv7JmmjccAK28Cjk
+                    nama_vaksin: Moderna
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 500
+                    created_at: "2022-01-02T20:42:19.106+07:00"
+                    updated_at: "2022-01-02T20:42:19.106+07:00"
+                  - id: SE9why4D2PMmiU75T3OSc
+                    nama_vaksin: Sinopharm
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 900
+                    created_at: "2022-01-13T13:59:59.81+07:00"
+                    updated_at: "2022-01-13T13:59:59.81+07:00"
+                  - id: UKNHAfxsMzIOGZUOoGQMF
+                    nama_vaksin: AstraZeneca
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 250
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "2022-01-07T17:58:57.135+07:00"
+                  - id: VWmoAFO5NshFGcOFjxIDH
+                    nama_vaksin: Pfizer
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 500
+                    created_at: "2022-01-02T20:42:33.658+07:00"
+                    updated_at: "2022-01-02T20:42:33.658+07:00"
+                  - id: XtMM326PzZhcF-Z4aVJtC
+                    nama_vaksin: Sinovac
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 500
+                    created_at: "2022-01-02T20:42:26.258+07:00"
+                    updated_at: "2022-01-02T20:42:26.258+07:00"
+      tags:
+        - Vaccine
+  /vaccine/{id}:
+    get:
+      summary: GetByID
+      operationId: GetByID1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 3WEItpPHajouc3Jame0FV
+      responses:
+        "200":
+          description: GetByID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: 4LtskWv7JmmjccAK28Cjk
+                  nama_vaksin: Moderna
+                  admin_id: luYbco9Im0yqrODt08KLE
+                  stok: 500
+                  created_at: "2022-01-02T20:42:19.106+07:00"
+                  updated_at: "2022-01-02T20:42:19.106+07:00"
+        "400":
+          description: GetByID [not found]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      tags:
+        - Vaccine
+    put:
+      summary: Update
+      operationId: Update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 3WEItpPHajouc3Jame0FV
+      responses:
+        "200":
+          description: Update [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: 4LtskWv7JmmjccAK28Cjk
+                  nama_vaksin: Moderna
+                  admin_id: luYbco9Im0yqrODt08KLE
+                  stok: 1000
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "2022-01-13T14:06:22.459+07:00"
+        "400":
+          description: Update [bad request id]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                admin_id: bNQV1Uy9JtkoQIwERfyit
+                nama_vaksin: Sinopharm
+                Stok: 500
+            example: "{\r\n    \"admin_id\": \"bNQV1Uy9JtkoQIwERfyit\",\r\n    \"nama_vaksin\": \"Sinopharm\",\r\n    \"Stok\": 500\r\n}"
+      tags:
+        - Vaccine
+    delete:
+      summary: Delete
+      operationId: Delete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: Rz86mbVUjO4YsMEmp
+      responses:
+        "200":
+          description: Delete [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data: vaccine Sinopharm KW success to deleted
+        "400":
+          description: Delete [bad request]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      tags:
+        - Vaccine
+  /vaccine/admin/{id}:
+    get:
+      summary: GetByAdminID
+      operationId: GetByAdminID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: nHBMa-88t78LWI9vrbCo3
+      responses:
+        "200":
+          description: GetByAdminID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - id: 4LtskWv7JmmjccAK28Cjk
+                    nama_vaksin: Moderna
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 1000
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "2022-01-13T14:07:48+07:00"
+                  - id: SE9why4D2PMmiU75T3OSc
+                    nama_vaksin: Sinopharm
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 900
+                    created_at: "2022-01-13T13:59:59.81+07:00"
+                    updated_at: "2022-01-13T13:59:59.81+07:00"
+                  - id: UKNHAfxsMzIOGZUOoGQMF
+                    nama_vaksin: AstraZeneca
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 250
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "2022-01-07T17:58:57.135+07:00"
+                  - id: VWmoAFO5NshFGcOFjxIDH
+                    nama_vaksin: Pfizer
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 500
+                    created_at: "2022-01-02T20:42:33.658+07:00"
+                    updated_at: "2022-01-02T20:42:33.658+07:00"
+                  - id: XtMM326PzZhcF-Z4aVJtC
+                    nama_vaksin: Sinovac
+                    admin_id: luYbco9Im0yqrODt08KLE
+                    stok: 500
+                    created_at: "2022-01-02T20:42:26.258+07:00"
+                    updated_at: "2022-01-02T20:42:26.258+07:00"
+      tags:
+        - Vaccine
+  /address:
+    post:
+      summary: Insert
+      operationId: Insert0
+      parameters: []
+      responses:
+        "200":
+          description: Insert
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: aHWgCfyjJ5Ma51C3VD0qG
+                  alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                  provinsi: Banten
+                  kota: Kab. Tangerang
+                  kecamatan: Pagedengan
+                  kelurahan: Medang
+                  lat: -6.266067
+                  lng: 106.61311
+                  created_at: "2022-01-02T20:55:45.033+07:00"
+                  updated_at: "2022-01-02T20:55:45.033+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                provinsi: Banten
+                kota: Kab. Tangerang
+                kecamatan: Pagedengan
+                kelurahan: Medang
+                lat: -6.266067
+                lng: 106.61311
+            example: "{\r\n    \"alamat\": \"jl. Lestari segar 4, blok D4/d13 rt.02/09\",\r\n    \"provinsi\": \"Banten\",\r\n    \"kota\": \"Kab. Tangerang\",\r\n    \"kecamatan\": \"Pagedengan\",\r\n    \"kelurahan\": \"Medang\",\r\n    \"lat\": -6.266067,\r\n    \"lng\": 106.613110\r\n}"
+      tags:
+        - Address
+  /address/{id}:
+    get:
+      summary: GetByID
+      operationId: GetByID1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: aHWgCfyjJ5Ma51C3VD0qG
+      responses:
+        "200":
+          description: GetByID
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: aHWgCfyjJ5Ma51C3VD0qG
+                  alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                  provinsi: Banten
+                  kota: Kab. Tangerang
+                  kecamatan: Pagedengan
+                  kelurahan: Medang
+                  lat: -6.266067
+                  lng: 106.61311
+                  created_at: "2022-01-02T20:55:45.033+07:00"
+                  updated_at: "2022-01-02T20:55:45.033+07:00"
+      tags:
+        - Address
+    put:
+      summary: Update
+      operationId: Update2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: aHWgCfyjJ5Ma51C3VD0qG
+      responses:
+        "200":
+          description: Update
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: aHWgCfyjJ5Ma51C3VD0qG
+                  alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                  provinsi: Banten
+                  kota: Kab. Tangerang
+                  kecamatan: Pagedengan
+                  kelurahan: Medang
+                  lat: -6.26599
+                  lng: 106.613329
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "2022-01-02T20:57:08.551+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                provinsi: Banten
+                kota: Kab. Tangerang
+                kecamatan: Pagedengan
+                kelurahan: Medang
+                lat: -6.26599
+                lng: 106.613329
+            example: "{\r\n    \"alamat\": \"jl. Lestari segar 4, blok D4/d13 rt.02/09\",\r\n    \"provinsi\": \"Banten\",\r\n    \"kota\": \"Kab. Tangerang\",\r\n    \"kecamatan\": \"Pagedengan\",\r\n    \"kelurahan\": \"Medang\",\r\n    \"lat\": -6.265990,\r\n    \"lng\": 106.613329\r\n}"
+      tags:
+        - Address
+    delete:
+      summary: Delete
+      operationId: Delete3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 1nVQE9t6-_05Djo8iQJqc
+      responses:
+        "200":
+          description: New Request
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data: current address success to deleted
+      tags:
+        - Address
+  /health-facilities:
+    post:
+      summary: Create
+      operationId: Create
+      parameters: []
+      responses:
+        "200":
+          description: Create
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: GRrVAwdGuDc6NxU5ti62h
+                  name_facilities: RS. Mentari Asih
+                  no_telp: "089567872456"
+                  admin: luYbco9Im0yqrODt08KLE
+                  current_Address:
+                    id: sGLLA6UJEHJpe3ZWpWRzx
+                    alamat: Jl. Raya Legok No.22
+                    provinsi: Banten
+                    kota: Kab. Tangerang
+                    kecamatan: Pagedangan
+                    kelurahan: Medang
+                    lat: -6.266067
+                    lng: 106.61311
+                    created_at: "2022-01-05T17:14:46.923+07:00"
+                    updated_at: "2022-01-05T17:14:46.923+07:00"
+                  created_at: "2022-01-05T17:14:47.035+07:00"
+                  updated_at: "2022-01-05T17:14:47.035+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                admin_id: bNQV1Uy9JtkoQIwERfyit
+                name_facilities: Eka Hospital BSD
+                no_telp: "+622125655555"
+                current_address:
+                  alamat: Central Business District Lot. IX, Jl. Boulevard BSD Tim
+                  provinsi: Banten
+                  kota: Kota Tangerang Selatan
+                  kecamatan: Serpong
+                  kelurahan: Lengkong Gudang
+                  lat: -6.298301
+                  lng: 106.669367
+            example: "{\r\n    \"admin_id\": \"bNQV1Uy9JtkoQIwERfyit\",\r\n    \"name_facilities\": \"Eka Hospital BSD\",\r\n    \"no_telp\": \"+622125655555\",\r\n    \"current_address\": {\r\n        \"alamat\": \"Central Business District Lot. IX, Jl. Boulevard BSD Tim\",\r\n        \"provinsi\": \"Banten\",\r\n        \"kota\": \"Kota Tangerang Selatan\",\r\n        \"kecamatan\": \"Serpong\",\r\n        \"kelurahan\": \"Lengkong Gudang\",\r\n        \"lat\": -6.298301,\r\n        \"lng\": 106.669367\r\n    }\r\n}"
+      tags:
+        - Health Facilities
+  /health-facilities/{id}:
+    get:
+      summary: GetByID
+      operationId: GetByID1
+      parameters:
+        - name: id
+          in: query
+          required: true
+          style: form
+          schema:
+            type: string
+            example: c9VTGWVBuMyYr4rvb-X0C
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: c9VTGWVBuMyYr4rvb-X0C
+      responses:
+        "200":
+          description: GetByID
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: GRrVAwdGuDc6NxU5ti62h
+                  name_facilities: RS. Mentari Asih
+                  no_telp: "089567872456"
+                  admin: luYbco9Im0yqrODt08KLE
+                  current_Address:
+                    id: sGLLA6UJEHJpe3ZWpWRzx
+                    alamat: Jl. Raya Legok No.22
+                    provinsi: Banten
+                    kota: Kab. Tangerang
+                    kecamatan: Pagedangan
+                    kelurahan: Medang
+                    lat: -6.266067
+                    lng: 106.61311
+                    created_at: "2022-01-05T17:14:46.923+07:00"
+                    updated_at: "2022-01-05T17:14:46.923+07:00"
+                  created_at: "2022-01-05T17:14:47.035+07:00"
+                  updated_at: "2022-01-05T17:14:47.035+07:00"
+        "400":
+          description: GetByID
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      tags:
+        - Health Facilities
+    put:
+      summary: Update
+      operationId: Update2
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: vDFv9VD1W4MJEwiSwoYhN
+      responses:
+        "200":
+          description: Update
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: GRrVAwdGuDc6NxU5ti62h
+                  name_facilities: RS. Omni Hospital
+                  no_telp: "089567872456"
+                  admin: luYbco9Im0yqrODt08KLE
+                  current_Address:
+                    id: sGLLA6UJEHJpe3ZWpWRzx
+                    alamat: Jl. Raya Legok No.22
+                    provinsi: Banten
+                    kota: Kab. Tangerang
+                    kecamatan: Karawaci
+                    kelurahan: Karawaci
+                    lat: -6.266067
+                    lng: 106.61311
+                    created_at: "2022-01-05T17:18:15.11+07:00"
+                    updated_at: "2022-01-05T17:18:15.11+07:00"
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "2022-01-05T17:18:15.11+07:00"
+        "500":
+          description: Update
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/500"
+              example:
+                meta:
+                  status: 500
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                admin_id: bNQV1Uy9JtkoQIwERfyit
+                name_facilities: "Eka Hospital BSD "
+                no_telp: "+62212567777"
+                current_address:
+                  alamat: Central Business District Lot. IX, Jl. Boulevard BSD Timur
+                  provinsi: Banten
+                  kota: Kota Tangerang Selatan
+                  kecamatan: Serpong
+                  kelurahan: Lengkong Gudang
+                  lat: -6.298301
+                  lng: 106.669367
+            example: "{\r\n    \"admin_id\": \"bNQV1Uy9JtkoQIwERfyit\",\r\n    \"name_facilities\": \"Eka Hospital BSD \",\r\n    \"no_telp\": \"+62212567777\",\r\n    \"current_address\": {\r\n        \"alamat\": \"Central Business District Lot. IX, Jl. Boulevard BSD Timur\",\r\n        \"provinsi\": \"Banten\",\r\n        \"kota\": \"Kota Tangerang Selatan\",\r\n        \"kecamatan\": \"Serpong\",\r\n        \"kelurahan\": \"Lengkong Gudang\",\r\n        \"lat\": -6.298301,\r\n        \"lng\": 106.669367\r\n    }\r\n}"
+      tags:
+        - Health Facilities
+    delete:
+      summary: Delete
+      operationId: Delete3
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: GRrVAwdGuDc6NxU5ti62h
+      responses:
+        "200":
+          description: Delete
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data: health facilities RS. Omni Hospital success to deleted
+        "400":
+          description: Delete
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      tags:
+        - Health Facilities
+  /health-facilities/admin/{id}: {}
+  /session:
+    post:
+      summary: Create
+      operationId: Create0
+      parameters: []
+      responses:
+        "200":
+          description: Create
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: mfH66sLb_AHZch2tgM5lq
+                  health_facilities_id: pKO5s1hbQelLGE-v_nrRB
+                  health_facilities:
+                    id: pKO5s1hbQelLGE-v_nrRB
+                    name_facilities: Primaya Hospital Tangerang
+                    no_telp: "+622155758888"
+                    admin: _oz4VwMCZCAkZqULxh03p
+                    current_address_id: _TKxixwqMuBubsRuJtYjO
+                    current_Address:
+                      id: _TKxixwqMuBubsRuJtYjO
+                      alamat: Jl. MH. Thamrin No.3, RT.003/RW.001
+                      provinsi: Banten
+                      kota: Kota Tangerang
+                      kecamatan: Cikokol
+                      kelurahan: Pinang
+                      lat: -6.214643
+                      lng: 106.630243
+                      created_at: "2022-01-07T15:47:35.207+07:00"
+                      updated_at: "2022-01-07T15:47:35.207+07:00"
+                    created_at: "2022-01-07T15:47:35.363+07:00"
+                    updated_at: "2022-01-07T15:47:35.363+07:00"
+                  name_session: Vaksinasi Nyok Vaksin
+                  capacity: 500
+                  vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                  vaccine:
+                    id: XtMM326PzZhcF-Z4aVJtC
+                    nama_vaksin: Sinovac
+                    stok: 500
+                    created_at: "2022-01-02T20:42:26.258+07:00"
+                    updated_at: "2022-01-02T20:42:26.258+07:00"
+                  date: "2022-01-09T00:00:00+07:00"
+                  tahap: "2"
+                  start_session: "2022-01-09T08:00:00+07:00"
+                  end_session: "2022-01-09T16:00:00+07:00"
+                  created_at: "2022-01-07T15:49:51.225+07:00"
+                  updated_at: "2022-01-07T15:49:51.225+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                health_facilities_id: vDFv9VD1W4MJEwiSwoYhN
+                name_session: Vaksinasi Nyok Vaksin
+                capacity: 500
+                vaccine_id: 3WEItpPHajouc3Jame0FV
+                date: "2022-01-30"
+                tahap: "2"
+                start_session: "2022-01-30 08:00:00"
+                end_session: "2022-01-30 16:00:00"
+            example: "{\r\n    \"health_facilities_id\": \"vDFv9VD1W4MJEwiSwoYhN\",\r\n    \"name_session\": \"Vaksinasi Nyok Vaksin\",\r\n    \"capacity\": 500,\r\n    \"vaccine_id\": \"3WEItpPHajouc3Jame0FV\",\r\n    \"date\": \"2022-01-30\",\r\n    \"tahap\": \"2\",\r\n    \"start_session\": \"2022-01-30 08:00:00\",\r\n    \"end_session\": \"2022-01-30 16:00:00\"\r\n}"
+      tags:
+        - Session
+    get:
+      summary: FetchAll
+      operationId: FetchAll2
+      parameters: []
+      responses:
+        "200":
+          description: FetchAll
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - Id: eKD-kOFpEjYYFr4AR2R-n
+                    HealthFacilitesID: yUxEwcOATwcq7vKBpZmz_
+                    HealthFacilites:
+                      ID: yUxEwcOATwcq7vKBpZmz_
+                      AdminId: luYbco9Im0yqrODt08KLE
+                      NameFacilites: RS. Omni Hospital
+                      CurrentAddressID: y_WrY3wNNOiUdA8Kb9FcU
+                      NoTelp: "089567872456"
+                      CurrentAddress:
+                        Id: y_WrY3wNNOiUdA8Kb9FcU
+                        Alamat: Jl. Raya Legok No.22
+                        Provinsi: Banten
+                        Kota: Kab. Tangerang
+                        Kecamatan: Karawaci
+                        Kelurahan: Karawaci
+                        Lat: -6.225327
+                        Lng: 106.598199
+                        CreatedAt: "2022-01-05T19:04:26.113+07:00"
+                        UpdatedAt: "2022-01-05T19:05:07.42+07:00"
+                      CreatedAt: "2022-01-05T19:04:26.321+07:00"
+                      UpdatedAt: "2022-01-05T19:05:07.518+07:00"
+                    NameSession: Vaksinasi Mantap
+                    Capacity: 500
+                    VaccineID: XtMM326PzZhcF-Z4aVJtC
+                    Vaccine:
+                      Id: XtMM326PzZhcF-Z4aVJtC
+                      NamaVaksin: Sinovac
+                      Stok: 500
+                      CreatedAt: "2022-01-02T20:42:26.258+07:00"
+                      UpdatedAt: "2022-01-02T20:42:26.258+07:00"
+                    Date: "2022-01-07T00:00:00+07:00"
+                    Tahap: "1"
+                    StartSession: "2022-01-07T08:00:00+07:00"
+                    EndSession: "2022-01-07T16:00:00+07:00"
+                    CreatedAt: "2022-01-06T12:57:40.89+07:00"
+                    UpdatedAt: "2022-01-06T12:57:40.89+07:00"
+                  - Id: Ka0kMVxT99SM3Stt5Jy0E
+                    HealthFacilitesID: vOPrWPXqRXkeoaQzmYRcx
+                    HealthFacilites:
+                      ID: vOPrWPXqRXkeoaQzmYRcx
+                      AdminId: luYbco9Im0yqrODt08KLE
+                      NameFacilites: RS. Mentari Pagi
+                      CurrentAddressID: yNJFiMcI-l0DCvCqXgSnW
+                      NoTelp: "089567872456"
+                      CurrentAddress:
+                        Id: yNJFiMcI-l0DCvCqXgSnW
+                        Alamat: Jl. Raya Legok No.22
+                        Provinsi: Banten
+                        Kota: Kab. Tangerang
+                        Kecamatan: Pagedangan
+                        Kelurahan: Bojong Nangka
+                        Lat: -6.25807
+                        Lng: 106.606278
+                        CreatedAt: "2022-01-05T17:03:59.194+07:00"
+                        UpdatedAt: "2022-01-05T17:08:56.245+07:00"
+                      CreatedAt: "2022-01-05T17:03:59.235+07:00"
+                      UpdatedAt: "2022-01-05T17:08:56.3+07:00"
+                    NameSession: Vaksin Gratis Warga
+                    Capacity: 500
+                    VaccineID: 4LtskWv7JmmjccAK28Cjk
+                    Vaccine:
+                      Id: 4LtskWv7JmmjccAK28Cjk
+                      NamaVaksin: Moderna
+                      Stok: 500
+                      CreatedAt: "2022-01-02T20:42:19.106+07:00"
+                      UpdatedAt: "2022-01-02T20:42:19.106+07:00"
+                    Date: "2022-01-07T00:00:00+07:00"
+                    Tahap: "1"
+                    StartSession: "2022-01-07T08:00:00+07:00"
+                    EndSession: "2022-01-07T16:00:00+07:00"
+                    CreatedAt: "2022-01-05T17:44:52.083+07:00"
+                    UpdatedAt: "2022-01-05T17:44:52.083+07:00"
+      tags:
+        - Session
+  /session/{id}:
+    get:
+      summary: GetByID
+      operationId: GetByID1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: EAST9hzo-jAAaDOC4cCqc
+      responses:
+        "200":
+          description: GetByID
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: Fme0BElnrbbYmxQN7Mb8y
+                  health_facilities_id: pKO5s1hbQelLGE-v_nrRB
+                  health_facilities:
+                    id: pKO5s1hbQelLGE-v_nrRB
+                    name_facilities: Primaya Hospital Tangerang
+                    no_telp: "+622155758888"
+                    admin: _oz4VwMCZCAkZqULxh03p
+                    current_address_id: _TKxixwqMuBubsRuJtYjO
+                    current_Address:
+                      id: _TKxixwqMuBubsRuJtYjO
+                      alamat: Jl. MH. Thamrin No.3, RT.003/RW.001
+                      provinsi: Banten
+                      kota: Kota Tangerang
+                      kecamatan: Cikokol
+                      kelurahan: Pinang
+                      lat: -6.214643
+                      lng: 106.630243
+                      created_at: "2022-01-07T15:47:35.207+07:00"
+                      updated_at: "2022-01-07T15:47:35.207+07:00"
+                    created_at: "2022-01-07T15:47:35.363+07:00"
+                    updated_at: "2022-01-07T15:47:35.363+07:00"
+                  name_session: Vaksinasi Nyok Vaksin
+                  capacity: 500
+                  vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                  vaccine:
+                    id: XtMM326PzZhcF-Z4aVJtC
+                    nama_vaksin: Sinovac
+                    stok: 500
+                    created_at: "2022-01-02T20:42:26.258+07:00"
+                    updated_at: "2022-01-02T20:42:26.258+07:00"
+                  date: "2022-01-09T00:00:00+07:00"
+                  tahap: "2"
+                  start_session: "2022-01-09T08:00:00+07:00"
+                  end_session: "2022-01-09T16:00:00+07:00"
+                  created_at: "2022-01-07T15:48:28.3+07:00"
+                  updated_at: "2022-01-07T15:48:28.3+07:00"
+      tags:
+        - Session
+    put:
+      summary: Update
+      operationId: Update4
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: Fme0BElnrbbYmxQN7Mb8y
+      responses:
+        "200":
+          description: Update
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: Fme0BElnrbbYmxQN7Mb8y
+                  health_facilities_id: pKO5s1hbQelLGE-v_nrRB
+                  health_facilities:
+                    id: pKO5s1hbQelLGE-v_nrRB
+                    name_facilities: Primaya Hospital Tangerang
+                    no_telp: "+622155758888"
+                    admin: _oz4VwMCZCAkZqULxh03p
+                    current_address_id: _TKxixwqMuBubsRuJtYjO
+                    current_Address:
+                      id: _TKxixwqMuBubsRuJtYjO
+                      alamat: Jl. MH. Thamrin No.3, RT.003/RW.001
+                      provinsi: Banten
+                      kota: Kota Tangerang
+                      kecamatan: Cikokol
+                      kelurahan: Pinang
+                      lat: -6.214643
+                      lng: 106.630243
+                      created_at: "2022-01-07T15:47:35.207+07:00"
+                      updated_at: "2022-01-07T15:47:35.207+07:00"
+                    created_at: "2022-01-07T15:47:35.363+07:00"
+                    updated_at: "2022-01-07T15:47:35.363+07:00"
+                  name_session: Mari Kita Vaksin
+                  capacity: 500
+                  vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                  vaccine:
+                    id: XtMM326PzZhcF-Z4aVJtC
+                    nama_vaksin: Sinovac
+                    stok: 500
+                    created_at: "2022-01-02T20:42:26.258+07:00"
+                    updated_at: "2022-01-02T20:42:26.258+07:00"
+                  date: "2022-01-09T00:00:00+07:00"
+                  tahap: "2"
+                  start_session: "2022-01-09T08:00:00+07:00"
+                  end_session: "2022-01-09T16:00:00+07:00"
+                  created_at: "2022-01-07T15:48:28.3+07:00"
+                  updated_at: "2022-01-07T17:52:54.571+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                health_facilities_id: pKO5s1hbQelLGE-v_nrRB
+                name_session: Mari Kita Vaksin
+                capacity: 500
+                vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                date: "2022-01-09"
+                tahap: "2"
+                start_session: "2022-01-09 08:00:00"
+                end_session: "2022-01-09 16:00:00"
+            example: "{\r\n    \"health_facilities_id\": \"pKO5s1hbQelLGE-v_nrRB\",\r\n    \"name_session\": \"Mari Kita Vaksin\",\r\n    \"capacity\": 500,\r\n    \"vaccine_id\": \"XtMM326PzZhcF-Z4aVJtC\",\r\n    \"date\": \"2022-01-09\",\r\n    \"tahap\": \"2\",\r\n    \"start_session\": \"2022-01-09 08:00:00\",\r\n    \"end_session\": \"2022-01-09 16:00:00\"\r\n}"
+      tags:
+        - Session
+    delete:
+      summary: Delete
+      operationId: Delete5
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: EAST9hzo-jAAaDOC4cCqc
+      responses:
+        "200":
+          description: Delete
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data: session Vaksinasi Nyok Vaksin success to deleted
+      tags:
+        - Session
+  /session/nearest-facilities:
+    get:
+      summary: GetByLatLng
+      operationId: GetByLatLng
+      parameters:
+        - $ref: "#/components/parameters/lat"
+        - $ref: "#/components/parameters/lng"
+        - name: id
+          in: query
+          required: true
+          style: form
+          schema:
+            type: number
+      responses:
+        "200":
+          description: GetByLatLng
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - session:
+                      id: eKD-kOFpEjYYFr4AR2R-n
+                      health_facilities_id: yUxEwcOATwcq7vKBpZmz_
+                      health_facilities:
+                        id: yUxEwcOATwcq7vKBpZmz_
+                        name_facilities: RS. Omni Hospital
+                        no_telp: "089567872456"
+                        admin: luYbco9Im0yqrODt08KLE
+                        current_address_id: y_WrY3wNNOiUdA8Kb9FcU
+                        current_Address:
+                          id: y_WrY3wNNOiUdA8Kb9FcU
+                          alamat: Jl. Raya Legok No.22
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Karawaci
+                          kelurahan: Karawaci
+                          lat: -6.225327
+                          lng: 106.598199
+                          created_at: "2022-01-05T19:04:26.113+07:00"
+                          updated_at: "2022-01-05T19:05:07.42+07:00"
+                        created_at: "2022-01-05T19:04:26.321+07:00"
+                        updated_at: "2022-01-05T19:05:07.518+07:00"
+                      name_session: Vaksinasi Mantap
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-07T00:00:00+07:00"
+                      tahap: "1"
+                      start_session: "2022-01-07T08:00:00+07:00"
+                      end_session: "2022-01-07T16:00:00+07:00"
+                      created_at: "2022-01-06T12:57:40.89+07:00"
+                      updated_at: "2022-01-06T12:57:40.89+07:00"
+                    distance: 1.1690280106806925
+                  - session:
+                      id: Ka0kMVxT99SM3Stt5Jy0E
+                      health_facilities_id: vOPrWPXqRXkeoaQzmYRcx
+                      health_facilities:
+                        id: vOPrWPXqRXkeoaQzmYRcx
+                        name_facilities: RS. Mentari Pagi
+                        no_telp: "089567872456"
+                        admin: luYbco9Im0yqrODt08KLE
+                        current_address_id: yNJFiMcI-l0DCvCqXgSnW
+                        current_Address:
+                          id: yNJFiMcI-l0DCvCqXgSnW
+                          alamat: Jl. Raya Legok No.22
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Bojong Nangka
+                          lat: -6.25807
+                          lng: 106.606278
+                          created_at: "2022-01-05T17:03:59.194+07:00"
+                          updated_at: "2022-01-05T17:08:56.245+07:00"
+                        created_at: "2022-01-05T17:03:59.235+07:00"
+                        updated_at: "2022-01-05T17:08:56.3+07:00"
+                      name_session: Vaksin Gratis Warga
+                      capacity: 500
+                      vaccine_id: 4LtskWv7JmmjccAK28Cjk
+                      vaccine:
+                        id: 4LtskWv7JmmjccAK28Cjk
+                        nama_vaksin: Moderna
+                        stok: 500
+                        created_at: "2022-01-02T20:42:19.106+07:00"
+                        updated_at: "2022-01-02T20:42:19.106+07:00"
+                      date: "2022-01-07T00:00:00+07:00"
+                      tahap: "1"
+                      start_session: "2022-01-07T08:00:00+07:00"
+                      end_session: "2022-01-07T16:00:00+07:00"
+                      created_at: "2022-01-05T17:44:52.083+07:00"
+                      updated_at: "2022-01-05T17:44:52.083+07:00"
+                    distance: 4.824049394659248
+      tags:
+        - Session
+  /session/upcoming/admin/{id}:
+    get:
+      summary: Upcoming
+      operationId: Upcoming
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: bNQV1Uy9JtkoQIwERfyit
+      responses:
+        "200":
+          description: Upcoming
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: Data is Empty
+                data: []
+      tags:
+        - Session
+  /session/current/admin/{id}:
+    get:
+      summary: Current
+      operationId: Current
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: bNQV1Uy9JtkoQIwERfyit
+      responses:
+        "200":
+          description: Current
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data: no current session
+      tags:
+        - Session
+  /session/history/admin/{id}:
+    get:
+      summary: History
+      operationId: History
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: bNQV1Uy9JtkoQIwERfyit
+      responses:
+        "200":
+          description: History
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - id: yUxEwcOATwcq7vKBpZmz_
+                    health_facilities_id: yUxEwcOATwcq7vKBpZmz_
+                    health_facilities: RS. Siloam Hosiptal International
+                    name_session: Vaksinasi Mantap
+                    capacity: 500
+                    vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                    vaccine: Sinovac
+                    date: "2022-01-07T00:00:00+07:00"
+                    tahap: "1"
+                    start_session: "2022-01-07T08:00:00+07:00"
+                    end_session: "2022-01-07T16:00:00+07:00"
+                    created_at: "2022-01-05T19:04:26.321+07:00"
+                    updated_at: "2022-01-05T19:05:07.518+07:00"
+                  - id: vOPrWPXqRXkeoaQzmYRcx
+                    health_facilities_id: vOPrWPXqRXkeoaQzmYRcx
+                    health_facilities: RS. Mentari Pagi
+                    name_session: Vaksin Gratis Warga
+                    capacity: 500
+                    vaccine_id: 4LtskWv7JmmjccAK28Cjk
+                    vaccine: Moderna
+                    date: "2022-01-07T00:00:00+07:00"
+                    tahap: "1"
+                    start_session: "2022-01-07T08:00:00+07:00"
+                    end_session: "2022-01-07T16:00:00+07:00"
+                    created_at: "2022-01-05T17:03:59.235+07:00"
+                    updated_at: "2022-01-05T17:08:56.3+07:00"
+      tags:
+        - Session
+  /session/admin/{id}:
+    get:
+      summary: FetchAllByAdminID
+      operationId: FetchAllByAdminID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: AMjDWJ6YsewbWR36-oz-f
+      responses:
+        "200":
+          description: FetchAllByAdminID
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - id: yUxEwcOATwcq7vKBpZmz_
+                    health_facilities_id: yUxEwcOATwcq7vKBpZmz_
+                    health_facilities: RS. Siloam Hosiptal International
+                    name_session: Vaksinasi Mantap
+                    capacity: 500
+                    vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                    vaccine: Sinovac
+                    date: "2022-01-07T00:00:00+07:00"
+                    tahap: "1"
+                    start_session: "2022-01-07T08:00:00+07:00"
+                    end_session: "2022-01-07T16:00:00+07:00"
+                    created_at: "2022-01-05T19:04:26.321+07:00"
+                    updated_at: "2022-01-05T19:05:07.518+07:00"
+                  - id: vOPrWPXqRXkeoaQzmYRcx
+                    health_facilities_id: vOPrWPXqRXkeoaQzmYRcx
+                    health_facilities: RS. Mentari Pagi
+                    name_session: Vaksin Gratis Warga
+                    capacity: 500
+                    vaccine_id: 4LtskWv7JmmjccAK28Cjk
+                    vaccine: Moderna
+                    date: "2022-01-07T00:00:00+07:00"
+                    tahap: "1"
+                    start_session: "2022-01-07T08:00:00+07:00"
+                    end_session: "2022-01-07T16:00:00+07:00"
+                    created_at: "2022-01-05T17:03:59.235+07:00"
+                    updated_at: "2022-01-05T17:08:56.3+07:00"
+      tags:
+        - Session
+  /citizen/register:
+    post:
+      summary: Register
+      operationId: Register0
+      parameters: []
+      responses:
+        "200":
+          description: Register
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: 0dGkh_hQgEr4IigeMYQ8G
+                  email: test3@gmail.com
+                  nohp: "089679798868"
+                  fullname: Muhammad Fadil Ardiansyah
+                  nokk: "3603222340870003"
+                  nik: "3603222340870023"
+                  dob: "1997-05-25"
+                  relationship: anak
+                  gender: laki-laki
+                  status: belum menikah
+                  role: user
+                  current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                  current_Address:
+                    id: c-LHj-_vuAF-1vHjhGBLw
+                    alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                    provinsi: Banten
+                    kota: Kab. Tangerang
+                    kecamatan: Pagedengan
+                    kelurahan: Medang
+                    lat: 0
+                    lng: 0
+                    created_at: "2022-01-12T16:07:52.227+07:00"
+                    updated_at: "2022-01-12T16:07:52.227+07:00"
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "0001-01-01T00:00:00Z"
+                  token: ""
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                email: tesaja@gmail.com
+                nohp: "089679798868"
+                fullname: Diah Aufa Arini
+                password: alterra-project
+                nokk: "3603222340870003"
+                nik: "3603222341270077"
+                dob: "2000-06-11"
+                relationship: anak
+                gender: perempuan
+                status: belum menikah
+                role: user
+                current_address:
+                  alamat: jl. Karawang
+                  provinsi: Jawa Barat
+                  kota: Karawang
+                  kecamatan: Azeeg
+                  kelurahan: Ahohoy
+            example: "{\r\n    \"email\" : \"tesaja@gmail.com\",\r\n    \"nohp\" : \"089679798868\",\r\n    \"fullname\" : \"Diah Aufa Arini\",\r\n    \"password\" : \"alterra-project\",\r\n    \"nokk\" :\"3603222340870003\",\r\n    \"nik\" : \"3603222341270077\",\r\n    \"dob\" :\"2000-06-11\",\r\n    \"relationship\" : \"anak\",\r\n    \"gender\" : \"perempuan\",\r\n    \"status\" : \"belum menikah\",\r\n    \"role\" : \"user\",\r\n    \"current_address\": {\r\n        \"alamat\": \"jl. Karawang\",\r\n        \"provinsi\": \"Jawa Barat\",\r\n        \"kota\": \"Karawang\",\r\n        \"kecamatan\": \"Azeeg\",\r\n        \"kelurahan\": \"Ahohoy\"\r\n    }\r\n}"
+      tags:
+        - Citizen
+  /citizen/login:
+    post:
+      summary: Login
+      operationId: Login1
+      parameters: []
+      responses:
+        "200":
+          description: Login By NIK [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  DataCitizen:
+                    id: 0dGkh_hQgEr4IigeMYQ8G
+                    email: test3@gmail.com
+                    nohp: "089679798868"
+                    fullname: Muhammad Fadil Ardiansyah
+                    nokk: "3603222340870003"
+                    nik: "3603222340870023"
+                    dob: "1997-05-25"
+                    relationship: anak
+                    gender: laki-laki
+                    status: belum menikah
+                    role: user
+                    current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                    current_Address:
+                      id: c-LHj-_vuAF-1vHjhGBLw
+                      alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                      provinsi: Banten
+                      kota: Kab. Tangerang
+                      kecamatan: Pagedengan
+                      kelurahan: Medang
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-12T16:07:52.194+07:00"
+                      updated_at: "2022-01-12T16:07:52.194+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                  token: >-
+                    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBkR2toX2hRZ0VyNElpZ2VNWVE4RyIsImV4cCI6MTY0MjQxNDk2Nn0.SiXhKxOk3Ay9MBy7dBE8vFFEYMi2xb1XZzWLU8UOyhg
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                email_or_nik: "3603222340870023"
+                password: alterra-project
+            example: "{\r\n    \"email_or_nik\" : \"3603222340870023\",\r\n    \"password\" : \"alterra-project\"\r\n}"
+      tags:
+        - Citizen
+  /citizen/{id}:
+    get:
+      summary: GetCitizenByID
+      operationId: GetCitizenByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 0dGkh_hQgEr4IigeMYQ8G
+      responses:
+        "200":
+          description: GetCitizenByID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: 0dGkh_hQgEr4IigeMYQ8G
+                  email: test3@gmail.com
+                  nohp: "089679798868"
+                  fullname: Muhammad Fadil Ardiansyah
+                  nokk: "3603222340870003"
+                  nik: "3603222340870023"
+                  dob: "1997-05-25"
+                  relationship: anak
+                  gender: laki-laki
+                  status: belum menikah
+                  role: user
+                  current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                  current_Address:
+                    id: c-LHj-_vuAF-1vHjhGBLw
+                    alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                    provinsi: Banten
+                    kota: Kab. Tangerang
+                    kecamatan: Pagedengan
+                    kelurahan: Medang
+                    lat: 0
+                    lng: 0
+                    created_at: "2022-01-12T16:07:52.194+07:00"
+                    updated_at: "2022-01-12T16:07:52.194+07:00"
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "0001-01-01T00:00:00Z"
+        "400":
+          description: GetCitizenByID [not found]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/400"
+              example:
+                meta:
+                  status: 400
+                  message: Error
+                  messages:
+                    - id not found
+                data: null
+      tags:
+        - Citizen
+    put:
+      summary: UpdateCitizenByID
+      operationId: UpdateCitizenByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 0dGkh_hQgEr4IigeMYQ8G
+      responses:
+        "200":
+          description: UpdateCitizenByID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  id: 0dGkh_hQgEr4IigeMYQ8G
+                  email: test@gmail.com
+                  nohp: "089679798868"
+                  fullname: Muhammad Fadil Ardiansyah
+                  nokk: "3603222340870003"
+                  nik: "3603222340870023"
+                  dob: "1997-05-25"
+                  relationship: anak
+                  gender: Pria
+                  status: belum menikah
+                  role: user
+                  current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                  current_Address:
+                    id: c-LHj-_vuAF-1vHjhGBLw
+                    alamat: jl. Lestari segar 4
+                    provinsi: Banten
+                    kota: Kab. Tangerang
+                    kecamatan: Pagedangan
+                    kelurahan: Medang
+                    lat: 0
+                    lng: 0
+                    created_at: "2022-01-12T16:07:52.194+07:00"
+                    updated_at: "2022-01-22T13:47:49.495+07:00"
+                  created_at: "0001-01-01T00:00:00Z"
+                  updated_at: "0001-01-01T00:00:00Z"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                nohp: "089679798868"
+                fullname: Muhammad Fadil Ardiansyah
+                nokk: "3603222340870003"
+                nik: "3603222340870023"
+                dob: "1997-05-25"
+                relationship: anak
+                gender: Pria
+                status: belum menikah
+                role: user
+                current_address:
+                  alamat: jl. Lestari segar 4 1212
+                  provinsi: Banten
+                  kota: Kab. Tangerang
+                  kecamatan: Pagedangan
+                  kelurahan: Medang
+            example: "{\r\n    \"nohp\" : \"089679798868\",\r\n    \"fullname\" : \"Muhammad Fadil Ardiansyah\",\r\n    \"nokk\" :\"3603222340870003\",\r\n    \"nik\" : \"3603222340870023\",\r\n    \"dob\" :\"1997-05-25\",\r\n    \"relationship\" : \"anak\",\r\n    \"gender\" : \"Pria\",\r\n    \"status\" : \"belum menikah\",\r\n    \"role\" : \"user\",\r\n    \"current_address\": {\r\n        \"alamat\": \"jl. Lestari segar 4 1212\",\r\n        \"provinsi\": \"Banten\",\r\n        \"kota\": \"Kab. Tangerang\",\r\n        \"kecamatan\": \"Pagedangan\",\r\n        \"kelurahan\": \"Medang\"\r\n    }\r\n}"
+      tags:
+        - Citizen
+  /citizen/admin/{id}:
+    get:
+      summary: GetCitizenByAdminID
+      operationId: GetCitizenByAdminID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: _oz4VwMCZCAkZqULxh03p
+      responses:
+        "200":
+          description: GetCitizenByAdminID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - id: "-v-rAVzc6yxP3d0Pi8EFt"
+                    email: tesaja@gmail.com
+                    nohp: "089679798868"
+                    fullname: Diah Aufa Arini
+                    nokk: "3603222340870003"
+                    nik: "3603222341270077"
+                    dob: "2000-06-11"
+                    relationship: anak
+                    gender: perempuan
+                    status: belum menikah
+                    role: user
+                    current_address_id: icJWNC0C1uzVM9_0mGRQs
+                    current_Address:
+                      id: icJWNC0C1uzVM9_0mGRQs
+                      alamat: jl. Karawang
+                      provinsi: Jawa Barat
+                      kota: Karawang
+                      kecamatan: Azeeg
+                      kelurahan: Ahohoy
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-14T18:58:10.56+07:00"
+                      updated_at: "2022-01-14T18:58:10.56+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                    token: ""
+                  - id: 0dGkh_hQgEr4IigeMYQ8G
+                    email: test3@gmail.com
+                    nohp: "089679798868"
+                    fullname: Muhammad Fadil Ardiansyah
+                    nokk: "3603222340870003"
+                    nik: "3603222340870023"
+                    dob: "1997-05-25"
+                    relationship: anak
+                    gender: laki-laki
+                    status: belum menikah
+                    role: user
+                    current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                    current_Address:
+                      id: c-LHj-_vuAF-1vHjhGBLw
+                      alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                      provinsi: Banten
+                      kota: Kab. Tangerang
+                      kecamatan: Pagedengan
+                      kelurahan: Medang
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-12T16:07:52.194+07:00"
+                      updated_at: "2022-01-12T16:07:52.194+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                    token: ""
+                  - id: 3aieP-7eHv1MrAHh9r_MI
+                    email: tesaja@gmail.com
+                    nohp: "089679798868"
+                    fullname: Ni Kadek Dwi Sabrina
+                    nokk: "3603222340870003"
+                    nik: "3603222341270023"
+                    dob: "2000-06-11"
+                    relationship: anak
+                    gender: perempuan
+                    status: belum menikah
+                    role: user
+                    current_address_id: IrQgJNN9nvnTmVgQ-uMk8
+                    current_Address:
+                      id: IrQgJNN9nvnTmVgQ-uMk8
+                      alamat: jl. Kuta
+                      provinsi: Bali
+                      kota: Denpasar
+                      kecamatan: Uhuy
+                      kelurahan: Ahoy
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-14T18:36:07.671+07:00"
+                      updated_at: "2022-01-14T18:36:07.671+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                    token: ""
+      tags:
+        - Citizen
+  /citizen/family:
+    get:
+      summary: GetByNokk
+      operationId: GetByNokk
+      parameters:
+        - $ref: "#/components/parameters/nokk"
+      responses:
+        "200":
+          description: GetByNokk [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - id: 7UcKNaFLno68hXYJU_6B9
+                    email: fadhilansyah25@gmail.com
+                    nohp: "089332347887"
+                    fullname: Rudi Tabuti
+                    nokk: "3603224040409997"
+                    nik: "3603222505971112"
+                    dob: "1997-05-25"
+                    relationship: anak
+                    gender: Pria
+                    status: belumKawin
+                    role: user
+                    current_address_id: 1teCWRvh-kf-bu3X2i_lh
+                    current_Address:
+                      id: 1teCWRvh-kf-bu3X2i_lh
+                      alamat: Jl. Lestari Segar 4 Blok D4/D13
+                      provinsi: Banten
+                      kota: Kab Tangerang
+                      kecamatan: Pagedangan
+                      kelurahan: Medang
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-17T22:35:09.254+07:00"
+                      updated_at: "2022-01-17T22:35:09.254+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                  - id: EDHQKr0i4OUiCHU01zOen
+                    email: ""
+                    nohp: ""
+                    fullname: Sriantarti
+                    nokk: "3603224040409997"
+                    nik: "3603222505971114"
+                    dob: "1984-12-14"
+                    relationship: istri
+                    gender: Wanita
+                    status: kawin
+                    role: anggota
+                    current_address_id: NW4lPd2gkb0ewjNgmmlH6
+                    current_Address:
+                      id: NW4lPd2gkb0ewjNgmmlH6
+                      alamat: Jl. Lestari Segar 4 Blok D4/D13
+                      provinsi: Banten
+                      kota: Kab Tangerang
+                      kecamatan: Pagedangan
+                      kelurahan: Medang
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-17T22:35:10.591+07:00"
+                      updated_at: "2022-01-17T22:35:10.591+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                  - id: uqXp1-HNQk3Mt1USlMO0m
+                    email: ""
+                    nohp: ""
+                    fullname: Bambang
+                    nokk: "3603224040409997"
+                    nik: "3603222505971113"
+                    dob: "1980-10-16"
+                    relationship: suami
+                    gender: Pria
+                    status: kawin
+                    role: anggota
+                    current_address_id: FWF4ogI9rowb1FzY74_Ht
+                    current_Address:
+                      id: FWF4ogI9rowb1FzY74_Ht
+                      alamat: Jl. Lestari Segar 4 Blok D4/D13
+                      provinsi: Banten
+                      kota: Kab Tangerang
+                      kecamatan: Pagedangan
+                      kelurahan: Medang
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-17T22:35:10.199+07:00"
+                      updated_at: "2022-01-17T22:35:10.199+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+      tags:
+        - Citizen
+  /booking:
+    post:
+      summary: BookingSession
+      operationId: BookingSession
+      parameters: []
+      responses:
+        "200":
+          description: BookingSession [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  booking_id: czgVkMui1GA0ly1ycZOpz
+                  nomor_antrian: 10
+                  status: booked
+                  vaccine_name: Sinovac
+                  citizen_id: "-v-rAVzc6yxP3d0Pi8EFt"
+                  citizen:
+                    id: "-v-rAVzc6yxP3d0Pi8EFt"
+                    email: tesaja@gmail.com
+                    nohp: "089679798868"
+                    fullname: Diah Aufa Arini
+                    nokk: "3603222340870003"
+                    nik: "3603222341270077"
+                    dob: "2000-06-11"
+                    relationship: anak
+                    gender: perempuan
+                    status: belum menikah
+                    role: user
+                    current_address_id: icJWNC0C1uzVM9_0mGRQs
+                    current_Address:
+                      id: icJWNC0C1uzVM9_0mGRQs
+                      alamat: jl. Karawang
+                      provinsi: Jawa Barat
+                      kota: Karawang
+                      kecamatan: Azeeg
+                      kelurahan: Ahohoy
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-14T18:58:10.56+07:00"
+                      updated_at: "2022-01-14T18:58:10.56+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                  session_id: "-H_erp9Q9KYgag3LhCrKB"
+                  session:
+                    id: "-H_erp9Q9KYgag3LhCrKB"
+                    health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                    health_facilities:
+                      id: kKWaVvlNp0b_cEzh1UYIl
+                      name_facilities: Mitra Keluarga Hospital Gading Serpong
+                      no_telp: "+622155689111"
+                      admin: _oz4VwMCZCAkZqULxh03p
+                      current_address_id: UPDDglCcgJ5dm49s_ia4y
+                      current_Address:
+                        id: UPDDglCcgJ5dm49s_ia4y
+                        alamat: Jl. Raya Legok - Karawaci No.20
+                        provinsi: Banten
+                        kota: Kab. Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: -6.24963994
+                        lng: 106.6101737
+                        created_at: "2022-01-15T22:36:18.328+07:00"
+                        updated_at: "2022-01-15T22:36:18.328+07:00"
+                      created_at: "2022-01-15T22:36:19.588+07:00"
+                      updated_at: "2022-01-15T22:36:19.588+07:00"
+                    name_session: Vaksinasi Gratis 1
+                    capacity: 500
+                    vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                    vaccine:
+                      id: XtMM326PzZhcF-Z4aVJtC
+                      nama_vaksin: Sinovac
+                      admin_id: luYbco9Im0yqrODt08KLE
+                      stok: 500
+                      created_at: "2022-01-02T20:42:26.258+07:00"
+                      updated_at: "2022-01-02T20:42:26.258+07:00"
+                    date: "2022-01-22T00:00:00+07:00"
+                    tahap: "2"
+                    start_session: "2022-01-22T08:00:00+07:00"
+                    end_session: "2022-01-22T16:00:00+07:00"
+                    created_at: "2022-01-12T15:20:01.373+07:00"
+                    updated_at: "2022-01-12T15:20:01.373+07:00"
+                  date: "2022-01-12T00:00:00+07:00"
+                  session_time: "2022-01-09T12:00:00+07:00"
+                  created_at: "2022-01-18T16:58:12.751+07:00"
+                  updated_at: "2022-01-18T16:58:12.751+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                citizen_id: "-v-rAVzc6yxP3d0Pi8EFt"
+                session_id: "-H_erp9Q9KYgag3LhCrKB"
+                date: "2022-01-12"
+                session_time: "2022-01-09 12:00:00"
+            example: "{\r\n    \"citizen_id\": \"-v-rAVzc6yxP3d0Pi8EFt\",\r\n    \"session_id\": \"-H_erp9Q9KYgag3LhCrKB\",\r\n    \"date\": \"2022-01-12\",\r\n    \"session_time\": \"2022-01-09 12:00:00\"\r\n}"
+      tags:
+        - Booking
+  /booking/citizen/{id}:
+    get:
+      summary: GetByCitizenID
+      operationId: GetByCitizenID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: 0dGkh_hQgEr4IigeMYQ8G
+      responses:
+        "200":
+          description: GetByCitizenID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - booking_id: iIXXvbl2jqsqHZBx6zsPt
+                    nomor_antrian: 2
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 0dGkh_hQgEr4IigeMYQ8G
+                    citizen:
+                      id: 0dGkh_hQgEr4IigeMYQ8G
+                      email: test3@gmail.com
+                      nohp: "089679798868"
+                      fullname: Muhammad Fadil Ardiansyah
+                      nokk: "3603222340870003"
+                      nik: "3603222340870023"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: laki-laki
+                      status: belum menikah
+                      role: user
+                      current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                      current_Address:
+                        id: c-LHj-_vuAF-1vHjhGBLw
+                        alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                        provinsi: Banten
+                        kota: Kab. Tangerang
+                        kecamatan: Pagedengan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-12T16:07:52.194+07:00"
+                        updated_at: "2022-01-12T16:07:52.194+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: "-H_erp9Q9KYgag3LhCrKB"
+                    session:
+                      id: "-H_erp9Q9KYgag3LhCrKB"
+                      health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                      health_facilities:
+                        id: kKWaVvlNp0b_cEzh1UYIl
+                        name_facilities: Mitra Keluarga Hospital Gading Serpong
+                        no_telp: "+622155689111"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: UPDDglCcgJ5dm49s_ia4y
+                        current_Address:
+                          id: UPDDglCcgJ5dm49s_ia4y
+                          alamat: Jl. Raya Legok - Karawaci No.20
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Medang
+                          lat: -6.24963994
+                          lng: 106.6101737
+                          created_at: "2022-01-15T22:36:18.328+07:00"
+                          updated_at: "2022-01-15T22:36:18.328+07:00"
+                        created_at: "2022-01-15T22:36:19.588+07:00"
+                        updated_at: "2022-01-15T22:36:19.588+07:00"
+                      name_session: Vaksinasi Gratis 1
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-22T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-22T08:00:00+07:00"
+                      end_session: "2022-01-22T16:00:00+07:00"
+                      created_at: "2022-01-12T15:20:01.373+07:00"
+                      updated_at: "2022-01-12T15:20:01.373+07:00"
+                    date: "2022-01-12T00:00:00+07:00"
+                    session_time: "2022-01-09T12:00:00+07:00"
+                    created_at: "2022-01-12T16:20:19.609+07:00"
+                    updated_at: "2022-01-12T16:20:19.609+07:00"
+                  - booking_id: jmsRqm9Erhh_r9F8BCXgq
+                    nomor_antrian: 3
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 0dGkh_hQgEr4IigeMYQ8G
+                    citizen:
+                      id: 0dGkh_hQgEr4IigeMYQ8G
+                      email: test3@gmail.com
+                      nohp: "089679798868"
+                      fullname: Muhammad Fadil Ardiansyah
+                      nokk: "3603222340870003"
+                      nik: "3603222340870023"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: laki-laki
+                      status: belum menikah
+                      role: user
+                      current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                      current_Address:
+                        id: c-LHj-_vuAF-1vHjhGBLw
+                        alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                        provinsi: Banten
+                        kota: Kab. Tangerang
+                        kecamatan: Pagedengan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-12T16:07:52.194+07:00"
+                        updated_at: "2022-01-12T16:07:52.194+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: "-H_erp9Q9KYgag3LhCrKB"
+                    session:
+                      id: "-H_erp9Q9KYgag3LhCrKB"
+                      health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                      health_facilities:
+                        id: kKWaVvlNp0b_cEzh1UYIl
+                        name_facilities: Mitra Keluarga Hospital Gading Serpong
+                        no_telp: "+622155689111"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: UPDDglCcgJ5dm49s_ia4y
+                        current_Address:
+                          id: UPDDglCcgJ5dm49s_ia4y
+                          alamat: Jl. Raya Legok - Karawaci No.20
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Medang
+                          lat: -6.24963994
+                          lng: 106.6101737
+                          created_at: "2022-01-15T22:36:18.328+07:00"
+                          updated_at: "2022-01-15T22:36:18.328+07:00"
+                        created_at: "2022-01-15T22:36:19.588+07:00"
+                        updated_at: "2022-01-15T22:36:19.588+07:00"
+                      name_session: Vaksinasi Gratis 1
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-22T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-22T08:00:00+07:00"
+                      end_session: "2022-01-22T16:00:00+07:00"
+                      created_at: "2022-01-12T15:20:01.373+07:00"
+                      updated_at: "2022-01-12T15:20:01.373+07:00"
+                    date: "2022-01-12T00:00:00+07:00"
+                    session_time: "2022-01-09T12:00:00+07:00"
+                    created_at: "2022-01-12T21:36:01.602+07:00"
+                    updated_at: "2022-01-12T21:36:01.602+07:00"
+                  - booking_id: JSzBwd7zuuS_H1qx2Q9Pq
+                    nomor_antrian: 4
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 0dGkh_hQgEr4IigeMYQ8G
+                    citizen:
+                      id: 0dGkh_hQgEr4IigeMYQ8G
+                      email: test3@gmail.com
+                      nohp: "089679798868"
+                      fullname: Muhammad Fadil Ardiansyah
+                      nokk: "3603222340870003"
+                      nik: "3603222340870023"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: laki-laki
+                      status: belum menikah
+                      role: user
+                      current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                      current_Address:
+                        id: c-LHj-_vuAF-1vHjhGBLw
+                        alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                        provinsi: Banten
+                        kota: Kab. Tangerang
+                        kecamatan: Pagedengan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-12T16:07:52.194+07:00"
+                        updated_at: "2022-01-12T16:07:52.194+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: "-H_erp9Q9KYgag3LhCrKB"
+                    session:
+                      id: "-H_erp9Q9KYgag3LhCrKB"
+                      health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                      health_facilities:
+                        id: kKWaVvlNp0b_cEzh1UYIl
+                        name_facilities: Mitra Keluarga Hospital Gading Serpong
+                        no_telp: "+622155689111"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: UPDDglCcgJ5dm49s_ia4y
+                        current_Address:
+                          id: UPDDglCcgJ5dm49s_ia4y
+                          alamat: Jl. Raya Legok - Karawaci No.20
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Medang
+                          lat: -6.24963994
+                          lng: 106.6101737
+                          created_at: "2022-01-15T22:36:18.328+07:00"
+                          updated_at: "2022-01-15T22:36:18.328+07:00"
+                        created_at: "2022-01-15T22:36:19.588+07:00"
+                        updated_at: "2022-01-15T22:36:19.588+07:00"
+                      name_session: Vaksinasi Gratis 1
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-22T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-22T08:00:00+07:00"
+                      end_session: "2022-01-22T16:00:00+07:00"
+                      created_at: "2022-01-12T15:20:01.373+07:00"
+                      updated_at: "2022-01-12T15:20:01.373+07:00"
+                    date: "2022-01-12T00:00:00+07:00"
+                    session_time: "2022-01-09T12:00:00+07:00"
+                    created_at: "2022-01-12T23:04:54.617+07:00"
+                    updated_at: "2022-01-12T23:04:54.617+07:00"
+                  - booking_id: XsDGkcInLTBYQt1fitfC_
+                    nomor_antrian: 1
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 0dGkh_hQgEr4IigeMYQ8G
+                    citizen:
+                      id: 0dGkh_hQgEr4IigeMYQ8G
+                      email: test3@gmail.com
+                      nohp: "089679798868"
+                      fullname: Muhammad Fadil Ardiansyah
+                      nokk: "3603222340870003"
+                      nik: "3603222340870023"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: laki-laki
+                      status: belum menikah
+                      role: user
+                      current_address_id: c-LHj-_vuAF-1vHjhGBLw
+                      current_Address:
+                        id: c-LHj-_vuAF-1vHjhGBLw
+                        alamat: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                        provinsi: Banten
+                        kota: Kab. Tangerang
+                        kecamatan: Pagedengan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-12T16:07:52.194+07:00"
+                        updated_at: "2022-01-12T16:07:52.194+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: "-H_erp9Q9KYgag3LhCrKB"
+                    session:
+                      id: "-H_erp9Q9KYgag3LhCrKB"
+                      health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                      health_facilities:
+                        id: kKWaVvlNp0b_cEzh1UYIl
+                        name_facilities: Mitra Keluarga Hospital Gading Serpong
+                        no_telp: "+622155689111"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: UPDDglCcgJ5dm49s_ia4y
+                        current_Address:
+                          id: UPDDglCcgJ5dm49s_ia4y
+                          alamat: Jl. Raya Legok - Karawaci No.20
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Medang
+                          lat: -6.24963994
+                          lng: 106.6101737
+                          created_at: "2022-01-15T22:36:18.328+07:00"
+                          updated_at: "2022-01-15T22:36:18.328+07:00"
+                        created_at: "2022-01-15T22:36:19.588+07:00"
+                        updated_at: "2022-01-15T22:36:19.588+07:00"
+                      name_session: Vaksinasi Gratis 1
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-22T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-22T08:00:00+07:00"
+                      end_session: "2022-01-22T16:00:00+07:00"
+                      created_at: "2022-01-12T15:20:01.373+07:00"
+                      updated_at: "2022-01-12T15:20:01.373+07:00"
+                    date: "2022-01-12T00:00:00+07:00"
+                    session_time: "2022-01-09T12:00:00+07:00"
+                    created_at: "2022-01-12T16:19:25.089+07:00"
+                    updated_at: "2022-01-12T16:19:25.089+07:00"
+      tags:
+        - Booking
+  /booking/session/{id}:
+    get:
+      summary: GetBySessionID
+      operationId: GetBySessionID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: "-H_erp9Q9KYgag3LhCrKB"
+      responses:
+        "200":
+          description: GetBySessionID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - booking_id: 0AiE8m71dBgDP1b_rjkYQ
+                    citizen_name: Diah Aufa Arini
+                    address: jl. Karawang
+                    nik: "3603222341270077"
+                    no_telp: "089679798868"
+                    status: booked
+                  - booking_id: HKM3Y7f4KGfQBHvl_4ob-
+                    citizen_name: Ni Kadek Dwi Sabrina
+                    address: jl. Kuta
+                    nik: "3603222341270023"
+                    no_telp: "089679798868"
+                    status: booked
+                  - booking_id: iIXXvbl2jqsqHZBx6zsPt
+                    citizen_name: Muhammad Fadil Ardiansyah
+                    address: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                    nik: "3603222340870023"
+                    no_telp: "089679798868"
+                    status: booked
+                  - booking_id: jmsRqm9Erhh_r9F8BCXgq
+                    citizen_name: Muhammad Fadil Ardiansyah
+                    address: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                    nik: "3603222340870023"
+                    no_telp: "089679798868"
+                    status: booked
+                  - booking_id: JSzBwd7zuuS_H1qx2Q9Pq
+                    citizen_name: Muhammad Fadil Ardiansyah
+                    address: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                    nik: "3603222340870023"
+                    no_telp: "089679798868"
+                    status: booked
+                  - booking_id: XsDGkcInLTBYQt1fitfC_
+                    citizen_name: Muhammad Fadil Ardiansyah
+                    address: jl. Lestari segar 4, blok D4/d13 rt.02/09
+                    nik: "3603222340870023"
+                    no_telp: "089679798868"
+                    status: booked
+      tags:
+        - Booking
+  /booking/nokk/{id}:
+    get:
+      summary: GetByNoKK
+      operationId: GetByNoKK
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: number
+      responses:
+        "200":
+          description: GetByNoKK [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  - booking_id: 7UcKNaFLno68hXYJU_6B9
+                    nomor_antrian: 2
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 7UcKNaFLno68hXYJU_6B9
+                    citizen:
+                      id: 7UcKNaFLno68hXYJU_6B9
+                      email: fadhilansyah25@gmail.com
+                      nohp: "089332347887"
+                      fullname: Rudi Tabuti
+                      nokk: "3603224040409997"
+                      nik: "3603222505971112"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: Pria
+                      status: belumKawin
+                      role: user
+                      current_address_id: 1teCWRvh-kf-bu3X2i_lh
+                      current_Address:
+                        id: 1teCWRvh-kf-bu3X2i_lh
+                        alamat: Jl. Lestari Segar 4 Blok D4/D13
+                        provinsi: Banten
+                        kota: Kab Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-17T22:35:09.254+07:00"
+                        updated_at: "2022-01-17T22:35:09.254+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: EAST9hzo-jAAaDOC4cCqc
+                    session:
+                      id: EAST9hzo-jAAaDOC4cCqc
+                      health_facilities_id: LvEf8uBrtFESNaimva_OB
+                      health_facilities:
+                        id: LvEf8uBrtFESNaimva_OB
+                        name_facilities: Bethsaida Hospitals
+                        no_telp: "+622180524900"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: 9oAiTx7_nlenvNOlTQWd8
+                        current_Address:
+                          id: 9oAiTx7_nlenvNOlTQWd8
+                          alamat: >-
+                            Jalan Boulevard Raya Gading Serpong Kav. 29 Curug
+                            Sangereng Kelapa Dua, Gading
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Serpong
+                          kelurahan: Kelapa Dua
+                          lat: -6.255028
+                          lng: 106.622527
+                          created_at: "2022-01-15T22:50:21.107+07:00"
+                          updated_at: "2022-01-15T22:50:21.107+07:00"
+                        created_at: "2022-01-15T22:50:21.207+07:00"
+                        updated_at: "2022-01-15T22:50:21.207+07:00"
+                      name_session: Vaksinasi Lansia Covid-19
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-18T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-18T08:00:00+07:00"
+                      end_session: "2022-01-18T16:00:00+07:00"
+                      created_at: "2022-01-07T17:54:18.218+07:00"
+                      updated_at: "2022-01-07T17:55:26.067+07:00"
+                    date: "2022-01-18T00:00:00+07:00"
+                    session_time: "2022-01-18T16:49:00+07:00"
+                    created_at: "2022-01-17T22:35:09.953+07:00"
+                    updated_at: "2022-01-17T22:35:09.953+07:00"
+                  - booking_id: 7UcKNaFLno68hXYJU_6B9
+                    nomor_antrian: 7
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 7UcKNaFLno68hXYJU_6B9
+                    citizen:
+                      id: 7UcKNaFLno68hXYJU_6B9
+                      email: fadhilansyah25@gmail.com
+                      nohp: "089332347887"
+                      fullname: Rudi Tabuti
+                      nokk: "3603224040409997"
+                      nik: "3603222505971112"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: Pria
+                      status: belumKawin
+                      role: user
+                      current_address_id: 1teCWRvh-kf-bu3X2i_lh
+                      current_Address:
+                        id: 1teCWRvh-kf-bu3X2i_lh
+                        alamat: Jl. Lestari Segar 4 Blok D4/D13
+                        provinsi: Banten
+                        kota: Kab Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-17T22:35:09.254+07:00"
+                        updated_at: "2022-01-17T22:35:09.254+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: "-H_erp9Q9KYgag3LhCrKB"
+                    session:
+                      id: "-H_erp9Q9KYgag3LhCrKB"
+                      health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                      health_facilities:
+                        id: kKWaVvlNp0b_cEzh1UYIl
+                        name_facilities: Mitra Keluarga Hospital Gading Serpong
+                        no_telp: "+622155689111"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: UPDDglCcgJ5dm49s_ia4y
+                        current_Address:
+                          id: UPDDglCcgJ5dm49s_ia4y
+                          alamat: Jl. Raya Legok - Karawaci No.20
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Medang
+                          lat: -6.24963994
+                          lng: 106.6101737
+                          created_at: "2022-01-15T22:36:18.328+07:00"
+                          updated_at: "2022-01-15T22:36:18.328+07:00"
+                        created_at: "2022-01-15T22:36:19.588+07:00"
+                        updated_at: "2022-01-15T22:36:19.588+07:00"
+                      name_session: Vaksinasi Gotong Royong
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-22T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-22T08:00:00+07:00"
+                      end_session: "2022-01-22T16:00:00+07:00"
+                      created_at: "2022-01-12T15:20:01.373+07:00"
+                      updated_at: "2022-01-12T15:20:01.373+07:00"
+                    date: "2022-01-22T00:00:00+07:00"
+                    session_time: "2022-01-22T13:33:00+07:00"
+                    created_at: "2022-01-17T22:35:09.953+07:00"
+                    updated_at: "2022-01-17T22:35:09.953+07:00"
+                  - booking_id: 7UcKNaFLno68hXYJU_6B9
+                    nomor_antrian: 1
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: 7UcKNaFLno68hXYJU_6B9
+                    citizen:
+                      id: 7UcKNaFLno68hXYJU_6B9
+                      email: fadhilansyah25@gmail.com
+                      nohp: "089332347887"
+                      fullname: Rudi Tabuti
+                      nokk: "3603224040409997"
+                      nik: "3603222505971112"
+                      dob: "1997-05-25"
+                      relationship: anak
+                      gender: Pria
+                      status: belumKawin
+                      role: user
+                      current_address_id: 1teCWRvh-kf-bu3X2i_lh
+                      current_Address:
+                        id: 1teCWRvh-kf-bu3X2i_lh
+                        alamat: Jl. Lestari Segar 4 Blok D4/D13
+                        provinsi: Banten
+                        kota: Kab Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-17T22:35:09.254+07:00"
+                        updated_at: "2022-01-17T22:35:09.254+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: EAST9hzo-jAAaDOC4cCqc
+                    session:
+                      id: EAST9hzo-jAAaDOC4cCqc
+                      health_facilities_id: LvEf8uBrtFESNaimva_OB
+                      health_facilities:
+                        id: LvEf8uBrtFESNaimva_OB
+                        name_facilities: Bethsaida Hospitals
+                        no_telp: "+622180524900"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: 9oAiTx7_nlenvNOlTQWd8
+                        current_Address:
+                          id: 9oAiTx7_nlenvNOlTQWd8
+                          alamat: >-
+                            Jalan Boulevard Raya Gading Serpong Kav. 29 Curug
+                            Sangereng Kelapa Dua, Gading
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Serpong
+                          kelurahan: Kelapa Dua
+                          lat: -6.255028
+                          lng: 106.622527
+                          created_at: "2022-01-15T22:50:21.107+07:00"
+                          updated_at: "2022-01-15T22:50:21.107+07:00"
+                        created_at: "2022-01-15T22:50:21.207+07:00"
+                        updated_at: "2022-01-15T22:50:21.207+07:00"
+                      name_session: Vaksinasi Lansia Covid-19
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-18T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-18T08:00:00+07:00"
+                      end_session: "2022-01-18T16:00:00+07:00"
+                      created_at: "2022-01-07T17:54:18.218+07:00"
+                      updated_at: "2022-01-07T17:55:26.067+07:00"
+                    date: "2022-01-18T00:00:00+07:00"
+                    session_time: "2022-01-18T12:06:00+07:00"
+                    created_at: "2022-01-17T22:35:09.953+07:00"
+                    updated_at: "2022-01-17T22:35:09.953+07:00"
+                  - booking_id: EDHQKr0i4OUiCHU01zOen
+                    nomor_antrian: 8
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: EDHQKr0i4OUiCHU01zOen
+                    citizen:
+                      id: EDHQKr0i4OUiCHU01zOen
+                      email: ""
+                      nohp: "089332347887"
+                      fullname: Sri Wedari
+                      nokk: "3603224040409997"
+                      nik: "3603222505971114"
+                      dob: "1984-12-14"
+                      relationship: istri
+                      gender: Wanita
+                      status: kawin
+                      role: anggota
+                      current_address_id: NW4lPd2gkb0ewjNgmmlH6
+                      current_Address:
+                        id: NW4lPd2gkb0ewjNgmmlH6
+                        alamat: Jl. Lestari Segar 4 Blok D4/D13
+                        provinsi: Banten
+                        kota: Kab Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-17T22:35:10.591+07:00"
+                        updated_at: "2022-01-17T22:35:10.591+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: "-H_erp9Q9KYgag3LhCrKB"
+                    session:
+                      id: "-H_erp9Q9KYgag3LhCrKB"
+                      health_facilities_id: kKWaVvlNp0b_cEzh1UYIl
+                      health_facilities:
+                        id: kKWaVvlNp0b_cEzh1UYIl
+                        name_facilities: Mitra Keluarga Hospital Gading Serpong
+                        no_telp: "+622155689111"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: UPDDglCcgJ5dm49s_ia4y
+                        current_Address:
+                          id: UPDDglCcgJ5dm49s_ia4y
+                          alamat: Jl. Raya Legok - Karawaci No.20
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Pagedangan
+                          kelurahan: Medang
+                          lat: -6.24963994
+                          lng: 106.6101737
+                          created_at: "2022-01-15T22:36:18.328+07:00"
+                          updated_at: "2022-01-15T22:36:18.328+07:00"
+                        created_at: "2022-01-15T22:36:19.588+07:00"
+                        updated_at: "2022-01-15T22:36:19.588+07:00"
+                      name_session: Vaksinasi Gotong Royong
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-22T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-22T08:00:00+07:00"
+                      end_session: "2022-01-22T16:00:00+07:00"
+                      created_at: "2022-01-12T15:20:01.373+07:00"
+                      updated_at: "2022-01-12T15:20:01.373+07:00"
+                    date: "2022-01-22T00:00:00+07:00"
+                    session_time: "2022-01-22T10:40:00+07:00"
+                    created_at: "2022-01-17T22:35:10.765+07:00"
+                    updated_at: "2022-01-17T22:35:10.765+07:00"
+                  - booking_id: uqXp1-HNQk3Mt1USlMO0m
+                    nomor_antrian: 1
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: uqXp1-HNQk3Mt1USlMO0m
+                    citizen:
+                      id: uqXp1-HNQk3Mt1USlMO0m
+                      email: ""
+                      nohp: "089332347887"
+                      fullname: Bambang
+                      nokk: "3603224040409997"
+                      nik: "3603222505971113"
+                      dob: "1980-10-16"
+                      relationship: suami
+                      gender: Pria
+                      status: kawin
+                      role: anggota
+                      current_address_id: FWF4ogI9rowb1FzY74_Ht
+                      current_Address:
+                        id: FWF4ogI9rowb1FzY74_Ht
+                        alamat: Jl. Lestari Segar 4 Blok D4/D13
+                        provinsi: Banten
+                        kota: Kab Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-17T22:35:10.199+07:00"
+                        updated_at: "2022-01-17T22:35:10.199+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: eKD-kOFpEjYYFr4AR2R-n
+                    session:
+                      id: eKD-kOFpEjYYFr4AR2R-n
+                      health_facilities_id: yUxEwcOATwcq7vKBpZmz_
+                      health_facilities:
+                        id: yUxEwcOATwcq7vKBpZmz_
+                        name_facilities: "Siloam Hospitals Lippo Village\_"
+                        no_telp: "+622180646900"
+                        admin: luYbco9Im0yqrODt08KLE
+                        current_address_id: y_WrY3wNNOiUdA8Kb9FcU
+                        current_Address:
+                          id: y_WrY3wNNOiUdA8Kb9FcU
+                          alamat: Jl. Siloam No. 6 1600
+                          provinsi: Banten
+                          kota: Kab. Tangerang
+                          kecamatan: Kelapa Dua
+                          kelurahan: Bencongan
+                          lat: -6.225327
+                          lng: 106.598199
+                          created_at: "2022-01-05T19:04:26.113+07:00"
+                          updated_at: "2022-01-05T19:05:07.42+07:00"
+                        created_at: "2022-01-05T19:04:26.321+07:00"
+                        updated_at: "2022-01-05T19:05:07.518+07:00"
+                      name_session: Vaksinasi Warga Sehat
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-19T00:00:00+07:00"
+                      tahap: "1"
+                      start_session: "2022-01-19T08:00:00+07:00"
+                      end_session: "2022-01-19T16:00:00+07:00"
+                      created_at: "2022-01-06T12:57:40.89+07:00"
+                      updated_at: "2022-01-06T12:57:40.89+07:00"
+                    date: "2022-01-19T00:00:00+07:00"
+                    session_time: "2022-01-19T15:20:00+07:00"
+                    created_at: "2022-01-17T22:35:10.29+07:00"
+                    updated_at: "2022-01-17T22:35:10.29+07:00"
+                  - booking_id: uqXp1-HNQk3Mt1USlMO0m
+                    nomor_antrian: 1
+                    status: booked
+                    vaccine_name: Sinovac
+                    citizen_id: uqXp1-HNQk3Mt1USlMO0m
+                    citizen:
+                      id: uqXp1-HNQk3Mt1USlMO0m
+                      email: ""
+                      nohp: "089332347887"
+                      fullname: Bambang
+                      nokk: "3603224040409997"
+                      nik: "3603222505971113"
+                      dob: "1980-10-16"
+                      relationship: suami
+                      gender: Pria
+                      status: kawin
+                      role: anggota
+                      current_address_id: FWF4ogI9rowb1FzY74_Ht
+                      current_Address:
+                        id: FWF4ogI9rowb1FzY74_Ht
+                        alamat: Jl. Lestari Segar 4 Blok D4/D13
+                        provinsi: Banten
+                        kota: Kab Tangerang
+                        kecamatan: Pagedangan
+                        kelurahan: Medang
+                        lat: 0
+                        lng: 0
+                        created_at: "2022-01-17T22:35:10.199+07:00"
+                        updated_at: "2022-01-17T22:35:10.199+07:00"
+                      created_at: "0001-01-01T00:00:00Z"
+                      updated_at: "0001-01-01T00:00:00Z"
+                    session_id: Fme0BElnrbbYmxQN7Mb8y
+                    session:
+                      id: Fme0BElnrbbYmxQN7Mb8y
+                      health_facilities_id: pKO5s1hbQelLGE-v_nrRB
+                      health_facilities:
+                        id: pKO5s1hbQelLGE-v_nrRB
+                        name_facilities: Primaya Hospital Tangerang
+                        no_telp: "+622155758888"
+                        admin: _oz4VwMCZCAkZqULxh03p
+                        current_address_id: _TKxixwqMuBubsRuJtYjO
+                        current_Address:
+                          id: _TKxixwqMuBubsRuJtYjO
+                          alamat: Jl. MH. Thamrin No.3, RT.003/RW.001
+                          provinsi: Banten
+                          kota: Kota Tangerang
+                          kecamatan: Cikokol
+                          kelurahan: Pinang
+                          lat: -6.214643
+                          lng: 106.630243
+                          created_at: "2022-01-07T15:47:35.207+07:00"
+                          updated_at: "2022-01-07T15:47:35.207+07:00"
+                        created_at: "2022-01-07T15:47:35.363+07:00"
+                        updated_at: "2022-01-07T15:47:35.363+07:00"
+                      name_session: Vaksinasi Nasional
+                      capacity: 500
+                      vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                      vaccine:
+                        id: XtMM326PzZhcF-Z4aVJtC
+                        nama_vaksin: Sinovac
+                        admin_id: luYbco9Im0yqrODt08KLE
+                        stok: 500
+                        created_at: "2022-01-02T20:42:26.258+07:00"
+                        updated_at: "2022-01-02T20:42:26.258+07:00"
+                      date: "2022-01-23T00:00:00+07:00"
+                      tahap: "2"
+                      start_session: "2022-01-23T08:00:00+07:00"
+                      end_session: "2022-01-23T16:00:00+07:00"
+                      created_at: "2022-01-07T15:48:28.3+07:00"
+                      updated_at: "2022-01-07T17:52:54.571+07:00"
+                    date: "2022-01-23T00:00:00+07:00"
+                    session_time: "2022-01-23T13:39:00+07:00"
+                    created_at: "2022-01-17T22:35:10.29+07:00"
+                    updated_at: "2022-01-17T22:35:10.29+07:00"
+      tags:
+        - Booking
+  /booking/status/{id}:
+    patch:
+      summary: UpdateBookingStatusByID
+      operationId: UpdateBookingStatusByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: qVOQhIoT76gTFuFgUFR_B
+      responses:
+        "200":
+          description: UpdateBookingStatusByID [success]
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: "#/components/schemas/200"
+              example:
+                meta:
+                  status: 200
+                  message: succes
+                data:
+                  booking_id: qVOQhIoT76gTFuFgUFR_B
+                  nomor_antrian: 1
+                  status: canceled
+                  vaccine_name: Sinovac
+                  citizen_id: 3aieP-7eHv1MrAHh9r_MI
+                  citizen:
+                    id: 3aieP-7eHv1MrAHh9r_MI
+                    email: ""
+                    nohp: "089679798868"
+                    fullname: Ni Kadek Dwi Sabrina
+                    nokk: "3603222340870003"
+                    nik: "3603222341270023"
+                    dob: "2000-06-11"
+                    relationship: anak
+                    gender: perempuan
+                    status: belum menikah
+                    role: anggota
+                    current_address_id: IrQgJNN9nvnTmVgQ-uMk8
+                    current_Address:
+                      id: IrQgJNN9nvnTmVgQ-uMk8
+                      alamat: jl. Kuta
+                      provinsi: Bali
+                      kota: Denpasar
+                      kecamatan: Uhuy
+                      kelurahan: Ahoy
+                      lat: 0
+                      lng: 0
+                      created_at: "2022-01-14T18:36:07.671+07:00"
+                      updated_at: "2022-01-14T18:36:07.671+07:00"
+                    created_at: "0001-01-01T00:00:00Z"
+                    updated_at: "0001-01-01T00:00:00Z"
+                  session_id: Fme0BElnrbbYmxQN7Mb8y
+                  session:
+                    id: Fme0BElnrbbYmxQN7Mb8y
+                    health_facilities_id: pKO5s1hbQelLGE-v_nrRB
+                    health_facilities:
+                      id: pKO5s1hbQelLGE-v_nrRB
+                      name_facilities: Primaya Hospital Tangerang
+                      no_telp: "+622155758888"
+                      admin: _oz4VwMCZCAkZqULxh03p
+                      current_address_id: _TKxixwqMuBubsRuJtYjO
+                      current_Address:
+                        id: _TKxixwqMuBubsRuJtYjO
+                        alamat: Jl. MH. Thamrin No.3, RT.003/RW.001
+                        provinsi: Banten
+                        kota: Kota Tangerang
+                        kecamatan: Cikokol
+                        kelurahan: Pinang
+                        lat: -6.214643
+                        lng: 106.630243
+                        created_at: "2022-01-07T15:47:35.207+07:00"
+                        updated_at: "2022-01-07T15:47:35.207+07:00"
+                      created_at: "2022-01-07T15:47:35.363+07:00"
+                      updated_at: "2022-01-07T15:47:35.363+07:00"
+                    name_session: Vaksinasi Nasional
+                    capacity: 500
+                    vaccine_id: XtMM326PzZhcF-Z4aVJtC
+                    vaccine:
+                      id: XtMM326PzZhcF-Z4aVJtC
+                      nama_vaksin: Sinovac
+                      admin_id: luYbco9Im0yqrODt08KLE
+                      stok: 500
+                      created_at: "2022-01-02T20:42:26.258+07:00"
+                      updated_at: "2022-01-02T20:42:26.258+07:00"
+                    date: "2022-01-23T00:00:00+07:00"
+                    tahap: "2"
+                    start_session: "2022-01-23T08:00:00+07:00"
+                    end_session: "2022-01-23T16:00:00+07:00"
+                    created_at: "2022-01-07T15:48:28.3+07:00"
+                    updated_at: "2022-01-07T17:52:54.571+07:00"
+                  date: "2022-01-23T00:00:00+07:00"
+                  session_time: "2022-01-23T13:00:00+07:00"
+                  created_at: "2022-01-19T03:24:40.385+07:00"
+                  updated_at: "2022-01-19T14:31:10.218+07:00"
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example:
+                status: canceled
+            example: "{\r\n    \"status\": \"canceled\"\r\n}"
+      tags:
+        - Booking
+components:
+  schemas:
+    "200":
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: ""
+              default: 200
+            message:
+              type: string
+              description: ""
+              default: succes
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: ""
+              default: luYbco9Im0yqrODt08KLE
+            role:
+              type: string
+              description: ""
+              default: admin
+            username:
+              type: string
+              description: ""
+              default: kurniawan12
+            password:
+              type: string
+              description: ""
+              default: $2a$04$FhY9ZzerGjL0Q4tlqpGdNuEcvh7mrgt1iLGp9JHO5MwGLtO6LtS3m
+            created_at:
+              type: string
+              description: ""
+              default: "2022-01-02T20:43:38.917+07:00"
+            updated_at:
+              type: string
+              description: ""
+              default: "2022-01-02T20:43:38.917+07:00"
+    "400":
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: ""
+              default: 400
+            message:
+              type: string
+              description: ""
+              default: Error
+            messages:
+              type: array
+              items:
+                type: string
+                description: ""
+                default: incorrect (Username) or (Password)
+        data: {}
+    "500":
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: ""
+              default: 500
+            message:
+              type: string
+              description: ""
+              default: Error
+            messages:
+              type: array
+              items:
+                type: string
+                description: ""
+                default: id not found
+        data: {}
+  parameters:
+    "":
+      name: ""
+      in: query
+      required: true
+      style: form
+      schema:
+        type: number
+    id:
+      name: id
+      in: path
+      required: true
+      style: simple
+      schema:
+        type: string
+        example: bNQV1Uy9JtkoQIwERfyit
+    lat:
+      name: lat
+      in: query
+      required: true
+      style: form
+      schema:
+        type: number
+    lng:
+      name: lng
+      in: query
+      required: true
+      style: form
+      schema:
+        type: number
+    nokk:
+      name: nokk
+      in: query
+      required: true
+      style: form
+      schema:
+        type: number
+security: []
+tags: []
+externalDocs:
+  url: ""
+  description: ""
+warnings: []
